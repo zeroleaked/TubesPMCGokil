@@ -142,5 +142,6 @@ float** adjoint(float** matrix, int n) {
             adj[j][i] = (sign)*(luDecomposition(temp, n-1));
         }
     }
+    destroyMatrix(temp);
     return adj;
 }
