@@ -4,19 +4,19 @@
 typedef struct{
     double value;
     int node1, node2;
-}r_t;
+}resistor_t;
 
 typedef struct{
     double value;
     double last_curr;
     int node1, node2;
-}l_t;
+}inductor_t;
 
 typedef struct{
     double value;
     double last_volt;
     int node1, node2;
-}c_t;
+}capacitor_t;
 
 typedef struct{
     double value;
