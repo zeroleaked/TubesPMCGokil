@@ -2,6 +2,20 @@
 #include <stdio.h>
 #include "matrices.h"
 
+float** createMatrix(int n) {
+    float* values = calloc(n*n, sizeof(float));
+    float** rows = calloc(n, sizeof(float*));
+    for (int i=0; i<n; ++i) for (int j = 0; j< n; j++) {
+        rows[i] = values + i*n;
+    }
+    return rows;
+}
+
+void destroyMatrix(float** matrix) {
+    free(*matrix);
+    free(matrix);
+}
+
 void inputMatrix(float **mat,int n){
     int i , j;
     for (i = 0; i < n; i++){
@@ -16,10 +30,11 @@ void printMatrix(float **mat, int n){
     int i = 0, j = 0;
     for (;i < n; i++){
         for (j = 0; j < n; j++){
-            // printf("%f ", mat[i][j]);
+             printf("%f ", mat[i][j]);
         }
-        // printf("\n");
+         printf("\n");
     }
+    printf("\n");
 }
 
 void swapRow(float **m, int a, int b , int n){
@@ -33,7 +48,7 @@ void swapRow(float **m, int a, int b , int n){
 }
 
 
-float luDecomposition(float** mat, int n){ 
+float luDecomposition(float** mat, int n){
     int i , j, k;
     float **m;
     m = (float**) malloc(n * sizeof(float*));
@@ -79,7 +94,7 @@ float luDecomposition(float** mat, int n){
 
         i++;
     }
-    printMatrix(m,n);
+    //printMatrix(m,n);
     float res = 1;
 
     for (i = 0; i < n; i++){
@@ -91,4 +106,41 @@ float luDecomposition(float** mat, int n){
 
     return res * sgn;
 
+}
+
+void getCofactor(float** A, float** temp, int p, int q, int n) {
+  //cofactor of A[p][q]
+    int i = 0, j = 0;
+    for (int row = 0; row < n; row++) {
+        for (int col = 0; col < n; col++) {
+            if (row != p && col != q) {
+                temp[i][j++] = A[row][col];
+                if (j == n - 1) {
+                    j = 0;
+                    i++;
+                }
+            }
+        }
+    }
+}
+
+float** adjoint(float** matrix, int n) {
+    float** adj = createMatrix(n);
+    if (n == 1) {
+        adj[0][0] = 1;
+        return adj;
+    }
+    // store cofactors of A[][]
+    float** temp = createMatrix(n);
+
+    for (int i=0; i<n; i++) {
+        for (int j=0; j<n; j++) {
+            getCofactor(matrix, temp, i, j, n);
+            // sign of adj[j][i] positive if sum of row and column indexes is even.
+            float sign = ((i+j)%2==0)? 1: -1;
+            // Interchanging i and j to get transpose
+            adj[j][i] = (sign)*(luDecomposition(temp, n-1));
+        }
+    }
+    return adj;
 }

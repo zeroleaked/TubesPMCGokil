@@ -8,4 +8,8 @@ void swapRow(float **m, int a, int b , int n);
 void printMatrix(float **mat, int n);
 float luDecomposition(float** mat, int n) ;
 
+float** createMatrix(int n);
+void destroyMatrix(float** matrix);
+float** adjoint(float** matrix, int n);
+
 #endif
