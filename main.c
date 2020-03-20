@@ -2,12 +2,6 @@
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
-<<<<<<< HEAD
-
-int main(){
-
-
-=======
 #include "Configuration/configuration.h"
 #include "Configuration/debug.h"
 #include "Configuration/procedure.h"
@@ -16,6 +10,5 @@ int main(){
 
 int main(){
     
->>>>>>> ModelComponent
     return 0;
 }
