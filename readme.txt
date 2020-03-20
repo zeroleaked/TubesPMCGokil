@@ -5,9 +5,13 @@ done :
 4. in input.h, every procedure except pushresToNodeArray is not tested
 5. Matrices sudah dicoba, tinggal bagian adjoin
 
-1. Bagian input pushnode belumdicooba
+
+to do :
+0. Print node dicoba juga dulu
+1. Bagian input pushresToNodeArray belum dicoba
     dicoba dulu
-2. Print node dicoba juga dulu
+2. if 1 done, please make another push for res, ind, cap, volt and current
+
 
 
 Cara membaca : 
