@@ -23,6 +23,31 @@ typedef struct{
     int nodePos, nodeNeg;
 }voltage_t, current_t;
 
+typedef struct{
+    resistor_t *array;
+    int Neff;
+}resistor_tab;
+
+typedef struct {
+    capacitor_t *array;
+    int Neff;
+} capacitor_tab;
+
+typedef struct {
+    inductor_t *array;
+    int Neff;
+}inductor_tab;
+
+typedef struct{
+    voltage_t *array;
+    int Neff;
+}voltage_tab;
+
+typedef struct{
+    current_t *array;
+    int Neff;
+}current_tab;
+
 #endif
 
 
