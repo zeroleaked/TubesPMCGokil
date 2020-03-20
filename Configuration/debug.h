@@ -36,4 +36,30 @@ void printCurrentSource(current_source_t cur){
     printf("Node Neg = %d \n",       cur.nodeNeg);
 }
 
+void printNode(node_t node, resistor_tab res, capacitor_tab cap,
+                inductor_tab ind, voltage_source_tab volt, 
+                current_source_tab curr){
+    printf("Nama Node : %d \n", node.name);
+
+    for(int i = 0; i < (node.res_list).Neff; i++){
+        printRes((res.array)[((node.res_list).array)[i]]);
+    }
+
+    for(int i = 0; i < (node.ind_list).Neff; i++){
+        printIn((ind.array)[((node.ind_list).array)[i]]);
+    }
+
+    for(int i = 0; i < (node.cap_list).Neff; i++){
+        printCap((cap.array)[((node.cap_list).array)[i]]);
+    }
+
+    for(int i = 0; i < (node.voltage_source_list).Neff; i++){
+        printVoltageSource((volt.array)[((node.voltage_source_list).array)[i]]);
+    }
+
+    for(int i = 0; i < (node.current_source_list).Neff; i++){
+        printCurrentSource((curr.array)[((node.current_source_list).array)[i]]);
+    }
+}
+
 #endif

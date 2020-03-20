@@ -48,6 +48,24 @@ typedef struct{
     int Neff;
 }current_source_tab;
 
+typedef struct{
+    int *array;
+    int Neff;
+}list_int_tab;
+
+typedef struct{
+    int name;
+    list_int_tab res_list;
+    list_int_tab ind_list;
+    list_int_tab cap_list;
+    list_int_tab current_source_list;
+    list_int_tab voltage_source_list;
+}node_t;
+
+typedef struct {
+    node_t *array;
+    int Neff;
+}node_tab;
+
+
 #endif
-
-

@@ -64,4 +64,25 @@ current_source_t askCurrentSource(){
     return temp;
 }
 
+void pushResToNodeArray(resistor_t res,int num_in_array ,node_tab *node_list){
+    int i = 0;
+    int found1 = 0;
+    int found2 = 0;
+    for (i = 0; i < node_list->Neff; i++){
+        int tempName = (node_list->array)[i].name;
+        if (tempName == res.node1){
+            found1 = 1;
+            addIntegerToTab(&((node_list->array)[i].res_list) , num_in_array);
+        }
+        else if (tempName == res.node1){
+            found2 = 1;
+            addIntegerToTab(&((node_list->array)[i].res_list) , num_in_array);
+        }
+    }
+
+    if (found1 != 1){
+        node_t tempNode = makeNode(res.node1);
+    }
+}
+
 #endif
