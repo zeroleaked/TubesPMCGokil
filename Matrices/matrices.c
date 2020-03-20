@@ -33,7 +33,7 @@ void swapRow(float **m, int a, int b , int n){
 }
 
 
-float luDecomposition(float** mat, int n){ 
+float findDeterminant(float** mat, int n){ 
     int i , j, k;
     float **m;
     m = (float**) malloc(n * sizeof(float*));
@@ -91,4 +91,20 @@ float luDecomposition(float** mat, int n){
 
     return res * sgn;
 
+}
+
+double matrixMultiplication(int p1, int l1, int p2, int l2, double** matriks1, double** matriks2)
+{
+  int i, j, k, hasil = 0;
+  double** matriksKali;
+  for (i = 0; i < p1; i++) {
+    for (j = 0; j < l2; j++) {
+      for (k = 0; k < p2; k++) {
+        hasil = hasil + matriks1[i][k] * matriks2[k][j];
+      }
+      matriksKali[i][j] = hasil;
+      hasil = 0;
+    }
+  }
+  return **matriksKali;
 }
