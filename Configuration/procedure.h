@@ -18,14 +18,14 @@ void initiateCapTab(capacitor_tab *tab){
     tab->array = (capacitor_t*)malloc((tab->Neff) * sizeof(capacitor_t));
 }
 
-void initiateVolTab(voltage_tab *tab){
+void initiateVolTab(voltage_source_tab *tab){
     tab->Neff = 0;
-    tab->array = (voltage_t*)malloc((tab->Neff) * sizeof(voltage_t));
+    tab->array = (voltage_source_t*)malloc((tab->Neff) * sizeof(voltage_source_t));
 }
 
-void initiateCurTab(current_tab *tab){
+void initiateCurTab(current_source_tab *tab){
     tab->Neff = 0;
-    tab->array = (current_t*)malloc((tab->Neff) * sizeof(current_t));
+    tab->array = (current_source_t*)malloc((tab->Neff) * sizeof(current_source_t));
 }
 
 // push component to array of component
@@ -47,15 +47,15 @@ void addCapToTab(capacitor_tab *tab , capacitor_t cap){
     (tab->array)[(tab->Neff) + 1] = cap;
 }
 
-void addVolToTab(voltage_tab *tab , voltage_t vol){
+void addVolToTab(voltage_source_tab *tab , voltage_source_t vol){
     tab->Neff += 1;
-    tab->array = (voltage_t*)realloc((tab->array) , (tab->Neff)*sizeof(voltage_t));
+    tab->array = (voltage_source_t*)realloc((tab->array) , (tab->Neff)*sizeof(voltage_source_t));
     (tab->array)[(tab->Neff) + 1] = vol;
 }
 
-void addCurToTab(current_tab *tab , current_t cur){
+void addCurToTab(current_source_tab *tab , current_source_t cur){
     tab->Neff += 1;
-    tab->array = (current_t*)realloc((tab->array) , (tab->Neff)*sizeof(current_t));
+    tab->array = (current_source_t*)realloc((tab->array) , (tab->Neff)*sizeof(current_source_t));
     (tab->array)[(tab->Neff) + 1] = cur;
 }
 
@@ -89,8 +89,8 @@ capacitor_t makeCap(double value, double last_vol, double node1, double node2){
     return temp;
 }
 
-current_t makeCurr(double value, int nodePos, int nodeNeg){
-    current_t temp;
+current_source_t makeCurr(double value, int nodePos, int nodeNeg){
+    current_source_t temp;
     temp.value = value;
     temp.nodePos = nodePos;
     temp.nodeNeg = nodeNeg;
@@ -98,8 +98,8 @@ current_t makeCurr(double value, int nodePos, int nodeNeg){
     return temp;
 }
 
-voltage_t makeVolt(double value, int nodePos, int nodeNeg){
-    voltage_t temp;
+voltage_source_t makeVolt(double value, int nodePos, int nodeNeg){
+    voltage_source_t temp;
     temp.value = value;
     temp.nodePos = nodePos;
     temp.nodeNeg = nodeNeg;

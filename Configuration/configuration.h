@@ -21,7 +21,7 @@ typedef struct{
 typedef struct{
     double value;
     int nodePos, nodeNeg;
-}voltage_t, current_t;
+}voltage_source_t, current_source_t;
 
 typedef struct{
     resistor_t *array;
@@ -39,14 +39,14 @@ typedef struct {
 }inductor_tab;
 
 typedef struct{
-    voltage_t *array;
+    voltage_source_t *array;
     int Neff;
-}voltage_tab;
+}voltage_source_tab;
 
 typedef struct{
-    current_t *array;
+    current_source_t *array;
     int Neff;
-}current_tab;
+}current_source_tab;
 
 #endif
 
