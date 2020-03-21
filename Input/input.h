@@ -3,6 +3,13 @@
 
 #include "stdio.h"
 #include "../Configuration/configuration.h"
+
+char askInput(){
+    printf("Masukkan Komponen yang ingin diinput :");
+    char temp;
+    scanf(" %c" , &temp);
+    return temp;
+}
 resistor_t askResistor(){
     resistor_t temp;
     printf("Masukkan nilai Resistor :");
@@ -72,17 +79,63 @@ void pushResToNodeArray(resistor_t res,int num_in_array ,node_tab *node_list){
         int tempName = (node_list->array)[i].name;
         if (tempName == res.node1){
             found1 = 1;
-            addIntegerToTab(&((node_list->array)[i].res_list) , num_in_array);
         }
-        else if (tempName == res.node1){
+        else if (tempName == res.node2){
             found2 = 1;
-            addIntegerToTab(&((node_list->array)[i].res_list) , num_in_array);
         }
     }
 
     if (found1 != 1){
         node_t tempNode = makeNode(res.node1);
+        addNodeToTab(node_list,tempNode);
     }
+    if (found2 != 1 && res.node1 != res.node2){
+        node_t tempNode = makeNode(res.node2);
+        addNodeToTab(node_list,tempNode);
+    }
+
+    for (i = 0; i < node_list->Neff; i++){
+        int tempName = (node_list->array)[i].name;
+        if (tempName == res.node1){
+            addIntegerToTab(&((node_list->array)[i].res_list) , num_in_array);
+        }
+        else if (tempName == res.node2){
+            addIntegerToTab(&((node_list->array)[i].res_list) , num_in_array);
+        }
+    }    
 }
 
+void pushindToNodeArray(inductor_t ind,int num_in_array ,node_tab *node_list){
+    int i = 0;
+    int found1 = 0;
+    int found2 = 0;
+    for (i = 0; i < node_list->Neff; i++){
+        int tempName = (node_list->array)[i].name;
+        if (tempName == ind.node1){
+            found1 = 1;
+        }
+        else if (tempName == ind.node2){
+            found2 = 1;
+        }
+    }
+
+    if (found1 != 1){
+        node_t tempNode = makeNode(ind.node1);
+        addNodeToTab(node_list,tempNode);
+    }
+    if (found2 != 1 && ind.node1 != ind.node2){
+        node_t tempNode = makeNode(ind.node2);
+        addNodeToTab(node_list,tempNode);
+    }
+
+    for (i = 0; i < node_list->Neff; i++){
+        int tempName = (node_list->array)[i].name;
+        if (tempName == ind.node1){
+            addIntegerToTab(&((node_list->array)[i].ind_list) , num_in_array);
+        }
+        else if (tempName == ind.node2){
+            addIntegerToTab(&((node_list->array)[i].ind_list) , num_in_array);
+        }
+    }    
+}
 #endif
