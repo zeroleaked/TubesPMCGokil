@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
@@ -13,7 +14,7 @@ int main(){
     char typeComponent = askInput();
     initiateNodeTab(&node_circuit);
     initiateResTab(&resistor_list);
-    initiateInTab(&inductor_list)
+    initiateInTab(&inductor_list);
     while (typeComponent != 'z'){
         if (typeComponent == 'r'){
             temp_resistor = askResistor();
@@ -32,8 +33,6 @@ int main(){
         printNode((node_circuit.array)[i] , resistor_list, capacitor_list
         ,inductor_list,voltage_source_list,current_source_list);
     }
-
-    
     
     
     return 0;
