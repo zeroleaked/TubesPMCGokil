@@ -13,6 +13,7 @@ int main(){
     char typeComponent = askInput();
     initiateNodeTab(&node_circuit);
     initiateResTab(&resistor_list);
+    initiateInTab(&inductor_list)
     while (typeComponent != 'z'){
         if (typeComponent == 'r'){
             temp_resistor = askResistor();
