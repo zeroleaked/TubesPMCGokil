@@ -10,6 +10,8 @@
 #include "Input/input.h"
 #include "Matrices/matrices.h"
 
+#define DEBUG
+
 int main(){
     int i , j , k;
     initiateNodeTab(&node_circuit);
@@ -34,11 +36,12 @@ int main(){
         typeComponent = askInput();
     }
 
-    // 
+    #ifdef DEBUG
     for (i = 0; i < node_circuit.Neff;i++){
         printNode((node_circuit.array)[i] , resistor_list, capacitor_list
         ,inductor_list,voltage_source_list,current_source_list);
     }
+    #endif
     
     
     return 0;
