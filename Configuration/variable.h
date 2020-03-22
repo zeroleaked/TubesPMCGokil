@@ -21,7 +21,7 @@ current_source_tab current_source_list;
 /* Total Rangkaian di Circuit */
 node_tab node_circuit;
 
-/* Koefisien pada Matriks */
+/*  Koefisien pada Matriks */
 int **koefMatrices;
 
 #endif
