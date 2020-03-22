@@ -11,10 +11,15 @@
 #include "Matrices/matrices.h"
 
 int main(){
-    char typeComponent = askInput();
+    int i , j , k;
     initiateNodeTab(&node_circuit);
+
+    // initiate tab for component
     initiateResTab(&resistor_list);
     initiateInTab(&inductor_list);
+
+    // input component
+    char typeComponent = askInput();
     while (typeComponent != 'z'){
         if (typeComponent == 'r'){
             temp_resistor = askResistor();
@@ -28,8 +33,9 @@ int main(){
         }
         typeComponent = askInput();
     }
-    int i = 0;
-    for (; i < node_circuit.Neff;i++){
+
+    // 
+    for (i = 0; i < node_circuit.Neff;i++){
         printNode((node_circuit.array)[i] , resistor_list, capacitor_list
         ,inductor_list,voltage_source_list,current_source_list);
     }
