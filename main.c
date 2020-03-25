@@ -26,12 +26,27 @@ int main(){
         if (typeComponent == 'r'){
             temp_resistor = askResistor();
             addResToTab(&resistor_list , temp_resistor);
-            pushResToNodeArray(temp_resistor,(resistor_list.Neff) - 1,&node_circuit);
+            pushResToNodeArray(temp_resistor,(resistor_list.Neff) -1,&node_circuit);
         }
         else if(typeComponent == 'i'){
             temp_inductor = askInductor();
             addInToTab(&inductor_list, temp_inductor);
             pushindToNodeArray(temp_inductor,(inductor_list.Neff) -1,&node_circuit);
+        }
+        else if (typeComponent == 'c'){
+            temp_capacitor = askCapacitor();
+            addCapToTab(&capacitor_list, temp_capacitor);
+            pushCapToNodeArray(temp_capacitor,(capacitor_list.Neff) -1,&node_circuit);
+        }
+        else if (typeComponent == 'A'){
+            temp_current_source = askCurrentSource();
+            addCurToTab(&current_source_list, temp_current_source);
+            pushCurToNodeArray(temp_current_source,(current_source_list.Neff) -1,&node_circuit);
+        }
+        else if(typeComponent == 'V'){
+            temp_voltage_source = askVoltageSource();
+            addVolToTab(&voltage_source_list, temp_voltage_source);
+            pushVolToNodeArray(temp_voltage_source,(voltage_source_list.Neff) -1,&node_circuit);
         }
         typeComponent = askInput();
     }

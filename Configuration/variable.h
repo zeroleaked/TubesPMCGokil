@@ -7,8 +7,8 @@
 resistor_t temp_resistor;
 inductor_t temp_inductor;
 capacitor_t temp_capacitor;
-voltage_source_t temp_volt;
-current_source_t temp_curr;
+voltage_source_t temp_voltage_source;
+current_source_t temp_current_source;
 
 /* tab for Component */
 resistor_tab resistor_list;

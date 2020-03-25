@@ -138,4 +138,106 @@ void pushindToNodeArray(inductor_t ind,int num_in_array ,node_tab *node_list){
         }
     }    
 }
+
+void pushCapToNodeArray(capacitor_t cap,int num_in_array ,node_tab *node_list){
+    int i = 0;
+    int found1 = 0;
+    int found2 = 0;
+    for (i = 0; i < node_list->Neff; i++){
+        int tempName = (node_list->array)[i].name;
+        if (tempName == cap.node1){
+            found1 = 1;
+        }
+        else if (tempName == cap.node2){
+            found2 = 1;
+        }
+    }
+
+    if (found1 != 1){
+        node_t tempNode = makeNode(cap.node1);
+        addNodeToTab(node_list,tempNode);
+    }
+    if (found2 != 1 && cap.node1 != cap.node2){
+        node_t tempNode = makeNode(cap.node2);
+        addNodeToTab(node_list,tempNode);
+    }
+
+    for (i = 0; i < node_list->Neff; i++){
+        int tempName = (node_list->array)[i].name;
+        if (tempName == cap.node1){
+            addIntegerToTab(&((node_list->array)[i].cap_list) , num_in_array);
+        }
+        else if (tempName == cap.node2){
+            addIntegerToTab(&((node_list->array)[i].cap_list) , num_in_array);
+        }
+    }
+}
+
+void pushCurToNodeArray(current_source_t cur,int num_in_array ,node_tab *node_list){
+    int i = 0;
+    int found1 = 0;
+    int found2 = 0;
+    for (i = 0; i < node_list->Neff; i++){
+        int tempName = (node_list->array)[i].name;
+        if (tempName == cur.nodePos){
+            found1 = 1;
+        }
+        else if (tempName == cur.nodeNeg){
+            found2 = 1;
+        }
+    }
+
+    if (found1 != 1){
+        node_t tempNode = makeNode(cur.nodePos);
+        addNodeToTab(node_list,tempNode);
+    }
+    if (found2 != 1 && cur.nodePos != cur.nodeNeg){
+        node_t tempNode = makeNode(cur.nodeNeg);
+        addNodeToTab(node_list,tempNode);
+    }
+
+    for (i = 0; i < node_list->Neff; i++){
+        int tempName = (node_list->array)[i].name;
+        if (tempName == cur.nodePos){
+            addIntegerToTab(&((node_list->array)[i].current_source_list) , num_in_array);
+        }
+        else if (tempName == cur.nodeNeg){
+            addIntegerToTab(&((node_list->array)[i].current_source_list) , num_in_array);
+        }
+    }
+}
+
+void pushVolToNodeArray(voltage_source_t vol,int num_in_array ,node_tab *node_list){
+    int i = 0;
+    int found1 = 0;
+    int found2 = 0;
+    for (i = 0; i < node_list->Neff; i++){
+        int tempName = (node_list->array)[i].name;
+        if (tempName == vol.nodePos){
+            found1 = 1;
+        }
+        else if (tempName == vol.nodeNeg){
+            found2 = 1;
+        }
+    }
+
+    if (found1 != 1){
+        node_t tempNode = makeNode(vol.nodePos);
+        addNodeToTab(node_list,tempNode);
+    }
+    if (found2 != 1 && vol.nodePos != vol.nodeNeg){
+        node_t tempNode = makeNode(vol.nodeNeg);
+        addNodeToTab(node_list,tempNode);
+    }
+
+    for (i = 0; i < node_list->Neff; i++){
+        int tempName = (node_list->array)[i].name;
+        if (tempName == vol.nodePos){
+            addIntegerToTab(&((node_list->array)[i].voltage_source_list) , num_in_array);
+        }
+        else if (tempName == vol.nodeNeg){
+            addIntegerToTab(&((node_list->array)[i].voltage_source_list) , num_in_array);
+        }
+    }
+}
 #endif
