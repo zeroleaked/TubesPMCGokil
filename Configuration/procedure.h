@@ -137,6 +137,7 @@ node_t makeNode(int node_name){
     initiateListIntTab(&(temp.ind_list));
     initiateListIntTab(&(temp.voltage_source_list));
     initiateListIntTab(&(temp.current_source_list));
+    temp.isGround = 0;
 
     return temp;
 }

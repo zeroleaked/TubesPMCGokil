@@ -1,6 +1,7 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
+
 typedef struct{
     double value;
     int node1, node2;
@@ -43,6 +44,7 @@ typedef struct{
     int Neff;
 }voltage_source_tab;
 
+
 typedef struct{
     current_source_t *array;
     int Neff;
@@ -60,6 +62,7 @@ typedef struct{
     list_int_tab cap_list;
     list_int_tab current_source_list;
     list_int_tab voltage_source_list;
+    int isGround;
 }node_t;
 
 typedef struct {

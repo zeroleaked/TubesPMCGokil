@@ -48,8 +48,18 @@ int main(){
             addVolToTab(&voltage_source_list, temp_voltage_source);
             pushVolToNodeArray(temp_voltage_source,(voltage_source_list.Neff) -1,&node_circuit);
         }
+        else if (typeComponent == 'G'){
+            int temp_node = askGround();
+            pushGroundToNodeArray(&node_circuit , temp_node);
+        }
         typeComponent = askInput();
     }
+
+    printf("Masukkan Nilai Waktu Awal Simulasi :");
+    scanf("%lf",&time_start);
+    printf("Masukkan Nilai Waktu Akhir dari Simulasi \n");
+    scanf("%lf",&time_end);
+    
 
     #ifdef DEBUG
     for (i = 0; i < node_circuit.Neff;i++){
@@ -61,3 +71,4 @@ int main(){
     
     return 0;
 }
+ 

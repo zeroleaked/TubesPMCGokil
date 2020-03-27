@@ -71,6 +71,13 @@ current_source_t askCurrentSource(){
     return temp;
 }
 
+int askGround(){
+    int node;
+    printf("Masukkan node Ground :");
+    scanf("%d", &node);
+    return node;
+}
+
 void pushResToNodeArray(resistor_t res,int num_in_array ,node_tab *node_list){
     int i = 0;
     int found1 = 0;
@@ -238,6 +245,23 @@ void pushVolToNodeArray(voltage_source_t vol,int num_in_array ,node_tab *node_li
         else if (tempName == vol.nodeNeg){
             addIntegerToTab(&((node_list->array)[i].voltage_source_list) , num_in_array);
         }
+    }
+}
+
+void pushGroundToNodeArray(node_tab *node_list, int ground_node){
+    int i;
+    int found = 0;
+    for (i = 0; i < node_list->Neff; i++){
+        int tempName = (node_list->array)[i].name;
+        if (tempName == ground_node){
+            found = 1;
+            (node_list->array)[i].isGround = 1;
+        }
+    }
+    if (found == 0){
+        node_t tempNode = makeNode(ground_node);
+        tempNode.isGround = 1;
+        addNodeToTab(node_list,tempNode);
     }
 }
 #endif

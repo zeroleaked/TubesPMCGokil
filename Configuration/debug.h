@@ -65,6 +65,10 @@ void printNode(node_t node, resistor_tab res, capacitor_tab cap,
         printf("Nilai Current Source \n");
         printCurrentSource((curr.array)[((node.current_source_list).array)[i]]);
     }
+
+    if (node.isGround){
+        printf("Node ini adalah Ground \n");
+    }
 }
 
 #endif

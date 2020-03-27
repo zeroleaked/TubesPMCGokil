@@ -24,4 +24,8 @@ node_tab node_circuit;
 /*  Koefisien pada Matriks */
 int **koefMatrices;
 
+/* Time Simulation */
+double time_start;
+double time_end;
+
 #endif
