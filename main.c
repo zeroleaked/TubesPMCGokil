@@ -9,6 +9,7 @@
 #include "Configuration/variable.h"
 #include "Input/input.h"
 #include "Matrices/matrices.h"
+#include "Model/model.h"
 
 #define DEBUG
 
@@ -54,12 +55,32 @@ int main(){
         }
         typeComponent = askInput();
     }
+    //making hash map for circuit
+    nodeNumInArrayPair = createTable(node_circuit.Neff);
+
+    for (i = 0; i < node_circuit.Neff; i++){
+        insert(nodeNumInArrayPair, node_circuit.array[i].name, i);
+    }
+    #ifdef DEBUG
+    for (i = 0; i < node_circuit.Neff; i++){
+        printf("%d berada di urutan %d \n",node_circuit.array[i].name,lookup(nodeNumInArrayPair , node_circuit.array[i].name));
+    }
+    #endif
+
+
 
     printf("Masukkan Nilai Waktu Awal Simulasi :");
     scanf("%lf",&time_start);
     printf("Masukkan Nilai Waktu Akhir dari Simulasi \n");
     scanf("%lf",&time_end);
     
+    //for saving coefficient
+    circuit_node_coefficient = makeKoefisienTab(node_circuit.Neff);
+
+    // for (time_now = time_start; time_now <= time_end; time_start+=SMALLEST_TIME_SAMPLING){
+    //     solveCircuit();
+    //     outputToFile();
+    // }
 
     #ifdef DEBUG
     for (i = 0; i < node_circuit.Neff;i++){
@@ -67,6 +88,12 @@ int main(){
         ,inductor_list,voltage_source_list,current_source_list);
     }
     #endif
+
+    makeMatricesVoltage(&circuit_node_coefficient,voltage_source_list,node_circuit,nodeNumInArrayPair);
+
+    printMatrix(circuit_node_coefficient.array_koef, circuit_node_coefficient.total_node);
+
+    
     
     
     return 0;

@@ -2,6 +2,7 @@
 #define VARIABLE_H
 
 #include "configuration.h"
+#include "../HashMap/hashMap.h"
 
 /* Temporary variable */
 resistor_t temp_resistor;
@@ -22,10 +23,14 @@ current_source_tab current_source_list;
 node_tab node_circuit;
 
 /*  Koefisien pada Matriks */
-int **koefMatrices;
+koefisien_tab circuit_node_coefficient;
 
 /* Time Simulation */
 double time_start;
 double time_end;
+double time_now;
 
+
+/*  Urutan node pada Matriks dalam bentuk HashMap */
+struct table *nodeNumInArrayPair;
 #endif

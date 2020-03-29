@@ -1,6 +1,8 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
+#define SMALLEST_TIME_SAMPLING 0.000001
+#define BIGGEST_TIME_SAMPLING 0.5
 
 typedef struct{
     double value;
@@ -54,6 +56,14 @@ typedef struct{
     int *array;
     int Neff;
 }list_int_tab;
+
+typedef struct {
+    double **array_koef;
+    double *ans;
+    int Neff;
+    int total_node;
+}koefisien_tab;
+
 
 typedef struct{
     int name;
