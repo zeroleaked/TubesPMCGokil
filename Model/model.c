@@ -12,28 +12,23 @@ void makeMatricesVoltage(koefisien_tab* circuit_node_coefficient,voltage_source_
     int *isDone;
     isDone = (int*)calloc(total_node, sizeof(int));
 
+    for (i = 0; i < node_circuit.Neff; i++){
+        if ((node_circuit.array)[i].isGround){
+            insertKoefisienTab(circuit_node_coefficient, lookup(nodeNumInArrayPair,(node_circuit.array[i]).name), 1, -1 , -1, 0);
+        }
+    }
+
     for (i = 0; i < volt.Neff; i++){
         voltage_source_t temp;
         temp = volt.array[i];
         int nodeNegInArray = lookup(nodeNumInArrayPair, temp.nodeNeg);
         int nodePosInArray = lookup(nodeNumInArrayPair, temp.nodePos);
 
-        if (node_circuit.array[nodeNegInArray].isGround){
-            if (!isDone[nodeNegInArray]){
-                insertKoefisienTab(circuit_node_coefficient, nodeNegInArray, 1,-1,-1,0);
-                isDone[nodeNegInArray] = 1;
-            }
-        }
-        else if (node_circuit.array[nodePosInArray].isGround){
-            if (!isDone[nodePosInArray]){
-                insertKoefisienTab(circuit_node_coefficient, nodePosInArray, 1,-1,-1,0);
-                isDone[nodeNegInArray] = 1;
-            }
-        }
-
         insertKoefisienTab(circuit_node_coefficient, nodeNegInArray,-1,
                 nodePosInArray,1,temp.value);
     }
+
+    free(isDone);
 }
 
 int findRow(double *row,double *ans,int* isDone,current_source_tab curr_list, resistor_tab res_list, voltage_source_tab volt_list,
@@ -44,14 +39,17 @@ int findRow(double *row,double *ans,int* isDone,current_source_tab curr_list, re
 
     voltage_source_t temp_vol;
     current_source_t temp_cur;
+    resistor_t temp_res;
+
+    isDone[lookup(nodeNumInArrayPair, node.name)] = 1;
 
     if (node.isGround)
         return -1;
+    
     for (i = 0; i < node.voltage_source_list.Neff; i++){
         temp_vol = volt_list.array[node.voltage_source_list.array[i]];
         int nodeNegInArray = lookup(nodeNumInArrayPair, temp_vol.nodeNeg);
         int nodePosInArray = lookup(nodeNumInArrayPair, temp_vol.nodePos);
-        isDone[lookup(nodeNumInArrayPair, node.name)] = 1;
         if (node_circuit.array[nodeNegInArray].isGround || node_circuit.array[nodePosInArray].isGround)
             return -1;
         
@@ -83,6 +81,16 @@ int findRow(double *row,double *ans,int* isDone,current_source_tab curr_list, re
     }
 
     // resistance arus keluar positif
+    for (i = 0; i < node.res_list.Neff; i++){
+        temp_res = res_list.array[(node.res_list.array)[i]];
+        row[lookup(nodeNumInArrayPair, node.name)] += 1 / (temp_res.value);
+        if (temp_res.node1 != node.name){
+            row[lookup(nodeNumInArrayPair, temp_res.node1)] -= 1 / (temp_res.value);
+        }
+        else{
+            row[lookup(nodeNumInArrayPair, temp_res.node2)] -= 1 / (temp_res.value);
+        }
+    }
 
     return 1;
 }
