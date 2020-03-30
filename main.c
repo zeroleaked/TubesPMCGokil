@@ -11,7 +11,7 @@
 #include "Matrices/matrices.h"
 #include "Model/model.h"
 
-#define DEBUG
+// #define DEBUG
 
 int main(){
     int i , j , k;
@@ -90,8 +90,16 @@ int main(){
     #endif
 
     makeMatricesVoltage(&circuit_node_coefficient,voltage_source_list,node_circuit,nodeNumInArrayPair);
+    KCLAnalysisPerNode(&circuit_node_coefficient,voltage_source_list, current_source_list,
+    resistor_list, inductor_list, capacitor_list, node_circuit, nodeNumInArrayPair);
 
-    printMatrix(circuit_node_coefficient.array_koef, circuit_node_coefficient.total_node);
+
+    for (i = 0; i < node_circuit.Neff; i++){
+        printf("%d ",node_circuit.array[i].name);
+    }
+    printf("\n");
+    printMatrix(circuit_node_coefficient.array_koef, node_circuit.Neff);
+    printArray(circuit_node_coefficient.ans, node_circuit.Neff);
 
     
     

@@ -1,5 +1,6 @@
 #include "configuration.h"
 #include "../Matrices/matrices.h"
+#include <stdio.h>
 #include "stdlib.h"
 #include "procedure.h"
 // Initiation Tab. always use for initiate array of component
@@ -145,7 +146,7 @@ node_t makeNode(int node_name){
 koefisien_tab makeKoefisienTab(int total_node){
     koefisien_tab temp;
     temp.array_koef = createMatrix(total_node);
-    temp.ans = (float*)calloc(total_node,sizeof(float));
+    temp.ans = (double *)calloc(total_node, sizeof(double));
     temp.Neff  = 0;
     temp.total_node = total_node;
 
@@ -161,10 +162,11 @@ void insertKoefisienTab(koefisien_tab *koef, int num1, double value1,
     (koef->Neff) += 1;
 }
 
-void inserRowToKoefTab(koefisien_tab *koef, double *row){
+void inserRowToKoefTab(koefisien_tab *koef, double *row,double ans){
     int i;
     for (i = 0; i < koef->total_node; i++){
         (koef->array_koef)[koef->Neff][i] = row[i];
     }
+    (koef->ans)[koef->Neff] = ans;
     (koef->Neff) += 1;
 }

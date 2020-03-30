@@ -73,10 +73,10 @@ int findRow(double *row,double *ans,int* isDone,current_source_tab curr_list, re
     for (i = 0; i < node.current_source_list.Neff;i++){
         temp_cur = curr_list.array[(node.current_source_list.array)[i]];
         if (temp_cur.nodePos == node.name){
-            (*ans) += temp_cur.value;
+            (*ans) -= temp_cur.value;
         }
         else{
-            (*ans) -= temp_cur.value;
+            (*ans) += temp_cur.value;
         }
     }
 
@@ -95,7 +95,7 @@ int findRow(double *row,double *ans,int* isDone,current_source_tab curr_list, re
     return 1;
 }
 
-void KCLAnalysisPerNode(koefisien_tab* circuit_node_coefficient,current_source_tab curr_list, resistor_tab res_list,
+void KCLAnalysisPerNode(koefisien_tab* circuit_node_coefficient,voltage_source_tab volt_list,current_source_tab curr_list, resistor_tab res_list, 
                         inductor_tab ind_list, capacitor_tab cap_list,  node_tab node_circuit,struct table *nodeNumInArrayPair)
 {
     int total_node = circuit_node_coefficient->total_node;
@@ -103,9 +103,14 @@ void KCLAnalysisPerNode(koefisien_tab* circuit_node_coefficient,current_source_t
     int *isDone;
     isDone = (int*)calloc(total_node, sizeof(int));
 
-    for (i = 0; i < total_node; i++){
-        if (!isDone[i]){
+    double row[total_node];
+    double ans;
 
+    for (i = 0; i < total_node; i++){
+        if (!isDone[i]){       
+            if (findRow(row, &ans, isDone, curr_list, res_list, volt_list,node_circuit, ind_list, cap_list, node_circuit.array[i],nodeNumInArrayPair) > 0){
+                inserRowToKoefTab(circuit_node_coefficient, row, ans);
+            }
         }
     }
 }

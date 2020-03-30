@@ -2,9 +2,9 @@
 #include <stdio.h>
 #include "matrices.h"
 
-float** createMatrix(int n) {
-    float* values = calloc(n*n, sizeof(float));
-    float** rows = calloc(n, sizeof(float*));
+double** createMatrix(int n) {
+    double* values = calloc(n*n, sizeof(double));
+    double** rows = calloc(n, sizeof(double*));
     int i,j;
     for (i=0; i<n; ++i) 
         for (j = 0; j< n; j++) {
@@ -13,22 +13,22 @@ float** createMatrix(int n) {
     return rows;
 }
 
-void destroyMatrix(float** matrix) {
+void destroyMatrix(double** matrix) {
     free(*matrix);
     free(matrix);
 }
 
-void inputMatrix(float **mat,int n){
+void inputMatrix(double **mat,int n){
     int i , j;
     for (i = 0; i < n; i++){
         for (j = 0;j < n; j++){
-            scanf("%f", mat[i] + j);
+            scanf("%lf", mat[i] + j);
         }
     }
 }
 
 
-void printMatrix(float **mat, int n){
+void printMatrix(double **mat, int n){
     int i = 0, j = 0;
     for (;i < n; i++){
         for (j = 0; j < n; j++){
@@ -39,9 +39,17 @@ void printMatrix(float **mat, int n){
     printf("\n");
 }
 
-void swapRow(float **m, int a, int b , int n){
+void printArray(double *mat, int n){
+    int i = 0;
+    for (;i < n; i++){
+        printf("%f ", mat[i]);
+    }
+    printf("\n");
+}
+
+void swapRow(double **m, int a, int b , int n){
     int i;
-    float temp;
+    double temp;
     for (i =0; i < n; i++){
         temp = *(m[a] + i);
         *(m[a] + i) = *(m[b] + i);
@@ -50,13 +58,13 @@ void swapRow(float **m, int a, int b , int n){
 }
 
 
-float findDeterminant(float** mat, int n){ 
+double findDeterminant(double** mat, int n){ 
     int i , j, k;
-    float **m;
-    m = (float**) malloc(n * sizeof(float*));
+    double **m;
+    m = (double**) malloc(n * sizeof(double*));
 
     for ( i = 0; i < n; i++){
-        m[i] = (float*)malloc(n * sizeof(float));
+        m[i] = (double*)malloc(n * sizeof(double));
     }
     for (i =0; i < n; i++){
         j = 0;
@@ -66,8 +74,8 @@ float findDeterminant(float** mat, int n){
         }
         // printf("%d \n ", i);
     }
-    float l[n][n], u[n][n];
-    float ratio;
+    double l[n][n], u[n][n];
+    double ratio;
     int sgn = 1;
     i = 0;
     int swap = 1;
@@ -97,7 +105,7 @@ float findDeterminant(float** mat, int n){
         i++;
     }
     //printMatrix(m,n);
-    float res = 1;
+    double res = 1;
 
     for (i = 0; i < n; i++){
         res = res * m[i][i];
@@ -124,7 +132,7 @@ double matrixMultiplication(int p1, int l1, int p2, int l2, double** matriks1, d
   }
   return **matriksKali;
 }
-void getCofactor(float** A, float** temp, int p, int q, int n) {
+void getCofactor(double** A, double** temp, int p, int q, int n) {
   //cofactor of A[p][q]
     int i = 0, j = 0;
     int row, col;
@@ -141,21 +149,21 @@ void getCofactor(float** A, float** temp, int p, int q, int n) {
     }
 }
 
-float** adjoint(float** matrix, int n) {
-    float** adj = createMatrix(n);
+double** adjoint(double** matrix, int n) {
+    double** adj = createMatrix(n);
     if (n == 1) {
         adj[0][0] = 1;
         return adj;
     }
     // store cofactors of A[][]
-    float** temp = createMatrix(n);
+    double** temp = createMatrix(n);
 
     int i , j;
     for (i=0; i<n; i++) {
         for (j=0; j<n; j++) {
             getCofactor(matrix, temp, i, j, n);
             // sign of adj[j][i] positive if sum of row and column indexes is even.
-            float sign = ((i+j)%2==0)? 1: -1;
+            double sign = ((i+j)%2==0)? 1: -1;
             // Interchanging i and j to get transpose
             adj[j][i] = (sign)*(findDeterminant(temp, n-1));
         }

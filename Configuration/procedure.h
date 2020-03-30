@@ -46,7 +46,7 @@ koefisien_tab makeKoefisienTab(int total_node);
 void insertKoefisienTab(koefisien_tab *koef, int num1, double value1,
                         int num2, double value2, double answer);
 
-void inserRowToKoefTab(koefisien_tab *koef, double *row);
+void inserRowToKoefTab(koefisien_tab *koef, double *row,double ans);
 
 
 
