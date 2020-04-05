@@ -7,7 +7,9 @@ void inputMatrix(double** mat, int n);
 void swapRow(double **m, int a, int b , int n);
 void printMatrix(double **mat, int n);
 double findDeterminant(double** mat, int n) ;
-double matrixMultiplication(int p1, int l1, int p2, int l2, double** matriks1, double** matriks2);
+double **matrixMultiplication(int p1, int l1, int p2, int l2, double** matriks1, double** matriks2);
+void scalarMatrixMultiplication(double num ,int p,double *matriks);
+double *matrixMultSquareTimesOneColumn(int size, double **matriks1, double *matriks2);
 
 double** createMatrix(int n);
 void destroyMatrix(double** matrix);

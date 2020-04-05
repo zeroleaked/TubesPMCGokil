@@ -29,8 +29,15 @@ koefisien_tab circuit_node_coefficient;
 double time_start;
 double time_end;
 double time_now;
+double time_sample;
 
 
 /*  Urutan node pada Matriks dalam bentuk HashMap */
-struct table *nodeNumInArrayPair;
+table *nodeNumInArrayPair;
+
+/* Nilai Tegangan pada setiap node, urutan sesuai dengan urutan pada node */
+double *voltage_in_node_now;
+
+/* */
+FILE *out;
 #endif

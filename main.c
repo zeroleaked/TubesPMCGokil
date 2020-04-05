@@ -15,6 +15,7 @@
 
 int main(){
     int i , j , k;
+    out = fopen("out.txt","w");
     initiateNodeTab(&node_circuit);
 
     // initiate tab for component
@@ -77,6 +78,8 @@ int main(){
     //for saving coefficient
     circuit_node_coefficient = makeKoefisienTab(node_circuit.Neff);
 
+    // voltage_in_node_now = (double**)calloc(node_circuit.Neff, sizeof(double*));
+
     // for (time_now = time_start; time_now <= time_end; time_start+=SMALLEST_TIME_SAMPLING){
     //     solveCircuit();
     //     outputToFile();
@@ -88,18 +91,34 @@ int main(){
         ,inductor_list,voltage_source_list,current_source_list);
     }
     #endif
-
+    // Circuit Analysis
+    time_sample = SMALLEST_TIME_SAMPLING;
     makeMatricesVoltage(&circuit_node_coefficient,voltage_source_list,node_circuit,nodeNumInArrayPair);
     KCLAnalysisPerNode(&circuit_node_coefficient,voltage_source_list, current_source_list,
-    resistor_list, inductor_list, capacitor_list, node_circuit, nodeNumInArrayPair);
-
-
+    resistor_list, inductor_list, capacitor_list, node_circuit, nodeNumInArrayPair,time_sample);
+        
+    #ifdef DEBUG
     for (i = 0; i < node_circuit.Neff; i++){
         printf("%d ",node_circuit.array[i].name);
     }
     printf("\n");
+    #endif
+
+    #ifdef DEBUG
     printMatrix(circuit_node_coefficient.array_koef, node_circuit.Neff);
     printArray(circuit_node_coefficient.ans, node_circuit.Neff);
+    #endif
+
+    double det_value = findDeterminant(circuit_node_coefficient.array_koef, node_circuit.Neff);
+    
+    voltage_in_node_now = matrixMultSquareTimesOneColumn(node_circuit.Neff, adjoint(circuit_node_coefficient.array_koef, node_circuit.Neff), 
+    circuit_node_coefficient.ans);
+    scalarMatrixMultiplication(1/det_value, node_circuit.Neff,voltage_in_node_now);
+
+    for (i = 0; i < node_circuit.Neff; i++){
+        printf("V di node %d adalah %f\n",node_circuit.array[i].name,voltage_in_node_now[i]);
+    }
+
 
     
     

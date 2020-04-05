@@ -32,7 +32,7 @@ void makeMatricesVoltage(koefisien_tab* circuit_node_coefficient,voltage_source_
 }
 
 int findRow(double *row,double *ans,int* isDone,current_source_tab curr_list, resistor_tab res_list, voltage_source_tab volt_list,
-            node_tab node_circuit,inductor_tab ind_list, capacitor_tab cap_list,  node_t node,struct table *nodeNumInArrayPair)
+            node_tab node_circuit,inductor_tab ind_list, capacitor_tab cap_list,  node_t node,struct table *nodeNumInArrayPair, double time_sample)
 {
     int total_node = nodeNumInArrayPair->size;
     int i;
@@ -40,6 +40,7 @@ int findRow(double *row,double *ans,int* isDone,current_source_tab curr_list, re
     voltage_source_t temp_vol;
     current_source_t temp_cur;
     resistor_t temp_res;
+    capacitor_t temp_cap;
 
     isDone[lookup(nodeNumInArrayPair, node.name)] = 1;
 
@@ -56,13 +57,13 @@ int findRow(double *row,double *ans,int* isDone,current_source_tab curr_list, re
         // super node
         if (node_circuit.array[nodeNegInArray].name != node.name){
             if (findRow(row, ans, isDone,curr_list, res_list, volt_list, node_circuit,
-            ind_list, cap_list, node_circuit.array[nodeNegInArray],nodeNumInArrayPair) == -1){
+            ind_list, cap_list, node_circuit.array[nodeNegInArray],nodeNumInArrayPair,time_sample) == -1){
                 return -1;
             }
         }
         if (node_circuit.array[nodePosInArray].name != node.name){
             if (findRow(row, ans, isDone,curr_list, res_list, volt_list, node_circuit,
-            ind_list, cap_list, node_circuit.array[nodePosInArray],nodeNumInArrayPair) == -1){
+            ind_list, cap_list, node_circuit.array[nodePosInArray],nodeNumInArrayPair,time_sample) == -1){
                 return -1;
             }
         }
@@ -92,11 +93,29 @@ int findRow(double *row,double *ans,int* isDone,current_source_tab curr_list, re
         }
     }
 
+    // capacitor, node1 node positif
+    for (i = 0; i < node.cap_list.Neff; i++){
+        temp_cap = cap_list.array[(node.cap_list.array)[i]];
+        row[lookup(nodeNumInArrayPair, node.name)] += temp_cap.value / (time_sample);
+        if (temp_cap.node1 == node.name){
+            (*ans) += temp_cap.value * temp_cap.last_volt/time_sample;
+        }
+        else{
+            (*ans) -= temp_cap.value * temp_cap.last_volt/time_sample;
+        }
+        if (temp_res.node1 != node.name){
+            row[lookup(nodeNumInArrayPair, node.name)] += temp_cap.value / (time_sample);
+        }
+        else{
+            row[lookup(nodeNumInArrayPair, node.name)] += temp_cap.value / (time_sample);
+        }
+    }    
+
     return 1;
 }
 
 void KCLAnalysisPerNode(koefisien_tab* circuit_node_coefficient,voltage_source_tab volt_list,current_source_tab curr_list, resistor_tab res_list, 
-                        inductor_tab ind_list, capacitor_tab cap_list,  node_tab node_circuit,struct table *nodeNumInArrayPair)
+                        inductor_tab ind_list, capacitor_tab cap_list,  node_tab node_circuit,struct table *nodeNumInArrayPair, double time_sample)
 {
     int total_node = circuit_node_coefficient->total_node;
     int i;
@@ -108,7 +127,7 @@ void KCLAnalysisPerNode(koefisien_tab* circuit_node_coefficient,voltage_source_t
 
     for (i = 0; i < total_node; i++){
         if (!isDone[i]){       
-            if (findRow(row, &ans, isDone, curr_list, res_list, volt_list,node_circuit, ind_list, cap_list, node_circuit.array[i],nodeNumInArrayPair) > 0){
+            if (findRow(row, &ans, isDone, curr_list, res_list, volt_list,node_circuit, ind_list, cap_list, node_circuit.array[i],nodeNumInArrayPair,time_sample) > 0){
                 inserRowToKoefTab(circuit_node_coefficient, row, ans);
             }
         }

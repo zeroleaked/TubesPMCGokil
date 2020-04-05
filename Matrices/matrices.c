@@ -118,9 +118,13 @@ double findDeterminant(double** mat, int n){
 
 }
 
-double matrixMultiplication(int p1, int l1, int p2, int l2, double** matriks1, double** matriks2){
+double **matrixMultiplication(int p1, int l1, int p2, int l2, double** matriks1, double** matriks2){
   int i, j, k, hasil = 0;
   double** matriksKali;
+  matriksKali = (double**)malloc(p1*sizeof(double*));
+  for (j = 0; j < l2; j++){
+      matriksKali[j] = (double*)malloc(l2*sizeof(double));
+  }
   for (i = 0; i < p1; i++) {
     for (j = 0; j < l2; j++) {
       for (k = 0; k < p2; k++) {
@@ -130,7 +134,28 @@ double matrixMultiplication(int p1, int l1, int p2, int l2, double** matriks1, d
       hasil = 0;
     }
   }
-  return **matriksKali;
+  return matriksKali;
+}
+
+double *matrixMultSquareTimesOneColumn(int size, double **matriks1, double *matriks2)
+{
+    int i, j;
+    double* matriksKali;
+    matriksKali = (double*)calloc(size,sizeof(double));
+    for (i = 0; i < size; i++){
+        for (j = 0; j < size; j++){
+            matriksKali[i] += matriks1[i][j] * matriks2[j];
+        }
+    }
+    return matriksKali;
+}
+
+void scalarMatrixMultiplication(double num ,int p,double *matriks){
+    int i,j;
+    for (i = 0; i < p; i++){
+        
+            matriks[i] *= num;
+    }
 }
 void getCofactor(double** A, double** temp, int p, int q, int n) {
   //cofactor of A[p][q]
