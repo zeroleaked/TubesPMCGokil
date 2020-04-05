@@ -15,6 +15,7 @@ void makeMatricesVoltage(koefisien_tab* circuit_node_coefficient,voltage_source_
     for (i = 0; i < node_circuit.Neff; i++){
         if ((node_circuit.array)[i].isGround){
             insertKoefisienTab(circuit_node_coefficient, lookup(nodeNumInArrayPair,(node_circuit.array[i]).name), 1, -1 , -1, 0);
+            
         }
     }
 
@@ -32,10 +33,22 @@ void makeMatricesVoltage(koefisien_tab* circuit_node_coefficient,voltage_source_
 }
 
 int findRow(double *row,double *ans,int* isDone,current_source_tab curr_list, resistor_tab res_list, voltage_source_tab volt_list,
-            node_tab node_circuit,inductor_tab ind_list, capacitor_tab cap_list,  node_t node,struct table *nodeNumInArrayPair, double time_sample)
+            node_tab node_circuit,inductor_tab ind_list, capacitor_tab cap_list,  node_t node,struct table *nodeNumInArrayPair, double time_sample, int *udahAdaVoltage)
 {
-    int total_node = nodeNumInArrayPair->size;
+    // printf("node = %d\n",node.name);
+    
+    // for (i = 0; i <nodeNumInArrayPair->size; i++ ){
+    //     printf("%f ",row[i]);
+    // }
+    // printf("\n");
     int i;
+    if (isDone[lookup(nodeNumInArrayPair, node.name)]){
+        return -1;
+    }
+
+    
+    int total_node = nodeNumInArrayPair->size;
+    
 
     voltage_source_t temp_vol;
     current_source_t temp_cur;
@@ -44,33 +57,12 @@ int findRow(double *row,double *ans,int* isDone,current_source_tab curr_list, re
 
     isDone[lookup(nodeNumInArrayPair, node.name)] = 1;
 
-    if (node.isGround)
-        return -1;
-    
-    for (i = 0; i < node.voltage_source_list.Neff; i++){
-        temp_vol = volt_list.array[node.voltage_source_list.array[i]];
-        int nodeNegInArray = lookup(nodeNumInArrayPair, temp_vol.nodeNeg);
-        int nodePosInArray = lookup(nodeNumInArrayPair, temp_vol.nodePos);
-        if (node_circuit.array[nodeNegInArray].isGround || node_circuit.array[nodePosInArray].isGround)
-            return -1;
-        
-        // super node
-        if (node_circuit.array[nodeNegInArray].name != node.name){
-            if (findRow(row, ans, isDone,curr_list, res_list, volt_list, node_circuit,
-            ind_list, cap_list, node_circuit.array[nodeNegInArray],nodeNumInArrayPair,time_sample) == -1){
-                return -1;
-            }
-        }
-        if (node_circuit.array[nodePosInArray].name != node.name){
-            if (findRow(row, ans, isDone,curr_list, res_list, volt_list, node_circuit,
-            ind_list, cap_list, node_circuit.array[nodePosInArray],nodeNumInArrayPair,time_sample) == -1){
-                return -1;
-            }
-        }
+    if (node.isGround){
+        udahAdaVoltage[lookup(nodeNumInArrayPair, node.name)] = 1;
+        return -1;        
     }
-    //-1 means ga bisa jadi supernode
-
-    // current source kcl (masuk = positif)
+    
+        // current source kcl (masuk = positif)
     for (i = 0; i < node.current_source_list.Neff;i++){
         temp_cur = curr_list.array[(node.current_source_list.array)[i]];
         if (temp_cur.nodePos == node.name){
@@ -107,9 +99,55 @@ int findRow(double *row,double *ans,int* isDone,current_source_tab curr_list, re
             row[lookup(nodeNumInArrayPair, node.name)] += temp_cap.value / (time_sample);
         }
         else{
-            row[lookup(nodeNumInArrayPair, node.name)] += temp_cap.value / (time_sample);
+            row[lookup(nodeNumInArrayPair, node.name)] -= temp_cap.value / (time_sample);
         }
-    }    
+    }   
+
+    for (i = 0; i < node.voltage_source_list.Neff; i++){
+        temp_vol = volt_list.array[node.voltage_source_list.array[i]];
+        int nodeNegInArray = lookup(nodeNumInArrayPair, temp_vol.nodeNeg);
+        int nodePosInArray = lookup(nodeNumInArrayPair, temp_vol.nodePos);
+        if (node_circuit.array[nodeNegInArray].isGround || node_circuit.array[nodePosInArray].isGround){
+            isDone[nodeNegInArray] = 1;
+            isDone[nodePosInArray] = 1;
+            udahAdaVoltage[nodeNegInArray] = 1;
+            udahAdaVoltage[nodePosInArray] = 1;
+            return -1;
+        }
+
+        // if (node.name != temp_vol.nodeNeg && isDone[nodeNegInArray] == 1){                     
+        //     return -1;
+        // }
+        // else if (node.name != temp_vol.nodePos && isDone[nodePosInArray] == 1){             
+        //     return -1;
+        // }
+
+    }
+
+    for (i = 0; i < node.voltage_source_list.Neff; i++){
+
+        temp_vol = volt_list.array[node.voltage_source_list.array[i]];
+        int nodeNegInArray = lookup(nodeNumInArrayPair, temp_vol.nodeNeg);
+        int nodePosInArray = lookup(nodeNumInArrayPair, temp_vol.nodePos);     
+        
+        // super node
+        if (udahAdaVoltage[nodeNegInArray] || udahAdaVoltage[nodePosInArray]){
+            return -1;
+        }
+        if (temp_vol.nodeNeg != node.name && !isDone[nodeNegInArray]){
+            if (findRow(row, ans, isDone,curr_list, res_list, volt_list, node_circuit,
+            ind_list, cap_list, node_circuit.array[nodeNegInArray],nodeNumInArrayPair,time_sample, udahAdaVoltage) == -1){
+                return -1;
+            }            
+        }
+        else if (node_circuit.array[nodePosInArray].name != node.name && !isDone[nodePosInArray]){
+            if (findRow(row, ans, isDone,curr_list, res_list, volt_list, node_circuit,
+            ind_list, cap_list, node_circuit.array[nodePosInArray],nodeNumInArrayPair,time_sample, udahAdaVoltage) == -1){
+                return -1;
+            }
+        }
+    }
+    //-1 means ga bisa jadi supernode
 
     return 1;
 }
@@ -121,14 +159,22 @@ void KCLAnalysisPerNode(koefisien_tab* circuit_node_coefficient,voltage_source_t
     int i;
     int *isDone;
     isDone = (int*)calloc(total_node, sizeof(int));
-
-    double row[total_node];
+    int *udahAdaVoltage;
+    udahAdaVoltage = (int*)calloc(total_node, sizeof(int));
+    
+    double *row = (double *)calloc(total_node,sizeof(double));;
     double ans;
-
+    printf("Total NEff = %d\n",circuit_node_coefficient->Neff);
     for (i = 0; i < total_node; i++){
-        if (!isDone[i]){       
-            if (findRow(row, &ans, isDone, curr_list, res_list, volt_list,node_circuit, ind_list, cap_list, node_circuit.array[i],nodeNumInArrayPair,time_sample) > 0){
+        free(row);
+        row = (double *)calloc(total_node,sizeof(double));
+        ans = 0;
+        if (!isDone[i]){
+            // printf("i = %d\n",i)       ;
+            if (findRow(row, &ans, isDone, curr_list, res_list, volt_list,node_circuit, ind_list, cap_list, node_circuit.array[i],nodeNumInArrayPair,time_sample, udahAdaVoltage) > 0){
                 inserRowToKoefTab(circuit_node_coefficient, row, ans);
+                // printf("Total NEff = %d\n",circuit_node_coefficient->Neff);
+                // printf("debug");
             }
         }
     }

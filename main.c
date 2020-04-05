@@ -11,7 +11,7 @@
 #include "Matrices/matrices.h"
 #include "Model/model.h"
 
-// #define DEBUG
+#define DEBUG
 
 int main(){
     int i , j , k;
@@ -91,11 +91,15 @@ int main(){
         ,inductor_list,voltage_source_list,current_source_list);
     }
     #endif
+
+    // solve circuit
     // Circuit Analysis
     time_sample = SMALLEST_TIME_SAMPLING;
     makeMatricesVoltage(&circuit_node_coefficient,voltage_source_list,node_circuit,nodeNumInArrayPair);
+    
     KCLAnalysisPerNode(&circuit_node_coefficient,voltage_source_list, current_source_list,
     resistor_list, inductor_list, capacitor_list, node_circuit, nodeNumInArrayPair,time_sample);
+    
         
     #ifdef DEBUG
     for (i = 0; i < node_circuit.Neff; i++){
@@ -111,6 +115,7 @@ int main(){
 
     double det_value = findDeterminant(circuit_node_coefficient.array_koef, node_circuit.Neff);
     
+    
     voltage_in_node_now = matrixMultSquareTimesOneColumn(node_circuit.Neff, adjoint(circuit_node_coefficient.array_koef, node_circuit.Neff), 
     circuit_node_coefficient.ans);
     scalarMatrixMultiplication(1/det_value, node_circuit.Neff,voltage_in_node_now);
@@ -118,6 +123,8 @@ int main(){
     for (i = 0; i < node_circuit.Neff; i++){
         printf("V di node %d adalah %f\n",node_circuit.array[i].name,voltage_in_node_now[i]);
     }
+
+    // output to file
 
 
     
