@@ -12,19 +12,19 @@
 
 
 int main(){
-  component *component_array;
-  component_array = NULL;
-
   int component_array_length = 0;
   int ground;
   double delta_t = 0.001;
   double t_start = 0;
   double t_stop = 3;
 
-  getComponentsFromFile("Input/infile3.txt", &component_array, &component_array_length, delta_t);
+
+  component *component_array;
+  component_array = NULL;
+  getComponentsFromFile("Input/infile2.txt", &component_array, &component_array_length, delta_t);
   ground = 0;
 
-  // printComponentArray(component_array, component_array_length);
+  printComponentArray(component_array, component_array_length);
 
   simulateCircuit(
     t_start,

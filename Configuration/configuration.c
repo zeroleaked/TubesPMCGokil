@@ -14,8 +14,20 @@ void addCapacitor(
   double delta_t
 ) {
   _negative_node --;
-  addComponent(component_array, length, 'V', 0, node1, _negative_node, 0);
+  addComponent(component_array, length, 'v', 0, node1, _negative_node, 0);
   addComponent(component_array, length, 'R', delta_t/capacitance, _negative_node, node2, 0);
+}
+
+void addInductor(
+  component **component_array,
+  int *length,
+  int node1,
+  int node2,
+  double inductance,
+  double delta_t
+) {
+  addComponent(component_array, length, 'i', 0, node1, node2, 0);
+  addComponent(component_array, length, 'R', inductance/delta_t, node1, node2, 0);
 }
 
 void addComponent(
@@ -31,7 +43,10 @@ void addComponent(
   if (type == 'C') {
     addCapacitor(component_array, length, node1, node2, constant, delta_t);
     return;
-  };
+  } else if (type == 'L') {
+    addInductor(component_array, length, node1, node2, constant, delta_t);
+    return;
+  }
 
   *length += 1;
   *component_array = realloc(*component_array, *length * sizeof(component));

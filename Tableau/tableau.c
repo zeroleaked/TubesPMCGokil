@@ -57,11 +57,11 @@ void addBranch (component *component_array,
         (*big_ass_matrix)[offset2+i][col_offset1+i] = 1;
         (*big_ass_matrix)[offset2+i][offset2+i] = -component_array[i].constant;
       }
-      else if ( component_array[i].type == 'V' ) {
+      else if ( component_array[i].type == 'V' || component_array[i].type == 'v' ) {
         (*big_ass_matrix)[offset2+i][col_offset1+i] = 1;
         (*constant)[offset2+i] = component_array[i].constant;
       }
-      else if ( component_array[i].type == 'I' ) {
+      else if ( component_array[i].type == 'I' || component_array[i].type == 'i') {
         (*big_ass_matrix)[offset2+i][offset2+i] = 1;
         (*constant)[offset2+i] = component_array[i].constant;
       }

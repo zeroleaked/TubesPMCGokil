@@ -18,19 +18,27 @@ void addHeaderToFile(
   fprintf(*fptr, "t,");
   for (int i = 0; i < node_array_length; i++) {
     if (node_array[i] != ground && node_array[i] > 0)
-      fprintf(*fptr, "V(%d) (Volt),", node_array[i]);
+      fprintf(*fptr, "node %d (Volt),", node_array[i]);
   }
   for (int i = 0; i < component_array_length; i++) {
-    if ( component_array[i].type == 'V' && component_array[i].node2 < 0) {
+    if ( component_array[i].type == 'v') {
       fprintf(*fptr, "V(C) (Volt),");
+      i++;
+      continue;
+    } else if ( component_array[i].type == 'i' ) {
+      fprintf(*fptr, "V(L) (Volt),");
       i++;
       continue;
     }
     fprintf(*fptr, "V(%c) (Volt),", component_array[i].type);
   }
   for (int i = 0; i < component_array_length; i++) {
-    if ( component_array[i].type == 'V' && component_array[i].node2 < 0) {
+    if ( component_array[i].type == 'v') {
       fprintf(*fptr, "I(C) (Amp),");
+      i++;
+      continue;
+    } else if ( component_array[i].type == 'i') {
+      fprintf(*fptr, "I(L) (Amp),");
       i++;
       continue;
     }
@@ -63,7 +71,7 @@ void addSummedInstanceToFile(
     // print voltages and currents
     for (int i = 0; i < 2*component_array_length; i++) {
       // capacitor case
-      if ( component_array[i % component_array_length].type == 'V' && component_array[i % component_array_length].node2 < 0) {
+      if ( component_array[i % component_array_length].type == 'v') {
         if ( i < component_array_length ) {
           // voltage
           fprintf(*fptr, "%f,", instance[node_array_length + i -1] + instance[node_array_length + i]);
@@ -72,8 +80,17 @@ void addSummedInstanceToFile(
           fprintf(*fptr, "%f,", instance[node_array_length + i -1]);
         }
         i++;
+      } else if ( component_array[i % component_array_length].type == 'i') {
+        if ( i < component_array_length ) {
+          // voltage
+          fprintf(*fptr, "%f,", instance[node_array_length + i -1]);
+        } else {
+          // current
+          fprintf(*fptr, "%f,", instance[node_array_length + i -1] + instance[node_array_length + i]);
+        }
+        i++;
       } else
-        fprintf(*fptr, "%f,", instance[node_array_length + i -1]);
+      fprintf(*fptr, "%f,", instance[node_array_length + i -1]);
     }
     fprintf(*fptr, "\n");
 }
