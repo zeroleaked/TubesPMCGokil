@@ -6,11 +6,20 @@ double** createMatrix(int n) {
     double* values = calloc(n*n, sizeof(double));
     double** rows = calloc(n, sizeof(double*));
     int i,j;
-    for (i=0; i<n; ++i) 
+    for (i=0; i<n; ++i)
         for (j = 0; j< n; j++) {
             rows[i] = values + i*n;
         }
     return rows;
+}
+
+double* createArray(int n) {
+  double* array;
+  array = (double*) malloc(n * sizeof(double));
+  for (int i = 0; i < n; i++) {
+    array[i] = 0;
+  }
+  return array;
 }
 
 void destroyMatrix(double** matrix) {
@@ -32,7 +41,7 @@ void printMatrix(double **mat, int n){
     int i = 0, j = 0;
     for (;i < n; i++){
         for (j = 0; j < n; j++){
-             printf("%f ", mat[i][j]);
+             printf("%f\t", mat[i][j]);
         }
          printf("\n");
     }
@@ -40,9 +49,8 @@ void printMatrix(double **mat, int n){
 }
 
 void printArray(double *mat, int n){
-    int i = 0;
-    for (;i < n; i++){
-        printf("%f ", mat[i]);
+    for (int i = 0; i < n; i++){
+        printf("%f\n", mat[i]);
     }
     printf("\n");
 }
@@ -58,7 +66,7 @@ void swapRow(double **m, int a, int b , int n){
 }
 
 
-double findDeterminant(double** mat, int n){ 
+double findDeterminant(double** mat, int n){
     int i , j, k;
     double **m;
     m = (double**) malloc(n * sizeof(double*));
@@ -150,12 +158,11 @@ double *matrixMultSquareTimesOneColumn(int size, double **matriks1, double *matr
     return matriksKali;
 }
 
-void scalarMatrixMultiplication(double num ,int p,double *matriks){
+void scalarMatrixMultiplication(double num, int p, double ***matriks){
     int i,j;
-    for (i = 0; i < p; i++){
-        
-            matriks[i] *= num;
-    }
+    for (int i = 0; i < p; i++)
+      for (int j = 0; j < p; j++)
+          (*matriks)[i][j] *= num;
 }
 void getCofactor(double** A, double** temp, int p, int q, int n) {
   //cofactor of A[p][q]
@@ -195,4 +202,14 @@ double** adjoint(double** matrix, int n) {
     }
     destroyMatrix(temp);
     return adj;
+}
+
+double* matrixArrayMultiplication(double** matrix, double* array, int size) {
+  double* result = createArray(size);
+  for (int i = 0; i < size; i++) {
+    for (int j = 0; j < size; j++) {
+      result[i] += matrix[i][j] * array[j];
+    }
+  }
+  return result;
 }
