@@ -3,7 +3,6 @@
 #include "Time/time.h"
 
 // -DDEBUG for debug
-// jangan nyalain debug kalo t di main() belom diatur. Restart komputer wkwk
 
 int main(){
 
@@ -33,7 +32,7 @@ int main(){
     &node_array_length
   );
 
-  simulateCircuit(
+  timeSeries(
     t_start,
     t_stop,
     delta_t,

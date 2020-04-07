@@ -1,7 +1,7 @@
 #ifndef TIME_H
 #define TIME_H
 
-void simulateCircuit(
+void timeSeries(
   double t_start,
   double t_stop,
   double delta_t,

@@ -81,14 +81,14 @@ void addBranch (
   double **constant
 ) {
     int offset2 = node_array_length - 1 + component_array_length;
-    int col_offset1 = node_array_length - 1;
+    int offset1 = node_array_length - 1;
     for (int i = 0; i < component_array_length; i++) {
       if ( component_array[i].type == 'R' ) {
-        (*tableau_matrix)[offset2+i][col_offset1+i] = 1;
+        (*tableau_matrix)[offset2+i][offset1+i] = 1;
         (*tableau_matrix)[offset2+i][offset2+i] = -component_array[i].constant;
       }
       else if ( component_array[i].type == 'V' || component_array[i].type == 'v' ) {
-        (*tableau_matrix)[offset2+i][col_offset1+i] = 1;
+        (*tableau_matrix)[offset2+i][offset1+i] = 1;
         (*constant)[offset2+i] = component_array[i].constant;
       }
       else if ( component_array[i].type == 'I' || component_array[i].type == 'i') {

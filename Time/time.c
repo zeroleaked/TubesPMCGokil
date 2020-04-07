@@ -28,7 +28,7 @@ void updateDynamicComponents(
   #endif
 }
 
-void simulateCircuit(
+void timeSeries(
   double t_start,
   double t_stop,
   double delta_t,
