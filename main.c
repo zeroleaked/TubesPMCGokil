@@ -11,7 +11,7 @@
 #include "Matrices/matrices.h"
 #include "Model/model.h"
 
-#define DEBUG
+// #define DEBUG
 
 int main(){
     int i , j , k;
