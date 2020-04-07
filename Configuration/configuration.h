@@ -1,3 +1,7 @@
+#ifndef CONFIGURATION_H
+
+#define CONFIGURATION_H
+
 typedef struct{
   char type;
   double constant;
@@ -13,7 +17,11 @@ void addComponent(
   int node2,
   double delta_t
 );
-void printComponentArray(component *component, int length);
 
-void getNodeArray(component *component_array, int component_array_length, int **node_array, int *node_array_length);
+void printComponentArray(component *component_array, int component_array_length);
+void destroyComponentArray(component **component_array);
+
+void createNodeArray(component *component_array, int component_array_length, int **node_array, int *node_array_length);
 void printNodeArray(int *node_array, int node_array_length);
+void destroyNodeArray(int **node_array);
+#endif

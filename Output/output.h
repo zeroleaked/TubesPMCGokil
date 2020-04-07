@@ -1,3 +1,6 @@
+#ifndef OUTPUT_H
+#define OUTPUT_H
+
 FILE* getCSVfile(char *filepath);
 
 void addSummedInstanceToFile(
@@ -13,7 +16,7 @@ void addSummedInstanceToFile(
 
 void addInstanceToFile(double t, double *instance, int instance_length, FILE **fptr);
 
-void closeCSVfile(FILE *fptr);
+void closeCSVfile(FILE **fptr);
 
 void addHeaderToFile(
   int *node_array,
@@ -22,3 +25,5 @@ void addHeaderToFile(
   int component_array_length,
   int ground,
   FILE **fptr);
+
+#endif

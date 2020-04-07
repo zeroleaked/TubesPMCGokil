@@ -1,4 +1,7 @@
-void getInstance(
+#ifndef TABLEAU_H
+#define TABLEAU_H
+
+void createInstance(
   component *component_array,
   int component_array_length,
   int ground,
@@ -17,3 +20,9 @@ void printInstance(
   int node_array_length,
   int ground
 );
+
+void destroyInstance(
+  double **instance
+);
+
+#endif

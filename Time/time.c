@@ -1,32 +1,30 @@
-
 #include <stdio.h>
-#include <stdlib.h>
 
 #include "../Configuration/configuration.h"
 #include "../Tableau/tableau.h"
 #include "../Output/output.h"
 
-
-// jangan nyalain debug kalo t di main() belom diatur. Restart komputer wkwk
-// #define DEBUG
-
-void updateCapacitorsInductors(
+void updateDynamicComponents(
   component *component_array,
   int component_array_length,
   double *instance,
-  int instance_length,
-  int *node_array,
-  int node_array_length
+  int instance_length
 ) {
   for (int i = 0; i < component_array_length; i++) {
+    // capacitor
     if ( component_array[i].type == 'v' ) {
-      // printf("v sebelum = %fV, r = %fV\n", component_array[i].constant, instance[node_array_length + i]);
-      component_array[i].constant += instance[node_array_length + i];
-    } else if ( component_array[i].type == 'i' ) {
-      // printf("i sebelum = %fA, r = %fA\n", component_array[i].constant, instance[node_array_length + component_array_length + i]);
-      component_array[i].constant += instance[node_array_length + component_array_length + i];
+      component_array[i].constant +=
+        instance[instance_length + 1 - 2 * component_array_length + i];
+    } else
+    // inductor
+    if ( component_array[i].type == 'i' ) {
+      component_array[i].constant +=
+        instance[instance_length + 1 - component_array_length + i];
     }
   }
+  #ifdef DEBUG
+  printComponentArray(component_array, component_array_length);
+  #endif
 }
 
 void simulateCircuit(
@@ -35,20 +33,14 @@ void simulateCircuit(
   double delta_t,
   component *component_array,
   int component_array_length,
-  int ground
+  int *node_array,
+  int node_array_length,
+  int ground,
+  char *outfile_path
 ) {
-
-  int *node_array;
-  int node_array_length = 0;
-  getNodeArray(
-    component_array,
-    component_array_length,
-    &node_array,
-    &node_array_length
-  );
-
   FILE *outfile;
-  outfile = getCSVfile("output.csv");
+  outfile = getCSVfile(outfile_path);
+
   addHeaderToFile(
     node_array,
     node_array_length,
@@ -65,30 +57,18 @@ void simulateCircuit(
   while (t < t_stop) {
     #ifdef DEBUG
     printf("--------------------\n");
-    printf("t=%f\n", t);
+    printf("\nt = %fs\n", t);
     #endif
 
-    getInstance(
-      component_array, //dynamic
-      component_array_length, //static
-      ground, //static
-      node_array, //static
-      node_array_length, //static
-      &instance, //dynamic
-      &instance_length //dynamic
-    );
-
-    #ifdef DEBUG
-    printInstance(
-      instance,
-      instance_length,
+    createInstance(
       component_array,
       component_array_length,
+      ground,
       node_array,
       node_array_length,
-      ground
+      &instance,
+      &instance_length
     );
-    #endif
 
     if (t >= t_start)
       addSummedInstanceToFile(
@@ -102,23 +82,16 @@ void simulateCircuit(
         &outfile
       );
 
-    updateCapacitorsInductors(
+    updateDynamicComponents(
       component_array,
       component_array_length,
       instance,
-      instance_length,
-      node_array,
-      node_array_length
+      instance_length
     );
 
-    #ifdef DEBUG
-    printComponentArray(component_array, component_array_length);
-    #endif
-
     t += delta_t;
-    free(instance);
+
+    destroyInstance(&instance);
   }
-  closeCSVfile(outfile);
-  free(node_array);
-  free(component_array);
+  closeCSVfile(&outfile);
 }

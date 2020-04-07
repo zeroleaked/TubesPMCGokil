@@ -13,8 +13,8 @@ void scalarMatrixMultiplication(double num ,int p,double ***matriks);
 
 double** createMatrix(int n);
 double* createArray(int n);
-void destroyMatrix(double** matrix);
+void destroyMatrix(double*** matrix);
 double** adjoint(double** matrix, int n);
-double* matrixArrayMultiplication(double** matrix, double* array, int size); 
+double* matrixArrayMultiplication(double** matrix, double* array, int size);
 
 #endif

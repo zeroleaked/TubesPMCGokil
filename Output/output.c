@@ -103,8 +103,8 @@ void addInstanceToFile(double t, double *instance, int instance_length, FILE **f
   fprintf(*fptr, "\n");
 }
 
-void closeCSVfile(FILE *fptr) {
-  fclose(fptr);
+void closeCSVfile(FILE **fptr) {
+  fclose(*fptr);
 }
 
 // void addHeaderToFile(

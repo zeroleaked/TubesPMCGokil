@@ -3,4 +3,4 @@ gcc main.c Configuration/configuration.c Input/input.c Matrices/matrices.c Outpu
 
 Kalau ganti komponen di infile, ganti variabel lain di main.c
 
-To do: optimasi getInstance, big_ass_matrix bisa dibuat sekali doang, iterasi selanjutnya edit bagian branch doang
+To do: optimasi createInstance, tableau_matrix bisa dibuat sekali doang, iterasi selanjutnya edit bagian branch doang

@@ -22,9 +22,9 @@ double* createArray(int n) {
   return array;
 }
 
-void destroyMatrix(double** matrix) {
+void destroyMatrix(double*** matrix) {
+    free(**matrix);
     free(*matrix);
-    free(matrix);
 }
 
 void inputMatrix(double **mat,int n){
@@ -200,7 +200,7 @@ double** adjoint(double** matrix, int n) {
             adj[j][i] = (sign)*(findDeterminant(temp, n-1));
         }
     }
-    destroyMatrix(temp);
+    destroyMatrix(&temp);
     return adj;
 }
 
