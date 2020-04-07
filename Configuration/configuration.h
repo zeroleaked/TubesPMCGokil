@@ -17,7 +17,6 @@ void addComponent(
   int node2,
   double delta_t
 );
-
 void printComponentArray(component *component_array, int component_array_length);
 void destroyComponentArray(component **component_array);
 

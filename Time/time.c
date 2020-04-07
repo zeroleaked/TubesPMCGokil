@@ -3,23 +3,24 @@
 #include "../Configuration/configuration.h"
 #include "../Tableau/tableau.h"
 #include "../Output/output.h"
+#include "../Matrices/matrices.h"
 
 void updateDynamicComponents(
   component *component_array,
   int component_array_length,
-  double *instance,
-  int instance_length
+  double *solved_array,
+  int tableau_length
 ) {
   for (int i = 0; i < component_array_length; i++) {
     // capacitor
     if ( component_array[i].type == 'v' ) {
       component_array[i].constant +=
-        instance[instance_length + 1 - 2 * component_array_length + i];
+        solved_array[tableau_length + 1 - 2 * component_array_length + i];
     } else
     // inductor
     if ( component_array[i].type == 'i' ) {
       component_array[i].constant +=
-        instance[instance_length + 1 - component_array_length + i];
+        solved_array[tableau_length + 1 - component_array_length + i];
     }
   }
   #ifdef DEBUG
@@ -50,9 +51,21 @@ void simulateCircuit(
     &outfile
   );
 
-  double* instance;
-  int instance_length;
+  double** tableau_matrix;
+  double* constant_array;
+  int tableau_length;
+  createTableauMatrices(
+    component_array,
+    component_array_length,
+    node_array,
+    node_array_length,
+    ground,
+    &tableau_matrix,
+    &constant_array,
+    &tableau_length
+  );
 
+  double* solved_array;
   double t = 0;
   while (t < t_stop) {
     #ifdef DEBUG
@@ -60,20 +73,29 @@ void simulateCircuit(
     printf("\nt = %fs\n", t);
     #endif
 
-    createInstance(
-      component_array,
-      component_array_length,
-      ground,
-      node_array,
-      node_array_length,
-      &instance,
-      &instance_length
+    createSolvedArray(
+      tableau_matrix,
+      constant_array,
+      tableau_length,
+      &solved_array
     );
 
+    #ifdef DEBUG
+    printSolvedArray(
+      solved_array,
+      tableau_length,
+      component_array,
+      component_array_length,
+      node_array,
+      node_array_length,
+      ground
+    );
+    #endif
+
     if (t >= t_start)
-      addSummedInstanceToFile(
+      addSolvedArrayToFile(
         t,
-        instance,
+        solved_array,
         component_array,
         component_array_length,
         node_array,
@@ -85,13 +107,20 @@ void simulateCircuit(
     updateDynamicComponents(
       component_array,
       component_array_length,
-      instance,
-      instance_length
+      solved_array,
+      tableau_length
+    );
+
+    updateConstantArray (
+      component_array,
+      component_array_length,
+      &constant_array,
+      tableau_length
     );
 
     t += delta_t;
 
-    destroyInstance(&instance);
+    destroyArray(&solved_array);
   }
   closeCSVfile(&outfile);
 }

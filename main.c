@@ -16,7 +16,7 @@ int main(){
   double delta_t = 0.001;
   double t_start = 0;
   double t_stop = 3;
-  char *components_infile_path = "infiles/infile2.txt";
+  char *components_infile_path = "infiles/infile3.txt";
   char *outfile_path = "outfile.csv";
 
   component *component_array;

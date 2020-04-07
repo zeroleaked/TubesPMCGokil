@@ -8,9 +8,9 @@
 
 
 #ifdef DEBUG
-void printInstance(
-  double *instance,
-  int instance_length,
+void printSolvedArray(
+  double *solved_array,
+  int tableau_length,
   component *component_array,
   int component_array_length,
   int *node_array,
@@ -24,12 +24,12 @@ void printInstance(
       groundPassed = 1;
       continue;
     }
-      printf("node %d = %fV\n", node_array[i], instance[i - groundPassed]);
+      printf("node %d = %fV\n", node_array[i], solved_array[i - groundPassed]);
   }
   for (int i = 0; i < component_array_length; i++) {
     printf("component[%d] of type %c : %fV, %fA\n", i, component_array[i].type,
-      instance[node_array_length + i -1],
-      instance[node_array_length + component_array_length + i -1]);
+      solved_array[node_array_length + i -1],
+      solved_array[node_array_length + component_array_length + i -1]);
   }
   printf("\n");
 }
@@ -74,7 +74,8 @@ void addIdentity(int offset, int size, double ***tableau_matrix) {
   }
 }
 
-void addBranch (component *component_array,
+void addBranch (
+  component *component_array,
   int component_array_length,
   int node_array_length,
   double ***tableau_matrix,
@@ -98,92 +99,66 @@ void addBranch (component *component_array,
     }
   }
 
-void createBigAssMatrix(component *component_array,
+void createTableauMatrices(
+  component *component_array,
   int component_array_length,
   int *node_array,
   int node_array_length,
   int ground,
   double ***tableau_matrix,
-  double **constant
+  double **constant_array,
+  int *tableau_length
 ) {
-      int size = node_array_length - 1 + 2 * component_array_length;\
-      *tableau_matrix = createMatrix(size);
-      *constant = createArray(size);
-      for (int i = 0; i < size; i++) {
-        (*constant)[i] = 0;
-      }
+    *tableau_length = node_array_length - 1 + 2 * component_array_length;
+    *tableau_matrix = createMatrix(*tableau_length);
+    *constant_array = createArray(*tableau_length);
 
-      addMatrixA(component_array, component_array_length, node_array,
-        node_array_length, ground, tableau_matrix);
+    addMatrixA(component_array, component_array_length, node_array,
+      node_array_length, ground, tableau_matrix);
 
-      addIdentity(node_array_length-1, component_array_length, tableau_matrix);
+    addIdentity(node_array_length-1, component_array_length, tableau_matrix);
 
-      addBranch (component_array, component_array_length, node_array_length,
-        tableau_matrix, constant);
+    addBranch (
+      component_array,
+      component_array_length,
+      node_array_length,
+      tableau_matrix,
+      constant_array
+    );
+
+      // #ifdef DEBUG
+      // printMatrix(*tableau_matrix, *tableau_length);
+      // printArray(*constant_array, *tableau_length);
+      // #endif
 }
 
-double* solveEquation(
-  double **tableau_matrix,
-  double *constant_matrix,
-  int size
-) {
-  double** inverse = adjoint(tableau_matrix, size);
-  double det = findDeterminant(tableau_matrix, size);
-  scalarMatrixMultiplication(1/det, size, &inverse);
-  double *solved = matrixArrayMultiplication(inverse, constant_matrix, size);
-  destroyMatrix(&inverse);
-  return solved;
-}
-
-void createInstance(
+void updateConstantArray (
   component *component_array,
   int component_array_length,
-  int ground,
-  int *node_array,
-  int node_array_length,
-  double **instance,
-  int *instance_length
+  double **constant_array,
+  int tableau_length
 ) {
+  int offset1 = tableau_length - 2 * component_array_length;
+  int offset2 = tableau_length - component_array_length;
+  for (int i = 0; i < component_array_length; i++) {
+    if ( component_array[i].type == 'v' || component_array[i].type == 'i' ) {
+      (*constant_array)[offset2+i] = component_array[i].constant;
+    }
+  }
+};
 
-    double** tableau_matrix;
-    double* constant_matrix;
-    createBigAssMatrix(
-      component_array,
-      component_array_length,
-      node_array,
-      node_array_length,
-      ground,
-      &tableau_matrix,
-      &constant_matrix
-    );
-
-    int size = node_array_length - 1 + component_array_length * 2;
-
-    // #ifdef DEBUG
-    // printMatrix(tableau_matrix, size);
-    // printArray(constant_matrix, size);
-    // #endif
-
-    *instance = solveEquation(tableau_matrix, constant_matrix, size);
-    destroyMatrix(&tableau_matrix);
-
-    *instance_length = size;
-
-    #ifdef DEBUG
-    printInstance(
-      *instance,
-      *instance_length,
-      component_array,
-      component_array_length,
-      node_array,
-      node_array_length,
-      ground
-    );
-    #endif
-}
-
-void destroyInstance(
-  double **instance
+void createSolvedArray(
+  double **tableau_matrix,
+  double *constant_array,
+  int tableau_length,
+  double **solved_array
 ) {
-  free(*instance);
+  double** inverse;
+  createInverseMatrix( tableau_matrix, tableau_length, &inverse);
+  *solved_array = matrixArrayMultiplication(
+    inverse,
+    constant_array,
+    tableau_length
+  );
+  destroyMatrix(&inverse);
 }
