@@ -126,6 +126,8 @@ void getInstance(
     // printArray(constant_matrix, size);
 
     *instance = solveEquation(big_ass_matrix, constant_matrix, size);
+    destroyMatrix(big_ass_matrix);
+
     *instance_length = size;
 }
 

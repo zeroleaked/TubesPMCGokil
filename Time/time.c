@@ -47,8 +47,6 @@ void simulateCircuit(
     &node_array_length
   );
 
-
-
   FILE *outfile;
   outfile = getCSVfile("output.csv");
   addHeaderToFile(
@@ -60,11 +58,8 @@ void simulateCircuit(
     &outfile
   );
 
-
-
   double* instance;
   int instance_length;
-
 
   double t = 0;
   while (t < t_stop) {
@@ -124,5 +119,6 @@ void simulateCircuit(
     free(instance);
   }
   closeCSVfile(outfile);
+  free(node_array);
   free(component_array);
 }
