@@ -1,6 +1,28 @@
 #include <stdlib.h>
+
+#ifdef DEBUG
 #include <stdio.h>
-#include "matrices.h"
+#endif
+
+#ifdef DEBUG
+void printMatrix(double **mat, int n){
+    int i = 0, j = 0;
+    for (;i < n; i++){
+        for (j = 0; j < n; j++){
+             printf("%f\t", mat[i][j]);
+        }
+         printf("\n");
+    }
+    printf("\n");
+}
+
+void printArray(double *mat, int n){
+    for (int i = 0; i < n; i++){
+        printf("%f\n", mat[i]);
+    }
+    printf("\n");
+}
+#endif
 
 double** createMatrix(int n) {
     double* values = calloc(n*n, sizeof(double));
@@ -18,17 +40,6 @@ void destroyMatrix(double*** matrix) {
     free(*matrix);
 }
 
-void printMatrix(double **mat, int n){
-    int i = 0, j = 0;
-    for (;i < n; i++){
-        for (j = 0; j < n; j++){
-             printf("%f\t", mat[i][j]);
-        }
-         printf("\n");
-    }
-    printf("\n");
-}
-
 double* createArray(int n) {
   double* array;
   array = (double*) malloc(n * sizeof(double));
@@ -40,13 +51,6 @@ double* createArray(int n) {
 
 void destroyArray(double **array) {
   free(*array);
-}
-
-void printArray(double *mat, int n){
-    for (int i = 0; i < n; i++){
-        printf("%f\n", mat[i]);
-    }
-    printf("\n");
 }
 
 void swapRow(double **m, int a, int b , int n){

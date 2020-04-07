@@ -1,5 +1,6 @@
-#include "../Configuration/configuration.h"
 #include <stdio.h>
+
+#include "../Configuration/configuration.h"
 
 void createComponentArrayFromFile(
   char *filepath,
@@ -7,6 +8,7 @@ void createComponentArrayFromFile(
   component **component_array,
   int *component_array_length
 ) {
+  initializeComponentArray(component_array);
 
   FILE *fptr;
   fptr = fopen(filepath, "r");

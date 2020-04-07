@@ -1,8 +1,3 @@
-#include <stdio.h>
-#include <math.h>
-#include <string.h>
-#include <stdlib.h>
-
 #include "Configuration/configuration.h"
 #include "Input/input.h"
 #include "Time/time.h"
@@ -21,7 +16,7 @@ int main(){
 
   component *component_array;
   int component_array_length = 0;
-  component_array = NULL;
+
   createComponentArrayFromFile(
     components_infile_path,
     delta_t,

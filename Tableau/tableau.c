@@ -1,10 +1,9 @@
+#ifdef DEBUG
+#include <stdio.h>
+#endif
+
 #include "../Configuration/configuration.h"
 #include "../Matrices/matrices.h"
-#include "tableau.h"
-
-#include <stdio.h>
-#include <stdlib.h>
-
 
 
 #ifdef DEBUG

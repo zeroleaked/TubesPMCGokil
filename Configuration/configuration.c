@@ -1,7 +1,31 @@
 #include <stdlib.h>
+
+#ifdef DEBUG
 #include <stdio.h>
+#endif
 
 #include "configuration.h"
+
+
+#ifdef DEBUG
+
+void printComponentArray(component *component_array, int length) {
+  printf("component_array:\n");
+  for (int i = 0; i < length; i++) {
+    printf("%c %d %d %f\n", component_array[i].type, component_array[i].node1, component_array[i].node2, component_array[i].constant);
+  }
+  printf("\n");
+}
+
+void printNodeArray(int *node_array, int node_array_length) {
+  printf("node_array:\n");
+  for (int i = 0; i < node_array_length; i++) {
+    printf("%d ", node_array[i]);
+  }
+  printf("\n");
+}
+#endif
+
 
 int _negative_node = 0;
 
@@ -57,6 +81,10 @@ void addComponent(
   (*component_array)[*length-1].node2 = node2;
 }
 
+void initializeComponentArray(component **component_array) {
+  *component_array = NULL;
+}
+
 void destroyComponentArray(component **component_array) {
   free(*component_array);
 }
@@ -99,23 +127,3 @@ void createNodeArray(component *component_array, int component_array_length, int
 void destroyNodeArray(int **node_array) {
   free(*node_array);
 }
-
-
-#ifdef DEBUG
-
-void printComponentArray(component *component_array, int length) {
-  printf("component_array:\n");
-  for (int i = 0; i < length; i++) {
-    printf("%c %d %d %f\n", component_array[i].type, component_array[i].node1, component_array[i].node2, component_array[i].constant);
-  }
-  printf("\n");
-}
-
-void printNodeArray(int *node_array, int node_array_length) {
-  printf("node_array:\n");
-  for (int i = 0; i < node_array_length; i++) {
-    printf("%d ", node_array[i]);
-  }
-  printf("\n");
-}
-#endif

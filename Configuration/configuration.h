@@ -17,10 +17,16 @@ void addComponent(
   int node2,
   double delta_t
 );
+void initializeComponentArray(component **component_array);
 void printComponentArray(component *component_array, int component_array_length);
 void destroyComponentArray(component **component_array);
 
-void createNodeArray(component *component_array, int component_array_length, int **node_array, int *node_array_length);
+void createNodeArray(
+  component *component_array,
+  int component_array_length,
+  int **node_array,
+  int *node_array_length
+);
 void printNodeArray(int *node_array, int node_array_length);
 void destroyNodeArray(int **node_array);
 #endif
