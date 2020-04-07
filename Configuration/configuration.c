@@ -30,53 +30,31 @@ void printNodeArray(int *node_array, int node_array_length) {
 // analisis)
 int _negative_node = 0;
 
-// membuat model resistif dari kapasitor. Bukan menambahkan kapasitor pada
-// component_array, melainkan sumber tegangan dan resistor. Untuk ke depannya,
-// v bisa diberikan angka selain 0 (kapasitor memiliki tegangan awal)
-void addCapacitor(
-  component **component_array,
-  int *length,
-  int node1,
-  int node2,
-  double capacitance,
-  double delta_t
-) {
-  _negative_node --;
-  addComponent(component_array, length, 'v', 0, node1, _negative_node, 0);
-  addComponent(component_array, length, 'R', delta_t/capacitance, _negative_node, node2, 0);
-}
-
-// membuat model resistif dari induktor. Bukan menambahkan induktor pada
-// component_array, melainkan sumber arus dan resistor. Untuk ke depannya,
-// i bisa diberikan angka selain 0 (induktor memiliki arus awal)
-void addInductor(
-  component **component_array,
-  int *length,
-  int node1,
-  int node2,
-  double inductance,
-  double delta_t
-) {
-  addComponent(component_array, length, 'i', 0, node1, node2, 0);
-  addComponent(component_array, length, 'R', inductance/delta_t, node1, node2, 0);
-}
-
 // tambah komponen ke component_array
 void addComponent(
   component **component_array,
   int *length,
   char type,
-  double constant,
+  double value,
   int node1,
   int node2,
   double delta_t
 ) {
 
   if (type == 'C') {
-    addCapacitor(component_array, length, node1, node2, constant, delta_t);
+    // membuat model resistif dari kapasitor. Bukan menambahkan kapasitor pada
+    // component_array, melainkan sumber tegangan dan resistor. Untuk ke depannya,
+    // v bisa diberikan angka selain 0 (kapasitor memiliki tegangan awal)
+    _negative_node --;
+    addComponent(component_array, length, 'v', 0, node1, _negative_node, 0);
+    addComponent(component_array, length, 'R', delta_t/value, _negative_node, node2, 0);
     return;
   } else if (type == 'L') {
-    addInductor(component_array, length, node1, node2, constant, delta_t);
+    // membuat model resistif dari induktor. Bukan menambahkan induktor pada
+    // component_array, melainkan sumber arus dan resistor. Untuk ke depannya,
+    // i bisa diberikan angka selain 0 (induktor memiliki arus awal)
+    addComponent(component_array, length, 'i', 0, node1, node2, 0);
+    addComponent(component_array, length, 'R', value/delta_t, node1, node2, 0);
     return;
   }
 
@@ -84,7 +62,7 @@ void addComponent(
   *component_array = realloc(*component_array, *length * sizeof(component));
 
   (*component_array)[*length-1].type = type;
-  (*component_array)[*length-1].value = constant;
+  (*component_array)[*length-1].value = value;
   (*component_array)[*length-1].node1 = node1;
   (*component_array)[*length-1].node2 = node2;
 }
@@ -121,6 +99,7 @@ void createNodeArray(
       if (found1 && found2) break;
     }
 
+    // jika tidak ada, tambahkan
     if (!found1) {
       *node_array_length += 1;
       *node_array = realloc(*node_array, *node_array_length * sizeof(int));
