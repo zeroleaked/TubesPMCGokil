@@ -5,6 +5,7 @@
 #include "../Output/output.h"
 #include "../Matrices/matrices.h"
 
+// mengubah atribut value pada komponen
 void updateDynamicComponents(
   component *component_array,
   int component_array_length,
@@ -14,12 +15,14 @@ void updateDynamicComponents(
   for (int i = 0; i < component_array_length; i++) {
     // capacitor
     if ( component_array[i].type == 'v' ) {
-      component_array[i].constant +=
+      component_array[i].value +=
+        // tambah tegangan pada r dari model kapasitor
         solved_array[tableau_length + 1 - 2 * component_array_length + i];
     } else
     // inductor
     if ( component_array[i].type == 'i' ) {
-      component_array[i].constant +=
+      component_array[i].value +=
+        // tambah arus pada r dari model induktor
         solved_array[tableau_length + 1 - component_array_length + i];
     }
   }
@@ -28,6 +31,8 @@ void updateDynamicComponents(
   #endif
 }
 
+// simulasi component_array dengan perubahan terhadap waktu, output
+// langsung ditulis ke file
 void timeSeries(
   double t_start,
   double t_stop,
@@ -51,6 +56,7 @@ void timeSeries(
     &outfile
   );
 
+  // buat tableau_matrix untuk dikalikan
   double** tableau_matrix;
   double* constant_array;
   int tableau_length;
@@ -103,6 +109,7 @@ void timeSeries(
         &outfile
       );
 
+    // ubah value pada komponen
     updateDynamicComponents(
       component_array,
       component_array_length,
@@ -110,6 +117,8 @@ void timeSeries(
       tableau_length
     );
 
+    // implikasi dari pengubahan value pada sumber tegangan dan sumber arus,
+    // persamaan branch berubah
     updateConstantArray (
       component_array,
       component_array_length,
@@ -119,6 +128,7 @@ void timeSeries(
 
     t += delta_t;
 
+    // hasil sudah tidak diperlukan lagi
     destroyArray(&solved_array);
   }
   closeCSVfile(&outfile);
