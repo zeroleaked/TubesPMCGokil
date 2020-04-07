@@ -109,26 +109,24 @@ void createTableauMatrices(
   int *tableau_length
 ) {
     *tableau_length = node_array_length - 1 + 2 * component_array_length;
-    *tableau_matrix = createMatrix(*tableau_length);
+    double **before_inverse_matrix = createMatrix(*tableau_length);
     *constant_array = createArray(*tableau_length);
 
     addMatrixA(component_array, component_array_length, node_array,
-      node_array_length, ground, tableau_matrix);
+      node_array_length, ground, &before_inverse_matrix);
 
-    addIdentity(node_array_length-1, component_array_length, tableau_matrix);
+    addIdentity(node_array_length-1, component_array_length, &before_inverse_matrix);
 
     addBranch (
       component_array,
       component_array_length,
       node_array_length,
-      tableau_matrix,
+      &before_inverse_matrix,
       constant_array
     );
 
-      // #ifdef DEBUG
-      // printMatrix(*tableau_matrix, *tableau_length);
-      // printArray(*constant_array, *tableau_length);
-      // #endif
+    createInverseMatrix( before_inverse_matrix, *tableau_length, tableau_matrix );
+    destroyMatrix( &before_inverse_matrix );
 }
 
 void updateConstantArray (
@@ -145,19 +143,3 @@ void updateConstantArray (
     }
   }
 };
-
-void createSolvedArray(
-  double **tableau_matrix,
-  double *constant_array,
-  int tableau_length,
-  double **solved_array
-) {
-  double** inverse;
-  createInverseMatrix( tableau_matrix, tableau_length, &inverse);
-  *solved_array = matrixArrayMultiplication(
-    inverse,
-    constant_array,
-    tableau_length
-  );
-  destroyMatrix(&inverse);
-}

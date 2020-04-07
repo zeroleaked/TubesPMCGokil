@@ -19,23 +19,7 @@ void updateConstantArray (
   int tableau_length
 );
 
-void createSolvedArray(
-  double **tableau_matrix,
-  double *constant_array,
-  int tableau_length,
-  double **solved_array
-);
-
-void createInstance(
-  component *component_array,
-  int component_array_length,
-  int ground,
-  int *node_array,
-  int node_array_length,
-  double **solved_array,
-  int *tableau_length
-);
-
+#ifdef DEBUG
 void printSolvedArray(
   double *solved_array,
   int tableau_length,
@@ -45,6 +29,6 @@ void printSolvedArray(
   int node_array_length,
   int ground
 );
-
+#endif
 
 #endif

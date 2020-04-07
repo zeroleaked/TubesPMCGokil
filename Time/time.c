@@ -73,11 +73,10 @@ void simulateCircuit(
     printf("\nt = %fs\n", t);
     #endif
 
-    createSolvedArray(
+    solved_array = matrixArrayMultiplication(
       tableau_matrix,
       constant_array,
-      tableau_length,
-      &solved_array
+      tableau_length
     );
 
     #ifdef DEBUG
