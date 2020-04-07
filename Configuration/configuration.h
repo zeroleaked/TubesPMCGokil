@@ -4,7 +4,7 @@
 
 typedef struct{
   char type;
-  double constant;
+  double value;
   int node1, node2;
 } component;
 
