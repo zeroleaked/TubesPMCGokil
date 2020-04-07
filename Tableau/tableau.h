@@ -7,7 +7,7 @@ void createTableauMatrices(
   int *node_array,
   int node_array_length,
   int ground,
-  double ***tableau_matrix,
+  double ***inversed_coefficient_matrix,
   double **constant_array,
   int *tableau_length
 );

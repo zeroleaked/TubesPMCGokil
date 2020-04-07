@@ -26,7 +26,8 @@ void printNodeArray(int *node_array, int node_array_length) {
 }
 #endif
 
-// nama untuk node tambahan (yang tidak diinput, tapi diperlukan untuk analisis)
+// acuan nama untuk node tambahan (yang tidak diinput, tapi diperlukan untuk
+// analisis)
 int _negative_node = 0;
 
 // membuat model resistif dari kapasitor. Bukan menambahkan kapasitor pada

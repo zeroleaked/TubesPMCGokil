@@ -56,8 +56,9 @@ void timeSeries(
     &outfile
   );
 
-  // buat tableau_matrix untuk dikalikan
-  double** tableau_matrix;
+  // membuat inversed_coefficient_matrix dan constant_array untuk dikalikan
+  // nanti
+  double** inversed_coefficient_matrix;
   double* constant_array;
   int tableau_length;
   createTableauMatrices(
@@ -66,7 +67,7 @@ void timeSeries(
     node_array,
     node_array_length,
     ground,
-    &tableau_matrix,
+    &inversed_coefficient_matrix,
     &constant_array,
     &tableau_length
   );
@@ -80,7 +81,7 @@ void timeSeries(
     #endif
 
     solved_array = matrixArrayMultiplication(
-      tableau_matrix,
+      inversed_coefficient_matrix,
       constant_array,
       tableau_length
     );
