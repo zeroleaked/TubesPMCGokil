@@ -21,7 +21,7 @@ int main(){
 
   component *component_array;
   component_array = NULL;
-  getComponentsFromFile("Input/infile2.txt", &component_array, &component_array_length, delta_t);
+  getComponentsFromFile("Input/infile4.txt", &component_array, &component_array_length, delta_t);
   ground = 0;
 
   printComponentArray(component_array, component_array_length);
