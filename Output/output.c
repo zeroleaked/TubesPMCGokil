@@ -51,7 +51,7 @@ void addHeaderToFile(
     } 
     else if ( component_array[i].type == 'i' ) {
       LCounter += 1;
-      fprintf(*fptr, "V(L) (Volt),",LCounter);
+      fprintf(*fptr, "V(L%d) (Volt),",LCounter);
       i++;
     } 
     else{
