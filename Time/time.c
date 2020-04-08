@@ -1,56 +1,52 @@
-
 #include <stdio.h>
-#include <stdlib.h>
 
 #include "../Configuration/configuration.h"
 #include "../Tableau/tableau.h"
 #include "../Output/output.h"
+#include "../Matrices/matrices.h"
 
-
-// jangan nyalain debug kalo t di main() belom diatur. Restart komputer wkwk
-// #define DEBUG
-
-void updateCapacitorsInductors(
+// mengubah atribut value pada komponen
+void updateDynamicComponents(
   component *component_array,
   int component_array_length,
-  double *instance,
-  int instance_length,
-  int *node_array,
-  int node_array_length
+  double *solved_array,
+  int tableau_length
 ) {
   for (int i = 0; i < component_array_length; i++) {
+    // capacitor
     if ( component_array[i].type == 'v' ) {
-      // printf("v sebelum = %fV, r = %fV\n", component_array[i].constant, instance[node_array_length + i]);
-      component_array[i].constant += instance[node_array_length + i];
-    } else if ( component_array[i].type == 'i' ) {
-      // printf("i sebelum = %fA, r = %fA\n", component_array[i].constant, instance[node_array_length + component_array_length + i]);
-      component_array[i].constant += instance[node_array_length + component_array_length + i];
+      component_array[i].value +=
+        // tambah tegangan pada r dari model kapasitor
+        solved_array[tableau_length + 1 - 2 * component_array_length + i];
+    } else
+    // inductor
+    if ( component_array[i].type == 'i' ) {
+      component_array[i].value +=
+        // tambah arus pada r dari model induktor
+        solved_array[tableau_length + 1 - component_array_length + i];
     }
   }
+  #ifdef DEBUG
+  printComponentArray(component_array, component_array_length);
+  #endif
 }
 
-void simulateCircuit(
+// simulasi component_array dengan perubahan terhadap waktu, output
+// langsung ditulis ke file
+void timeSeries(
   double t_start,
   double t_stop,
   double delta_t,
   component *component_array,
   int component_array_length,
-  int ground
+  int *node_array,
+  int node_array_length,
+  int ground,
+  char *outfile_path
 ) {
-
-  int *node_array;
-  int node_array_length = 0;
-  getNodeArray(
-    component_array,
-    component_array_length,
-    &node_array,
-    &node_array_length
-  );
-
-
-
   FILE *outfile;
-  outfile = getCSVfile("output.csv");
+  outfile = getCSVfile(outfile_path);
+
   addHeaderToFile(
     node_array,
     node_array_length,
@@ -60,33 +56,40 @@ void simulateCircuit(
     &outfile
   );
 
+  // membuat inversed_coefficient_matrix dan constant_array untuk dikalikan
+  // nanti
+  double** inversed_coefficient_matrix;
+  double* constant_array;
+  int tableau_length;
+  createTableauMatrices(
+    component_array,
+    component_array_length,
+    node_array,
+    node_array_length,
+    ground,
+    &inversed_coefficient_matrix,
+    &constant_array,
+    &tableau_length
+  );
 
-
-  double* instance;
-  int instance_length;
-
-
+  double* solved_array;
   double t = 0;
   while (t < t_stop) {
     #ifdef DEBUG
     printf("--------------------\n");
-    printf("t=%f\n", t);
+    printf("\nt = %fs\n", t);
     #endif
 
-    getInstance(
-      component_array, //dynamic
-      component_array_length, //static
-      ground, //static
-      node_array, //static
-      node_array_length, //static
-      &instance, //dynamic
-      &instance_length //dynamic
+    solved_array = matrixArrayMultiplication(
+      inversed_coefficient_matrix,
+      constant_array,
+      tableau_length
     );
 
     #ifdef DEBUG
-    printInstance(
-      instance,
-      instance_length,
+    printSolvedArray(
+      solved_array,
+      tableau_length,
       component_array,
       component_array_length,
       node_array,
@@ -96,9 +99,9 @@ void simulateCircuit(
     #endif
 
     if (t >= t_start)
-      addSummedInstanceToFile(
+      addSolvedArrayToFile(
         t,
-        instance,
+        solved_array,
         component_array,
         component_array_length,
         node_array,
@@ -107,22 +110,27 @@ void simulateCircuit(
         &outfile
       );
 
-    updateCapacitorsInductors(
+    // ubah value pada komponen
+    updateDynamicComponents(
       component_array,
       component_array_length,
-      instance,
-      instance_length,
-      node_array,
-      node_array_length
+      solved_array,
+      tableau_length
     );
 
-    #ifdef DEBUG
-    printComponentArray(component_array, component_array_length);
-    #endif
+    // implikasi dari pengubahan value pada sumber tegangan dan sumber arus,
+    // persamaan branch berubah
+    updateConstantArray (
+      component_array,
+      component_array_length,
+      &constant_array,
+      tableau_length
+    );
 
     t += delta_t;
-    free(instance);
+
+    // hasil sudah tidak diperlukan lagi
+    destroyArray(&solved_array);
   }
-  closeCSVfile(outfile);
-  free(component_array);
+  closeCSVfile(&outfile);
 }

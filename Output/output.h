@@ -2,9 +2,9 @@
 #define OUTPUT_H
 FILE* getCSVfile(char *filepath);
 
-void addSummedInstanceToFile(
+void addSolvedArrayToFile(
   double t,
-  double *instance,
+  double *solved_array,
   component *component_array,
   int component_array_length,
   int *node_array,
@@ -13,9 +13,9 @@ void addSummedInstanceToFile(
   FILE **fptr
 );
 
-void addInstanceToFile(double t, double *instance, int instance_length, FILE **fptr);
+void addRawSolvedArrayToFile(double t, double *solved_array, int tableau_length, FILE **fptr);
 
-void closeCSVfile(FILE *fptr);
+void closeCSVfile(FILE **fptr);
 
 void addHeaderToFile(
   int *node_array,
@@ -24,5 +24,6 @@ void addHeaderToFile(
   int component_array_length,
   int ground,
   FILE **fptr);
+
 
 #endif
