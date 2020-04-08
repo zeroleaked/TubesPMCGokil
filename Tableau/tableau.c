@@ -34,14 +34,14 @@ void printSolvedArray(
 }
 #endif
 
-// menambahkan persamaan KCL pada inversed_coefficient_matrix
+// menambahkan persamaan KCL pada coefficient_matrix
 void addMatrixA(
   component *component_array,
   int component_array_length,
   int *node_array,
   int node_array_length,
   int ground,
-  double ***inversed_coefficient_matrix
+  double ***coefficient_matrix
 ) {
     // untuk A
     int col_offset = node_array_length - 1 + component_array_length;
@@ -58,32 +58,32 @@ void addMatrixA(
       // cari komponen yang terhubung dengan node j
       for (int k = 0; k < component_array_length; k++) {
         if (component_array[k].node1 == node_array[j]) {
-          (*inversed_coefficient_matrix)[j - groundPassed][col_offset + k] = -1;
-          (*inversed_coefficient_matrix)[row_offset + k][j - groundPassed] = -1;
+          (*coefficient_matrix)[j - groundPassed][col_offset + k] = -1;
+          (*coefficient_matrix)[row_offset + k][j - groundPassed] = -1;
         }
         else if (component_array[k].node2 == node_array[j]) {
-          (*inversed_coefficient_matrix)[j - groundPassed][col_offset + k] = 1;
-          (*inversed_coefficient_matrix)[row_offset + k][j - groundPassed] = 1;
+          (*coefficient_matrix)[j - groundPassed][col_offset + k] = 1;
+          (*coefficient_matrix)[row_offset + k][j - groundPassed] = 1;
         }
       }
     }
 
 }
 
-// menambahkan matriks identitas pada inversed_coefficient_matrix
-void addIdentity(int offset, int size, double ***inversed_coefficient_matrix) {
+// menambahkan matriks identitas pada coefficient_matrix
+void addIdentity(int offset, int size, double ***coefficient_matrix) {
   for (int i = 0; i < size; i++) {
-    (*inversed_coefficient_matrix)[offset+i][offset+i] = 1;
+    (*coefficient_matrix)[offset+i][offset+i] = 1;
   }
 }
 
-// menambahkan persamaan branch pada inversed_coefficient_matrix dan
+// menambahkan persamaan branch pada coefficient_matrix dan
 // constant_array
 void addBranch (
   component *component_array,
   int component_array_length,
   int node_array_length,
-  double ***inversed_coefficient_matrix,
+  double ***coefficient_matrix,
   double **constant
 ) {
     // offset untuk akses col M
@@ -93,19 +93,19 @@ void addBranch (
     for (int i = 0; i < component_array_length; i++) {
       if ( component_array[i].type == 'R' ) {
         // masukkan ke matriks M
-        (*inversed_coefficient_matrix)[offset2+i][offset1+i] = 1;
+        (*coefficient_matrix)[offset2+i][offset1+i] = 1;
         // masukkan ke matriks N
-        (*inversed_coefficient_matrix)[offset2+i][offset2+i] = -component_array[i].value;
+        (*coefficient_matrix)[offset2+i][offset2+i] = -component_array[i].value;
       }
       else if ( component_array[i].type == 'V' || component_array[i].type == 'v' ) {
         // masukkan ke matriks M
-        (*inversed_coefficient_matrix)[offset2+i][offset1+i] = 1;
+        (*coefficient_matrix)[offset2+i][offset1+i] = 1;
         // masukkan ke u
         (*constant)[offset2+i] = component_array[i].value;
       }
       else if ( component_array[i].type == 'I' || component_array[i].type == 'i') {
         // masukkan ke N
-        (*inversed_coefficient_matrix)[offset2+i][offset2+i] = 1;
+        (*coefficient_matrix)[offset2+i][offset2+i] = 1;
         // masukkan ke u
         (*constant)[offset2+i] = component_array[i].value;
       }
