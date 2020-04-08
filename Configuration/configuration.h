@@ -2,6 +2,7 @@
 
 #define CONFIGURATION_H
 
+
 typedef struct{
   char type;
   double value;
@@ -18,7 +19,7 @@ void addComponent(
   double delta_t
 );
 void initializeComponentArray(component **component_array);
-void printComponents(component *component_array, int component_array_length,int delta_t);
+void printComponents(component *component_array, int component_array_length,double delta_t);
 void destroyComponentArray(component **component_array);
 
 void createNodeArray(

@@ -7,7 +7,7 @@
 
 
 
-void printComponents(component *component_array, int length, int delta_t) {
+void printComponents(component *component_array, int length, double delta_t) {
   int vsource = 1, csource = 1, resistor = 1, capacitor = 1, inductor = 1;
   printf("\nName\tValue\t\tNode1\tNode2\n");
   for (int i = 0; i < length; i++) {
@@ -29,7 +29,7 @@ void printComponents(component *component_array, int length, int delta_t) {
       i++;
     } else
     if (component_array[i].type == 'i') {
-      printf("L%d\t%.3e H\t%d\t%d\n", capacitor++, delta_t*component_array[i+1].value,
+      printf("L%d\t%.3e H\t%d\t%d\n", inductor++, delta_t*component_array[i+1].value,
         component_array[i].node1, component_array[i].node2);
       i++;
     }
@@ -37,7 +37,6 @@ void printComponents(component *component_array, int length, int delta_t) {
   printf("\n");
 }
 
-#ifdef DEBUG
 void printRawComponentArray(component *component_array, int length) {
   printf("component_array:\n");
   for (int i = 0; i < length; i++) {
@@ -46,6 +45,7 @@ void printRawComponentArray(component *component_array, int length) {
   printf("\n");
 }
 
+#ifdef DEBUG
 void printNodeArray(int *node_array, int node_array_length) {
   printf("node_array:\n");
   for (int i = 0; i < node_array_length; i++) {
