@@ -18,7 +18,7 @@ void addComponent(
   double delta_t
 );
 void initializeComponentArray(component **component_array);
-void printComponentArray(component *component_array, int component_array_length);
+void printComponents(component *component_array, int component_array_length,int delta_t);
 void destroyComponentArray(component **component_array);
 
 void createNodeArray(
@@ -29,4 +29,9 @@ void createNodeArray(
 );
 void printNodeArray(int *node_array, int node_array_length);
 void destroyNodeArray(int **node_array);
+
+#ifdef DEBUG
+void printRawComponentArray(component *component_array, int length);
+#endif
+
 #endif

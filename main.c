@@ -7,10 +7,10 @@
 int main(){
 
   int ground = 0;
-  double delta_t = 0.001;
+  double delta_t = 1;
   double t_start = 0;
   double t_stop = 3;
-  char *components_infile_path = "infiles/infile3.txt";
+  char *components_infile_path = "infiles/infile2.txt";
   char *outfile_path = "outfile.csv";
 
   component *component_array;
@@ -22,6 +22,7 @@ int main(){
     &component_array,
     &component_array_length
   );
+  printComponents(component_array, component_array_length, delta_t);
 
   int *node_array;
   int node_array_length = 0;

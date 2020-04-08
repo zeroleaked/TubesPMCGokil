@@ -27,7 +27,7 @@ void updateDynamicComponents(
     }
   }
   #ifdef DEBUG
-  printComponentArray(component_array, component_array_length);
+  printRawComponentArray(component_array, component_array_length);
   #endif
 }
 

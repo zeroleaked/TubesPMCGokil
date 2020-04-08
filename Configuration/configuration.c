@@ -1,15 +1,44 @@
 #include <stdlib.h>
 
-#ifdef DEBUG
+
 #include <stdio.h>
-#endif
 
 #include "configuration.h"
 
 
-#ifdef DEBUG
 
-void printComponentArray(component *component_array, int length) {
+void printComponents(component *component_array, int length, int delta_t) {
+  int vsource = 1, csource = 1, resistor = 1, capacitor = 1, inductor = 1;
+  printf("\nName\tValue\t\tNode1\tNode2\n");
+  for (int i = 0; i < length; i++) {
+    if (component_array[i].type == 'V') {
+      printf("V%d\t%.3e V\t%d\t%d\n", vsource++, component_array[i].value,
+        component_array[i].node1, component_array[i].node2);
+    } else
+    if (component_array[i].type == 'I') {
+      printf("I%d\t%.3e A\t%d\t%d\n", csource++, component_array[i].value,
+        component_array[i].node1, component_array[i].node2);
+    } else
+    if (component_array[i].type == 'R') {
+      printf("R%d\t%.3e Ohm\t%d\t%d\n", resistor++, component_array[i].value,
+        component_array[i].node1, component_array[i].node2);
+    } else
+    if (component_array[i].type == 'v') {
+      printf("C%d\t%.3e F\t%d\t%d\n", capacitor++, delta_t/component_array[i+1].value,
+        component_array[i].node1, component_array[i+1].node2);
+      i++;
+    } else
+    if (component_array[i].type == 'i') {
+      printf("L%d\t%.3e H\t%d\t%d\n", capacitor++, delta_t*component_array[i+1].value,
+        component_array[i].node1, component_array[i].node2);
+      i++;
+    }
+  }
+  printf("\n");
+}
+
+#ifdef DEBUG
+void printRawComponentArray(component *component_array, int length) {
   printf("component_array:\n");
   for (int i = 0; i < length; i++) {
     printf("%c %d %d %f\n", component_array[i].type, component_array[i].node1, component_array[i].node2, component_array[i].value);
