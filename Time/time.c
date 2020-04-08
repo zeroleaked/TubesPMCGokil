@@ -17,13 +17,13 @@ void updateDynamicComponents(
     if ( component_array[i].type == 'v' ) {
       component_array[i].value +=
         // tambah tegangan pada r dari model kapasitor
-        solved_array[tableau_length + 1 - 2 * component_array_length + i];
+        solved_array[tableau_length - 2 * component_array_length + i + 1];
     } else
     // inductor
     if ( component_array[i].type == 'i' ) {
       component_array[i].value +=
         // tambah arus pada r dari model induktor
-        solved_array[tableau_length + 1 - component_array_length + i];
+        solved_array[tableau_length - component_array_length + i + 1];
     }
   }
   #ifdef DEBUG
