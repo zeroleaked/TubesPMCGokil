@@ -157,11 +157,10 @@ void updateConstantArray (
   double **constant_array,
   int tableau_length
 ) {
-  int offset1 = tableau_length - 2 * component_array_length;
-  int offset2 = tableau_length - component_array_length;
+  int offset = tableau_length - component_array_length;
   for (int i = 0; i < component_array_length; i++) {
     if ( component_array[i].type == 'v' || component_array[i].type == 'i' ) {
-      (*constant_array)[offset2+i] = component_array[i].value;
+      (*constant_array)[offset+i] = component_array[i].value;
     }
   }
 };
