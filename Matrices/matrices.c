@@ -1,10 +1,10 @@
 #include <stdlib.h>
-
-#ifdef DEBUG
 #include <stdio.h>
-#endif
 
-#ifdef DEBUG
+// #define TESTUNIT
+// #define DETERMINANT
+// #define INVERSEMATRIX
+#ifdef TESTUNIT
 void printMatrix(double **mat, int n){
     int i = 0, j = 0;
     for (;i < n; i++){
@@ -166,3 +166,49 @@ void createInverseMatrix( double **matrix, int matrix_length, double ***inverse)
   double det = findDeterminant(matrix, matrix_length);
   scalarMatrixMultiplication(1/det, matrix_length, inverse);
 }
+#ifdef TESTUNIT
+int main(){
+    #ifdef DETERMINANT
+    int total;
+    scanf("%d",&total);
+
+    int n;
+    while(total--){
+        scanf("%d", &n);
+        double **arr = createMatrix(n);
+        for (int i = 0; i < n; i++){
+            for (int j = 0; j < n; j++){
+                scanf("%lf",arr[i]+j);
+            }
+        }
+        double ans = findDeterminant(arr, n);
+        printf("%f\n",ans);
+    }
+    #endif
+
+    #ifdef INVERSEMATRIX
+    int total;
+    scanf("%d",&total);
+
+    int n;
+    while(total--){
+        scanf("%d", &n);
+        double **arr = createMatrix(n);
+        for (int i = 0; i < n; i++){
+            for (int j = 0; j < n; j++){
+                scanf("%lf",arr[i]+j);
+            }
+        }
+        double** ans = createMatrix(n);
+        createInverseMatrix(arr,n,&ans);
+        for (int i = 0; i < n; i++){
+            for (int j = 0; j < n; j++){
+                printf("%.17f ",ans[i][j]);
+            }
+            printf("\n");
+        }
+    }
+    #endif
+    return 0;
+}
+#endif

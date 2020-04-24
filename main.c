@@ -7,9 +7,9 @@
 int main(){
 
   int ground = 0;
-  double delta_t = 1;
+  double delta_t = 1E-6;
   double t_start = 0;
-  double t_stop = 3;
+  double t_stop  = 3;
   char *components_infile_path = "infiles/infile2.txt";
   char *outfile_path = "outfile.csv";
 

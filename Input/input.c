@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include "input.h"
 #include "../Configuration/configuration.h"
 
 void createComponentArrayFromFile(
