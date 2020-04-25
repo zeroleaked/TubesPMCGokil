@@ -1,0 +1,1 @@
+t,node 1 (Volt),V(V1) (Volt),V(R1) (Volt),V(I1) (Volt),I(V1) (Amp),I(R1) (Amp),I(I1) (Amp),
