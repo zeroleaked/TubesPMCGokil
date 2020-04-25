@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "input.h"
 #include "../Configuration/configuration.h"
+#include "input.h"
 
 void createComponentArrayFromFile(
   char *filepath,
