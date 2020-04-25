@@ -2,7 +2,7 @@ import os
 import numpy as np
 import shutil
 
-MAX_COMPONENTS = 5
+MAX_COMPONENTS = 4
 types = ['R', 'V', 'I', 'C', 'L']
 
 class Components:
@@ -76,6 +76,7 @@ class Components:
             else:
                 count[c.type] += 1
             f.write(f'I({c.type}{count[c.type]}) (Amp),')
+        f.write("\n")
         f.close()
 
 
@@ -108,24 +109,25 @@ def generateTests(n):
 
 # generateTests(5)
 
-
-# ground = open(os.path.join("testcase5", "ground.txt")).read()
-# inpath = os.path.join('testcase5', "test_infile.txt")
-# outpath = os.path.join('testcase5', "test_outfile.txt")
-#
-# os.system(f'./a {inpath} {outpath} {ground}')
-
-for dir in os.listdir():
+list = os.listdir()
+list.sort()
+for dir in list:
     if 'testcase' in dir:
-        print(dir)
-        # f = open(os.path.join(dir, "ground.txt"))
-        # ground = f.read()
-        # inpath = os.path.join(dir, "test_infile.txt")
-        # outpath = os.path.join(dir, "test_outfile.txt")
-        # os.system(f'./a {inpath} {outpath} {ground}')
-        #
-        # print(dir)
-        # reference = open(os.path.join(dir, "test_outfile_reference.txt")).read()
-        # out = open(outpath).read()
-        # print("reference\n", reference)
-        # print("out\n", out)
+        f = open(os.path.join(dir, "ground.txt"))
+        ground = f.read()
+        inpath = os.path.join(dir, "test_infile.txt")
+        outpath = os.path.join(dir, "test_outfile.txt")
+        os.system(f'./a {inpath} {outpath} {ground}')
+
+        reference = open(os.path.join(dir, "test_outfile_reference.txt")).read().split(',')
+        out = open(outpath).read().split(',')
+        # print(ground)
+        # print(reference)
+        # print(out)
+        # if (reference == out):
+        #     print(dir, "passed")
+        # else:
+        #     print(dir, "failed")
+
+        if (len(reference)!=len(out)):
+            print(dir, "length unmatched", len(reference), len(out))

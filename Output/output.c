@@ -33,7 +33,7 @@ void addHeaderToFile(
   fprintf(*fptr, "t,");
   // print nodes
   for (int i = 0; i < node_array_length; i++) {
-    if (node_array[i] != ground && node_array[i] > 0)
+    if (node_array[i] != ground && node_array[i] >= 0)
       fprintf(*fptr, "node %d (Volt),", node_array[i]);
   }
   unsigned int cCounter = 0;
