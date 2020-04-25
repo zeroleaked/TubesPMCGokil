@@ -36,24 +36,24 @@ void addHeaderToFile(
     if (node_array[i] != ground && node_array[i] > 0)
       fprintf(*fptr, "node %d (Volt),", node_array[i]);
   }
+  unsigned int cCounter = 0;
+  unsigned int LCounter = 0;
+  unsigned int rCounter = 0;
+  unsigned int volSourceCounter = 0;
+  unsigned int curSourceCounter = 0;
+  unsigned int temp;
   // print header tegangan komponen
   for (int i = 0; i < component_array_length; i++) {
-    unsigned int cCounter = 0;
-    unsigned int LCounter = 0;
-    unsigned int rCounter = 0;
-    unsigned int volSourceCounter = 0;
-    unsigned int curSourceCounter = 0;
-    unsigned int temp;
     if ( component_array[i].type == 'v') {
       cCounter += 1;
       fprintf(*fptr, "V(C%d) (Volt),",cCounter);
       i++;
-    } 
+    }
     else if ( component_array[i].type == 'i' ) {
       LCounter += 1;
       fprintf(*fptr, "V(L%d) (Volt),",LCounter);
       i++;
-    } 
+    }
     else{
       if (component_array[i].type == 'R'){
         rCounter++;
@@ -71,23 +71,22 @@ void addHeaderToFile(
     }
   }
   // print header arus komponen
+  cCounter = 0;
+  LCounter = 0;
+  rCounter = 0;
+  volSourceCounter = 0;
+  curSourceCounter = 0;
   for (int i = 0; i < component_array_length; i++) {
-    unsigned int cCounter = 0;
-    unsigned int LCounter = 0;
-    unsigned int rCounter = 0;
-    unsigned int volSourceCounter = 0;
-    unsigned int curSourceCounter = 0;
-    unsigned int temp;
     if ( component_array[i].type == 'v') {
       cCounter++;
       fprintf(*fptr, "I(C%d) (Amp),",cCounter);
       i++;
-    } 
+    }
     else if ( component_array[i].type == 'i') {
       LCounter++;
       fprintf(*fptr, "I(L%d) (Amp),",LCounter);
       i++;
-    } 
+    }
     else{
     if (component_array[i].type == 'R'){
         rCounter++;
