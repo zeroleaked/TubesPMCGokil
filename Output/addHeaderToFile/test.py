@@ -4,6 +4,7 @@ import shutil
 
 MAX_COMPONENTS = 4
 types = ['R', 'V', 'I', 'C', 'L']
+TESTS = 5
 
 class Components:
     def __init__(self, length):
@@ -107,7 +108,7 @@ def generateTests(n):
         a.save(dir)
 
 
-# generateTests(5)
+generateTests(TESTS)
 
 list = os.listdir()
 list.sort()
@@ -121,13 +122,16 @@ for dir in list:
 
         reference = open(os.path.join(dir, "test_outfile_reference.txt")).read().split(',')
         out = open(outpath).read().split(',')
-        # print(ground)
-        # print(reference)
-        # print(out)
-        # if (reference == out):
-        #     print(dir, "passed")
-        # else:
-        #     print(dir, "failed")
-
-        if (len(reference)!=len(out)):
-            print(dir, "length unmatched", len(reference), len(out))
+        if (reference == out):
+            print(dir, "passed")
+        else:
+            print(dir, "failed: ", end="")
+            length = len(reference)
+            if length != len(out):
+                print(f"length umatched (result={len(out)}, reference={length})")
+                continue
+            else:
+                for i in range(length):
+                    if reference[i] != out[i]:
+                        print(f"unmatched {i} (result={out[i]}, reference={reference[i]})")
+                        continue
