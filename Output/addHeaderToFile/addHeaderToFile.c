@@ -1,14 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include "../../Configuration/configuration.h"
 #include "../../Input/input.h"
 #include "../output.h"
 
 #define MAX_CHAR 255
-
-
 
 int main(int argc, char *argv[]) {
   int ground;

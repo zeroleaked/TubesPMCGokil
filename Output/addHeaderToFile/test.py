@@ -2,8 +2,8 @@ import os
 import numpy as np
 import shutil
 
-MAX_COMPONENTS = 4
-types = ['R', 'V', 'I', 'C', 'L']
+MAX_COMPONENTS = 30
+TYPES = ['R', 'V', 'I', 'C', 'L']
 TESTS = 5
 
 class Components:
@@ -80,23 +80,13 @@ class Components:
         f.write("\n")
         f.close()
 
-
-        # path = os.path.join(dir, "test_outfile_reference.txt")
-        # f = open(path,"w")
-        # for c in self.array:
-        #     # print(c.type, c.node1, c.node2, c.value)
-        #     f.write(f'{c.type}\n{c.value:02.6f}\n{c.node1}\n{c.node2}\n\n')
-        # f.close()
-
 class Component:
     def __init__(self, node1, node2):
-        self.type = types[np.random.randint(5)]
+        self.type = TYPES[np.random.randint(5)]
         self.value = (np.random.randint(99)+1) * pow(10, np.random.randint(12) - 6)
         self.node1 = node1
         self.node2 = node2
 
-
-# generate test cases
 def generateTests(n):
     for dir in os.listdir():
         if 'testcase' in dir:
@@ -107,31 +97,29 @@ def generateTests(n):
         a = Components(np.random.randint(MAX_COMPONENTS)+1)
         a.save(dir)
 
-
 generateTests(TESTS)
 
-list = os.listdir()
-list.sort()
-for dir in list:
-    if 'testcase' in dir:
-        f = open(os.path.join(dir, "ground.txt"))
-        ground = f.read()
-        inpath = os.path.join(dir, "test_infile.txt")
-        outpath = os.path.join(dir, "test_outfile.txt")
-        os.system(f'./a {inpath} {outpath} {ground}')
+length = len(list(filter(lambda f: "testcase" in f, os.listdir())))
+for i in range(length):
+    dir = f'testcase{i+1}'
+    f = open(os.path.join(dir, "ground.txt"))
+    ground = f.read()
+    inpath = os.path.join(dir, "test_infile.txt")
+    outpath = os.path.join(dir, "test_outfile.txt")
+    os.system(f'./a {inpath} {outpath} {ground}')
 
-        reference = open(os.path.join(dir, "test_outfile_reference.txt")).read().split(',')
-        out = open(outpath).read().split(',')
-        if (reference == out):
-            print(dir, "passed")
+    reference = open(os.path.join(dir, "test_outfile_reference.txt")).read().split(',')
+    out = open(outpath).read().split(',')
+    if (reference == out):
+        print(dir, "passed")
+    else:
+        print(dir, "failed: ", end="")
+        length = len(reference)
+        if length != len(out):
+            print(f"length umatched (result={len(out)}, reference={length})")
+            continue
         else:
-            print(dir, "failed: ", end="")
-            length = len(reference)
-            if length != len(out):
-                print(f"length umatched (result={len(out)}, reference={length})")
-                continue
-            else:
-                for i in range(length):
-                    if reference[i] != out[i]:
-                        print(f"unmatched {i} (result={out[i]}, reference={reference[i]})")
-                        continue
+            for i in range(length):
+                if reference[i] != out[i]:
+                    print(f"unmatched {i} (result={out[i]}, reference={reference[i]})")
+                    continue

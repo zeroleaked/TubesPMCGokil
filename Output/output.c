@@ -139,11 +139,12 @@ void addComponentVoltagesToFile(
       i++; // skip resistor
       continue;
     }
+    fprintf(*fptr, "%f,", solved_array[offset + i]);
+
     // kasus induktor, tegangan sumber arus dan resistor sama (paralel)
-    else if ( component_array[i].type == 'i' ) {
+    if ( component_array[i].type == 'i' ) {
       i++; // skip resistor
     }
-    fprintf(*fptr, "%f,", solved_array[offset + i]);
   }
 }
 
@@ -163,11 +164,12 @@ void addComponentCurrentsToFile(
       i++; // skip resistor
       continue;
     }
+    fprintf(*fptr, "%f,", solved_array[offset + i]);
+
     // kasus kapasitor, arus sumber tegangan dan resistor sama (seri)
-    else if ( component_array[i].type == 'v' ) {
+    if ( component_array[i].type == 'v' ) {
       i++; // skip resistor
     }
-    fprintf(*fptr, "%f,", solved_array[offset + i]);
   }
 }
 
