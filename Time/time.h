@@ -13,4 +13,11 @@ void timeSeries(
   char *outfile_path
 );
 
+void updateDynamicComponents(
+  component *component_array,
+  int component_array_length,
+  double *solved_array,
+  int tableau_length
+);
+
 #endif
