@@ -3,9 +3,18 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 try :
+    import subprocess
+except:
+    print("install subprocess")
+    exit(0)
+try :
     import Tkinter as Tk
 except ImportError :
     import tkinter as Tk
+
+import os
+
+cwd = os.getcwd()
 # https://www.blog.pythonlibrary.org/2012/07/26/tkinter-how-to-show-hide-a-window/
 
 class showPlotClass(Tk.Toplevel):
@@ -66,8 +75,7 @@ class addFrame(Tk.Toplevel):
 
 
 class addComponentClass(Tk.Toplevel):
-    def __init__(self, original):
-        inputFile = "infile.txt"
+    def __init__(self, original, inputFile):
         self.original_frame = original
         self.data = original.data
         self.Dict = original.Dict
@@ -75,7 +83,7 @@ class addComponentClass(Tk.Toplevel):
         Tk.Toplevel.__init__(self)
         self.geometry("800x600")
         self.title("addComponentClass")        
-        self.file = open(inputFile,"w+")
+        self.file = open(original.inputFile, "w+")
 
         btnres =Tk.Button(self, text="Add Resistance", command=self.addResistance)
         btnres.grid(row = self.getRow()) 
@@ -369,8 +377,8 @@ class addComponentClass(Tk.Toplevel):
 
         submit = Tk.Button(otherFrame, text = "Submit")
         cancel = Tk.Button(otherFrame, text = "Cancel")
-        submit['command'] =lambda binst =submit, binst2 = cancel:self.putgrouentSource(1,grouValueEntry,otherFrame)
-        cancel['command'] = lambda binst = cancel,  binst2 = submit:self.putgrouentSource(0,grouValueEntry otherFrame)
+        submit['command'] =lambda binst =submit, binst2 = cancel:self.putGround(1,grouValueEntry,otherFrame)
+        cancel['command'] = lambda binst = cancel,  binst2 = submit:self.putGround(0,grouValueEntry,otherFrame)
         cancel.grid(row = rowStart+4, column = 4)
         submit.grid(row = rowStart+4, column = 5)
 
@@ -383,10 +391,64 @@ class addComponentClass(Tk.Toplevel):
 
         otherFrame.onClose()
 
+class simulateCircuit(Tk.Toplevel):
+    def __init__(self, original):
+        """Constructor"""
+        self.original_frame = original
+        self.file = open("timefile.txt", "w+")
+        self.Row = 0
+        Tk.Toplevel.__init__(self)
+        self.geometry("800x600")
+        self.title("Simulate")
+
+        rowStart = self.getRow()
+
+        timestartEntry = Tk.Entry(self)        
+        timendEntry = Tk.Entry(self)
+
+        timestartLabel=Tk.Label(self,text = "Time Start :")        
+        timeendLabel=Tk.Label(self,text = "Time End :")
+
+        timestartEntry.grid(row = rowStart, column = 2)
+        timestartLabel.grid(row=rowStart, column = 1)
+
+        timendEntry.grid(row=rowStart+1, column = 2)
+        timeendLabel.grid(row=rowStart+1, column = 1)        
+
+        btnsim = Tk.Button(self, text="Simulate", command=lambda :self.simulateNow(timestartEntry, timendEntry))
+        btnsim.grid(row = self.getRow(), column = 0)        
+
+        btn = Tk.Button(self, text="Close", command=self.onClose)
+        btn.grid(row = self.getRow(), column = 0) 
+
+    def onClose(self):
+        self.destroy()
+        self.original_frame.show()    
+
+    def getRow(self):
+        self.Row += 1
+        return (self.Row - 1) 
+
+    def simulateNow(self, timestartEntry, timendEntry):
+        self.file.write(str(timestartEntry.get()))
+        self.file.write("\n")
+        self.file.write(str(timendEntry.get()))
+        self.file.write("\n")
+        temp = ''
+        cmd = cwd+"/"+(self.original_frame.simulateexecute)
+
+        print (cmd)
+        process = subprocess.Popen(cmd, stdout=subprocess.PIPE, creationflags=0x08000000)
+        process.wait()
+
+        self.onClose()
+
     
 class MyApp(object):
     
     def __init__(self, parent, fileName):
+        self.inputFile = "infile.txt"
+        self.simulateexecute = "try.exe"
         self.root = parent
         self.root.title("Main Menu")
         self.frame = Tk.Frame(parent)
@@ -400,8 +462,11 @@ class MyApp(object):
         btnShowPlot.pack()
         btnAddComponent = Tk.Button(self.frame, text="Add Component", command=self.insertComponentInMenu)
         btnAddComponent.pack()
+        btnSimulate = Tk.Button(self.frame, text="Simulate", command=self.simulate)
+        btnSimulate.pack()
 
-        # btnExit = Tk.Button(self.frame, text = "Exit", command = self.)
+        btnExit = Tk.Button(self.frame, text = "Exit", command = self.root.destroy)
+        btnExit.pack()
         
     def hide(self):
         self.root.withdraw()        
@@ -422,10 +487,11 @@ class MyApp(object):
     # insert component
     def insertComponentInMenu(self)   :
         self.hide()
-        subFrame = addComponentClass(self)
+        subFrame = addComponentClass(self, self.inputFile)
 
-
-    # def insertResistor(self):
+    def simulate(self):
+        self.hide()
+        subFrame = simulateCircuit(self)
 
 
      
