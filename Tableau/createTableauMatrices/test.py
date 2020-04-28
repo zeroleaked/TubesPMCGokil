@@ -4,7 +4,7 @@ import shutil
 
 GENERATE = True
 MAX_COMPONENTS = 20
-TYPES = ['R', 'V', 'I', 'v', 'i']
+TYPES = ['R', 'R', 'R', 'V', 'I', 'v', 'i']
 TESTS = 10
 
 
