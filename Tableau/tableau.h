@@ -1,6 +1,7 @@
 #ifndef TABLEAU_H
 #define TABLEAU_H
 
+
 void createTableauMatrices(
   component *component_array,
   int component_array_length,

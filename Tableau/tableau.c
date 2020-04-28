@@ -163,4 +163,4 @@ void updateConstantArray (
       (*constant_array)[offset+i] = component_array[i].value;
     }
   }
-};
+}
