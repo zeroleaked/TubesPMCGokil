@@ -3,9 +3,18 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 try :
+    import subprocess
+except:
+    print("install subprocess")
+    exit(0)
+try :
     import Tkinter as Tk
 except ImportError :
     import tkinter as Tk
+
+import os
+
+cwd = os.getcwd()
 # https://www.blog.pythonlibrary.org/2012/07/26/tkinter-how-to-show-hide-a-window/
 
 class showPlotClass(Tk.Toplevel):
@@ -48,9 +57,25 @@ class showPlotClass(Tk.Toplevel):
         (self.data).plot(kind = 'line', x = 't', y = ((self.Dict).get(choice_show)))
         plt.show()
 
+class addFrame(Tk.Toplevel):
+    def __init__(self, original, frameName):
+        self.original_frame = original
+        Tk.Toplevel.__init__(self)
+        self.geometry("400x300")
+        self.title(frameName) 
+        self.Row = 0
+
+    def onClose(self):
+        self.destroy()
+        self.original_frame.show()
+
+    def getRow(self):
+        self.Row += 1
+        return (self.Row - 1)    
+
+
 class addComponentClass(Tk.Toplevel):
-    def __init__(self, original):
-        inputFile = "infile.txt"
+    def __init__(self, original, inputFile):
         self.original_frame = original
         self.data = original.data
         self.Dict = original.Dict
@@ -58,7 +83,7 @@ class addComponentClass(Tk.Toplevel):
         Tk.Toplevel.__init__(self)
         self.geometry("800x600")
         self.title("addComponentClass")        
-        self.file = open(inputFile,"w+")
+        self.file = open(original.inputFile, "w+")
 
         btnres =Tk.Button(self, text="Add Resistance", command=self.addResistance)
         btnres.grid(row = self.getRow()) 
@@ -74,9 +99,19 @@ class addComponentClass(Tk.Toplevel):
 
         btncurr =Tk.Button(self, text="Add Current Source", command=self.addCurrentSource)
         btncurr.grid(row = self.getRow())         
+
+        btngrou =Tk.Button(self, text="Add Ground", command=self.addGround)
+        btngrou.grid(row = self.getRow())                         
        
         btn = Tk.Button(self, text="Close", command=self.onClose)
         btn.grid(row = self.getRow())          
+
+    def hide(self):
+        self.withdraw()
+    def show(self):
+        """"""
+        self.update()
+        self.deiconify()    
 
     def onClose(self):
         self.destroy()
@@ -88,16 +123,18 @@ class addComponentClass(Tk.Toplevel):
 
     #Add resistance Component
     def addResistance(self):
-        resValueEntry = Tk.Entry(self)
+        self.hide()
+        otherFrame = addFrame(self, "addResistance")
+        resValueEntry = Tk.Entry(otherFrame)
         
-        resNode1Entry = Tk.Entry(self)
+        resNode1Entry = Tk.Entry(otherFrame)
         
-        resNode2Entry = Tk.Entry(self)
+        resNode2Entry = Tk.Entry(otherFrame)
 
-        rowStart = self.getRow()
-        resValueLabel=Tk.Label(self,text = "Nilai resistor:")        
-        resNode1Label=Tk.Label(self,text = "Nilai Node 1:")
-        resNode2Label=Tk.Label(self,text = "Nilai Node 2:")
+        rowStart = otherFrame.getRow()
+        resValueLabel=Tk.Label(otherFrame,text = "Nilai resistor:")        
+        resNode1Label=Tk.Label(otherFrame,text = "Nilai Node 1:")
+        resNode2Label=Tk.Label(otherFrame,text = "Nilai Node 2:")
 
         resValueLabel.grid(row=rowStart, column = 1)
         resNode1Label.grid(row=rowStart+1, column = 1)        
@@ -107,16 +144,16 @@ class addComponentClass(Tk.Toplevel):
         resValueEntry.grid(row=rowStart, column = 2)
         resNode2Entry.grid(row=rowStart+2, column = 2)    
 
-        submit = Tk.Button(self, text = "Submit")
-        cancel = Tk.Button(self, text = "Cancel")
+        submit = Tk.Button(otherFrame, text = "Submit")
+        cancel = Tk.Button(otherFrame, text = "Cancel")
         submit['command'] =lambda binst =submit, binst2 = cancel:self.putResistance(1,resValueEntry,
-                resNode1Entry,resNode2Entry, resValueLabel, resNode1Label, resNode2Label, binst, binst2)
+                resNode1Entry,resNode2Entry, resValueLabel, resNode1Label, resNode2Label, binst, binst2, otherFrame)
         cancel['command'] = lambda binst = cancel,  binst2 = submit:self.putResistance(0,resValueEntry,
-                resNode1Entry,resNode2Entry, resValueLabel, resNode1Label, resNode2Label, binst, binst2)
+                resNode1Entry,resNode2Entry, resValueLabel, resNode1Label, resNode2Label, binst, binst2, otherFrame)
         cancel.grid(row = rowStart+4, column = 4)
         submit.grid(row = rowStart+4, column = 5)
 
-    def putResistance(self, state ,resValueEntry, resNode1Entry, resNode2Entry, resValueLabel, resNode1Label, resNode2Label,binst, binst2):
+    def putResistance(self, state ,resValueEntry, resNode1Entry, resNode2Entry, resValueLabel, resNode1Label, resNode2Label,binst, binst2, otherFrame):
         if state == 1:
             self.file.write("R")
             self.file.write("\n")
@@ -126,30 +163,24 @@ class addComponentClass(Tk.Toplevel):
             self.file.write("\n")       
             self.file.write(str(resNode2Entry.get()))
             self.file.write("\n")
-
-        resValueEntry.destroy()
-        resNode1Entry.destroy()     
-        resNode2Entry.destroy()  
-        resValueLabel.destroy()
-        resNode1Label.destroy()     
-        resNode2Label.destroy()          
-
-        binst.destroy()   
-        binst2.destroy()    
+   
+        otherFrame.onClose()
         
 
     #Add Capacitor Component
     def addCapacitance(self):
-        capValueEntry = Tk.Entry(self)
+        self.hide()
+        otherFrame = addFrame(self, "addResistance")
+        capValueEntry = Tk.Entry(otherFrame)
         
-        capNode1Entry = Tk.Entry(self)
+        capNode1Entry = Tk.Entry(otherFrame)
         
-        capNode2Entry = Tk.Entry(self)
+        capNode2Entry = Tk.Entry(otherFrame)
 
-        rowStart = self.getRow()
-        capValueLabel=Tk.Label(self,text = "Nilai capacitor:")        
-        capNode1Label=Tk.Label(self,text = "Nilai Node 1:")
-        capNode2Label=Tk.Label(self,text = "Nilai Node 2:")
+        rowStart = otherFrame.getRow()
+        capValueLabel=Tk.Label(otherFrame,text = "Nilai capacitor:")        
+        capNode1Label=Tk.Label(otherFrame,text = "Nilai Node 1:")
+        capNode2Label=Tk.Label(otherFrame,text = "Nilai Node 2:")
 
         capValueLabel.grid(row=rowStart, column = 1)
         capNode1Label.grid(row=rowStart+1, column = 1)        
@@ -159,16 +190,16 @@ class addComponentClass(Tk.Toplevel):
         capValueEntry.grid(row=rowStart, column = 2)
         capNode2Entry.grid(row=rowStart+2, column = 2)    
 
-        submit = Tk.Button(self, text = "Submit")
-        cancel = Tk.Button(self, text = "Cancel")
+        submit = Tk.Button(otherFrame, text = "Submit")
+        cancel = Tk.Button(otherFrame, text = "Cancel")
         submit['command'] =lambda binst =submit, binst2 = cancel:self.putCapacitance(1,capValueEntry,
-                capNode1Entry,capNode2Entry, capValueLabel, capNode1Label, capNode2Label, binst, binst2)
+                capNode1Entry,capNode2Entry, capValueLabel, capNode1Label, capNode2Label, binst, binst2, otherFrame)
         cancel['command'] = lambda binst = cancel,  binst2 = submit:self.putCapacitance(0,capValueEntry,
-                capNode1Entry,capNode2Entry, capValueLabel, capNode1Label, capNode2Label, binst, binst2)
+                capNode1Entry,capNode2Entry, capValueLabel, capNode1Label, capNode2Label, binst, binst2, otherFrame)
         cancel.grid(row = rowStart+4, column = 4)
         submit.grid(row = rowStart+4, column = 5)
 
-    def putCapacitance(self, state ,capValueEntry, capNode1Entry, capNode2Entry, capValueLabel, capNode1Label, capNode2Label,binst, binst2):
+    def putCapacitance(self, state ,capValueEntry, capNode1Entry, capNode2Entry, capValueLabel, capNode1Label, capNode2Label,binst, binst2, otherFrame):
         if state == 1:
             self.file.write("C")
             self.file.write("\n")
@@ -188,18 +219,21 @@ class addComponentClass(Tk.Toplevel):
 
         binst.destroy()   
         binst2.destroy() 
+        otherFrame.onClose()
 
     def addInductance(self):
-        indValueEntry = Tk.Entry(self)
+        self.hide()
+        otherFrame = addFrame(self, "addResistance")
+        indValueEntry = Tk.Entry(otherFrame)
         
-        indNode1Entry = Tk.Entry(self)
+        indNode1Entry = Tk.Entry(otherFrame)
         
-        indNode2Entry = Tk.Entry(self)
+        indNode2Entry = Tk.Entry(otherFrame)
 
-        rowStart = self.getRow()
-        indValueLabel=Tk.Label(self,text = "Nilai induktor:")        
-        indNode1Label=Tk.Label(self,text = "Nilai Node 1:")
-        indNode2Label=Tk.Label(self,text = "Nilai Node 2:")
+        rowStart = otherFrame.getRow()
+        indValueLabel=Tk.Label(otherFrame,text = "Nilai induktor:")        
+        indNode1Label=Tk.Label(otherFrame,text = "Nilai Node 1:")
+        indNode2Label=Tk.Label(otherFrame,text = "Nilai Node 2:")
 
         indValueLabel.grid(row=rowStart, column = 1)
         indNode1Label.grid(row=rowStart+1, column = 1)        
@@ -209,16 +243,17 @@ class addComponentClass(Tk.Toplevel):
         indValueEntry.grid(row=rowStart, column = 2)
         indNode2Entry.grid(row=rowStart+2, column = 2)    
 
-        submit = Tk.Button(self, text = "Submit")
-        cancel = Tk.Button(self, text = "Cancel")
+        submit = Tk.Button(otherFrame, text = "Submit")
+        cancel = Tk.Button(otherFrame, text = "Cancel")
         submit['command'] =lambda binst =submit, binst2 = cancel:self.putInductance(1,indValueEntry,
-                indNode1Entry,indNode2Entry, indValueLabel, indNode1Label, indNode2Label, binst, binst2)
+                indNode1Entry,indNode2Entry, indValueLabel, indNode1Label, indNode2Label, binst, binst2, otherFrame)
         cancel['command'] = lambda binst = cancel,  binst2 = submit:self.putInductance(0,indValueEntry,
-                indNode1Entry,indNode2Entry, indValueLabel, indNode1Label, indNode2Label, binst, binst2)
+                indNode1Entry,indNode2Entry, indValueLabel, indNode1Label, indNode2Label, binst, binst2, otherFrame)
         cancel.grid(row = rowStart+4, column = 4)
         submit.grid(row = rowStart+4, column = 5)
 
-    def putInductance(self, state ,indValueEntry, indNode1Entry, indNode2Entry, indValueLabel, indNode1Label, indNode2Label,binst, binst2):
+
+    def putInductance(self, state ,indValueEntry, indNode1Entry, indNode2Entry, indValueLabel, indNode1Label, indNode2Label,binst, binst2, otherFrame):
         if state == 1:
             self.file.write("L")
             self.file.write("\n")
@@ -238,18 +273,21 @@ class addComponentClass(Tk.Toplevel):
 
         binst.destroy()   
         binst2.destroy()  
+        otherFrame.onClose()
 
     def addVoltageSource(self):
-        voltValueEntry = Tk.Entry(self)
+        self.hide()
+        otherFrame = addFrame(self, "Add VOltage Source")
+        voltValueEntry = Tk.Entry(otherFrame)
         
-        voltNode1Entry = Tk.Entry(self)
+        voltNode1Entry = Tk.Entry(otherFrame)
         
-        voltNode2Entry = Tk.Entry(self)
+        voltNode2Entry = Tk.Entry(otherFrame)
 
-        rowStart = self.getRow()
-        voltValueLabel=Tk.Label(self,text = "Nilai Sumber Tegangan:")        
-        voltNode1Label=Tk.Label(self,text = "Nilai Node 1:")
-        voltNode2Label=Tk.Label(self,text = "Nilai Node 2:")
+        rowStart = otherFrame.getRow()
+        voltValueLabel=Tk.Label(otherFrame,text = "Nilai Sumber Tegangan:")        
+        voltNode1Label=Tk.Label(otherFrame,text = "Nilai Node 1:")
+        voltNode2Label=Tk.Label(otherFrame,text = "Nilai Node 2:")
 
         voltValueLabel.grid(row=rowStart, column = 1)
         voltNode1Label.grid(row=rowStart+1, column = 1)        
@@ -259,18 +297,18 @@ class addComponentClass(Tk.Toplevel):
         voltValueEntry.grid(row=rowStart, column = 2)
         voltNode2Entry.grid(row=rowStart+2, column = 2)    
 
-        submit = Tk.Button(self, text = "Submit")
-        cancel = Tk.Button(self, text = "Cancel")
+        submit = Tk.Button(otherFrame, text = "Submit")
+        cancel = Tk.Button(otherFrame, text = "Cancel")
         submit['command'] =lambda binst =submit, binst2 = cancel:self.putVoltageSource(1,voltValueEntry,
-                voltNode1Entry,voltNode2Entry, voltValueLabel, voltNode1Label, voltNode2Label, binst, binst2)
+                voltNode1Entry,voltNode2Entry, voltValueLabel, voltNode1Label, voltNode2Label, binst, binst2, otherFrame)
         cancel['command'] = lambda binst = cancel,  binst2 = submit:self.putVoltageSource(0,voltValueEntry,
-                voltNode1Entry,voltNode2Entry, voltValueLabel, voltNode1Label, voltNode2Label, binst, binst2)
+                voltNode1Entry,voltNode2Entry, voltValueLabel, voltNode1Label, voltNode2Label, binst, binst2, otherFrame)
         cancel.grid(row = rowStart+4, column = 4)
         submit.grid(row = rowStart+4, column = 5)
 
-    def putVoltageSource(self, state ,voltValueEntry, voltNode1Entry, voltNode2Entry, voltValueLabel, voltNode1Label, voltNode2Label,binst, binst2):
+    def putVoltageSource(self, state ,voltValueEntry, voltNode1Entry, voltNode2Entry, voltValueLabel, voltNode1Label, voltNode2Label,binst, binst2, otherFrame):
         if state == 1:
-            self.file.write("R")
+            self.file.write("V")
             self.file.write("\n")
             self.file.write(str(voltValueEntry.get()))
             self.file.write("\n")       
@@ -279,27 +317,21 @@ class addComponentClass(Tk.Toplevel):
             self.file.write(str(voltNode2Entry.get()))
             self.file.write("\n")
 
-        voltValueEntry.destroy()
-        voltNode1Entry.destroy()     
-        voltNode2Entry.destroy()  
-        voltValueLabel.destroy()
-        voltNode1Label.destroy()     
-        voltNode2Label.destroy()          
-
-        binst.destroy()   
-        binst2.destroy()   
+        otherFrame.onClose()
 
     def addCurrentSource(self):
-        currValueEntry = Tk.Entry(self)
+        self.hide()
+        otherFrame = addFrame(self, "Add Current Source")
+        currValueEntry = Tk.Entry(otherFrame)
         
-        currNode1Entry = Tk.Entry(self)
+        currNode1Entry = Tk.Entry(otherFrame)
         
-        currNode2Entry = Tk.Entry(self)
+        currNode2Entry = Tk.Entry(otherFrame)
 
-        rowStart = self.getRow()
-        currValueLabel=Tk.Label(self,text = "Nilai Sumber Arus:")        
-        currNode1Label=Tk.Label(self,text = "Nilai Node 1:")
-        currNode2Label=Tk.Label(self,text = "Nilai Node 2:")
+        rowStart = otherFrame.getRow()
+        currValueLabel=Tk.Label(otherFrame,text = "Nilai Sumber Arus:")        
+        currNode1Label=Tk.Label(otherFrame,text = "Nilai Node 1:")
+        currNode2Label=Tk.Label(otherFrame,text = "Nilai Node 2:")
 
         currValueLabel.grid(row=rowStart, column = 1)
         currNode1Label.grid(row=rowStart+1, column = 1)        
@@ -309,18 +341,18 @@ class addComponentClass(Tk.Toplevel):
         currValueEntry.grid(row=rowStart, column = 2)
         currNode2Entry.grid(row=rowStart+2, column = 2)    
 
-        submit = Tk.Button(self, text = "Submit")
-        cancel = Tk.Button(self, text = "Cancel")
+        submit = Tk.Button(otherFrame, text = "Submit")
+        cancel = Tk.Button(otherFrame, text = "Cancel")
         submit['command'] =lambda binst =submit, binst2 = cancel:self.putCurrentSource(1,currValueEntry,
-                currNode1Entry,currNode2Entry, currValueLabel, currNode1Label, currNode2Label, binst, binst2)
+                currNode1Entry,currNode2Entry, currValueLabel, currNode1Label, currNode2Label, binst, binst2, otherFrame)
         cancel['command'] = lambda binst = cancel,  binst2 = submit:self.putCurrentSource(0,currValueEntry,
-                currNode1Entry,currNode2Entry, currValueLabel, currNode1Label, currNode2Label, binst, binst2)
+                currNode1Entry,currNode2Entry, currValueLabel, currNode1Label, currNode2Label, binst, binst2, otherFrame)
         cancel.grid(row = rowStart+4, column = 4)
         submit.grid(row = rowStart+4, column = 5)
 
-    def putCurrentSource(self, state ,currValueEntry, currNode1Entry, currNode2Entry, currValueLabel, currNode1Label, currNode2Label,binst, binst2):
+    def putCurrentSource(self, state ,currValueEntry, currNode1Entry, currNode2Entry, currValueLabel, currNode1Label, currNode2Label,binst, binst2, otherFrame):
         if state == 1:
-            self.file.write("R")
+            self.file.write("I")
             self.file.write("\n")
             self.file.write(str(currValueEntry.get()))
             self.file.write("\n")       
@@ -329,21 +361,93 @@ class addComponentClass(Tk.Toplevel):
             self.file.write(str(currNode2Entry.get()))
             self.file.write("\n")
 
-        currValueEntry.destroy()
-        currNode1Entry.destroy()     
-        currNode2Entry.destroy()  
-        currValueLabel.destroy()
-        currNode1Label.destroy()     
-        currNode2Label.destroy()          
+        otherFrame.onClose()
 
-        binst.destroy()   
-        binst2.destroy()      
+    def addGround(self):
+        self.hide()
+        otherFrame = addFrame(self, "Add Ground")
+        grouValueEntry = Tk.Entry(otherFrame)
 
+        rowStart = otherFrame.getRow()
+        grouValueLabel=Tk.Label(otherFrame,text = "Nilai Node Ground:")        
+
+        grouValueLabel.grid(row=rowStart, column = 1)
+
+        grouValueEntry.grid(row=rowStart, column = 2)
+
+        submit = Tk.Button(otherFrame, text = "Submit")
+        cancel = Tk.Button(otherFrame, text = "Cancel")
+        submit['command'] =lambda binst =submit, binst2 = cancel:self.putGround(1,grouValueEntry,otherFrame)
+        cancel['command'] = lambda binst = cancel,  binst2 = submit:self.putGround(0,grouValueEntry,otherFrame)
+        cancel.grid(row = rowStart+4, column = 4)
+        submit.grid(row = rowStart+4, column = 5)
+
+    def putGround(self, state ,grouValueEntry, otherFrame):
+        if state == 1:
+            self.file.write("G")
+            self.file.write("\n")
+            self.file.write(str(grouValueEntry.get()))
+            self.file.write("\n")
+
+        otherFrame.onClose()
+
+class simulateCircuit(Tk.Toplevel):
+    def __init__(self, original):
+        """Constructor"""
+        self.original_frame = original
+        self.file = open("timefile.txt", "w+")
+        self.Row = 0
+        Tk.Toplevel.__init__(self)
+        self.geometry("800x600")
+        self.title("Simulate")
+
+        rowStart = self.getRow()
+
+        timestartEntry = Tk.Entry(self)        
+        timendEntry = Tk.Entry(self)
+
+        timestartLabel=Tk.Label(self,text = "Time Start :")        
+        timeendLabel=Tk.Label(self,text = "Time End :")
+
+        timestartEntry.grid(row = rowStart, column = 2)
+        timestartLabel.grid(row=rowStart, column = 1)
+
+        timendEntry.grid(row=rowStart+1, column = 2)
+        timeendLabel.grid(row=rowStart+1, column = 1)        
+
+        btnsim = Tk.Button(self, text="Simulate", command=lambda :self.simulateNow(timestartEntry, timendEntry))
+        btnsim.grid(row = self.getRow(), column = 0)        
+
+        btn = Tk.Button(self, text="Close", command=self.onClose)
+        btn.grid(row = self.getRow(), column = 0) 
+
+    def onClose(self):
+        self.destroy()
+        self.original_frame.show()    
+
+    def getRow(self):
+        self.Row += 1
+        return (self.Row - 1) 
+
+    def simulateNow(self, timestartEntry, timendEntry):
+        self.file.write(str(timestartEntry.get()))
+        self.file.write("\n")
+        self.file.write(str(timendEntry.get()))
+        self.file.write("\n")
+        cmd = cwd+"/"+(self.original_frame.simulateexecute)
+
+        print (cmd)
+        process = subprocess.Popen(cmd, stdout=subprocess.PIPE, creationflags=0x08000000)
+        process.wait()
+
+        self.onClose()
 
     
 class MyApp(object):
     
     def __init__(self, parent, fileName):
+        self.inputFile = "infile.txt"
+        self.simulateexecute = "program.exe"
         self.root = parent
         self.root.title("Main Menu")
         self.frame = Tk.Frame(parent)
@@ -357,8 +461,11 @@ class MyApp(object):
         btnShowPlot.pack()
         btnAddComponent = Tk.Button(self.frame, text="Add Component", command=self.insertComponentInMenu)
         btnAddComponent.pack()
+        btnSimulate = Tk.Button(self.frame, text="Simulate", command=self.simulate)
+        btnSimulate.pack()
 
-        # btnExit = Tk.Button(self.frame, text = "Exit", command = self.)
+        btnExit = Tk.Button(self.frame, text = "Exit", command = self.root.destroy)
+        btnExit.pack()
         
     def hide(self):
         self.root.withdraw()        
@@ -379,10 +486,11 @@ class MyApp(object):
     # insert component
     def insertComponentInMenu(self)   :
         self.hide()
-        subFrame = addComponentClass(self)
+        subFrame = addComponentClass(self, self.inputFile)
 
-
-    # def insertResistor(self):
+    def simulate(self):
+        self.hide()
+        subFrame = simulateCircuit(self)
 
 
      
