@@ -434,7 +434,6 @@ class simulateCircuit(Tk.Toplevel):
         self.file.write("\n")
         self.file.write(str(timendEntry.get()))
         self.file.write("\n")
-        temp = ''
         cmd = cwd+"/"+(self.original_frame.simulateexecute)
 
         print (cmd)
@@ -448,7 +447,7 @@ class MyApp(object):
     
     def __init__(self, parent, fileName):
         self.inputFile = "infile.txt"
-        self.simulateexecute = "try.exe"
+        self.simulateexecute = "program.exe"
         self.root = parent
         self.root.title("Main Menu")
         self.frame = Tk.Frame(parent)
