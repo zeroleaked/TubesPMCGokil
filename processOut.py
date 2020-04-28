@@ -15,7 +15,7 @@ class showPlotClass(Tk.Toplevel):
         self.data = original.data
         self.Dict = original.Dict
         Tk.Toplevel.__init__(self)
-        self.geometry("400x300")
+        self.geometry("800x600")
         self.title("Show Plot")
         
 
@@ -25,7 +25,7 @@ class showPlotClass(Tk.Toplevel):
         btn.pack()          
 
     def onClose(self):
-    	self.destroy()
+        self.destroy()
         self.original_frame.show()
 
         #plotting menu
@@ -54,95 +54,290 @@ class addComponentClass(Tk.Toplevel):
         self.original_frame = original
         self.data = original.data
         self.Dict = original.Dict
+        self.Row = 0
         Tk.Toplevel.__init__(self)
-        self.geometry("400x300")
+        self.geometry("800x600")
         self.title("addComponentClass")        
         self.file = open(inputFile,"w+")
 
         btnres =Tk.Button(self, text="Add Resistance", command=self.addResistance)
-        btnres.grid(row = 0) 
+        btnres.grid(row = self.getRow()) 
 
         btncap =Tk.Button(self, text="Add Capacitance", command=self.addCapacitance)
-        btncap.grid(row = 1)                   
+        btncap.grid(row = self.getRow())
+
+        btnind =Tk.Button(self, text="Add Inductance", command=self.addInductance)
+        btnind.grid(row = self.getRow())                           
+
+        btnvolt =Tk.Button(self, text="Add Voltage Source", command=self.addVoltageSource)
+        btnvolt.grid(row = self.getRow())                                   
+
+        btncurr =Tk.Button(self, text="Add Current Source", command=self.addCurrentSource)
+        btncurr.grid(row = self.getRow())         
        
         btn = Tk.Button(self, text="Close", command=self.onClose)
-        btn.grid(row = 2)          
+        btn.grid(row = self.getRow())          
 
     def onClose(self):
-    	self.destroy()
+        self.destroy()
         self.original_frame.show()
+
+    def getRow(self):
+        self.Row += 1
+        return (self.Row - 1)
 
     #Add resistance Component
     def addResistance(self):
-    	resValueEntry = Tk.Entry(self)
-    	
+        resValueEntry = Tk.Entry(self)
+        
         resNode1Entry = Tk.Entry(self)
-    	
+        
         resNode2Entry = Tk.Entry(self)
 
-        rowStart = 3
-        resValueLabel=Tk.Label(self,text = "Nilai resistor:").grid(row=rowStart, column = 1)
-        resValueEntry.grid(row=rowStart, column = 2)
-        resNode1Label=Tk.Label(self,text = "Nilai Node 1:").grid(row=rowStart+1, column = 1)
+        rowStart = self.getRow()
+        resValueLabel=Tk.Label(self,text = "Nilai resistor:")        
+        resNode1Label=Tk.Label(self,text = "Nilai Node 1:")
+        resNode2Label=Tk.Label(self,text = "Nilai Node 2:")
+
+        resValueLabel.grid(row=rowStart, column = 1)
+        resNode1Label.grid(row=rowStart+1, column = 1)        
+        resNode2Label.grid(row=rowStart+2, column = 1)
+
         resNode1Entry.grid(row=rowStart+1, column = 2)        
-        resNode2Label=Tk.Label(self,text = "Nilai Node 2:").grid(row=rowStart+2, column = 1)
-    	resNode2Entry.grid(row=rowStart+2, column = 2)    
+        resValueEntry.grid(row=rowStart, column = 2)
+        resNode2Entry.grid(row=rowStart+2, column = 2)    
 
-    	submit = Tk.Button(self, text = "Submit")
-    	cancel = Tk.Button(self, text = "Cancel")
-    	submit['command'] =lambda binst =submit, binst2 = cancel:self.putResistance(1,resValueEntry,
-    			resNode1Entry,resNode2Entry, binst, binst2)
-    	cancel['command'] = lambda binst = cancel,  binst2 = submit:self.putResistance(0,resValueEntry,
-    			resNode1Entry,resNode2Entry, binst, binst2)
-    	cancel.pack(side = Tk.RIGHT, padx = 10, pady = 10)
-    	submit.pack(side = Tk.RIGHT)
+        submit = Tk.Button(self, text = "Submit")
+        cancel = Tk.Button(self, text = "Cancel")
+        submit['command'] =lambda binst =submit, binst2 = cancel:self.putResistance(1,resValueEntry,
+                resNode1Entry,resNode2Entry, resValueLabel, resNode1Label, resNode2Label, binst, binst2)
+        cancel['command'] = lambda binst = cancel,  binst2 = submit:self.putResistance(0,resValueEntry,
+                resNode1Entry,resNode2Entry, resValueLabel, resNode1Label, resNode2Label, binst, binst2)
+        cancel.grid(row = rowStart+4, column = 4)
+        submit.grid(row = rowStart+4, column = 5)
 
-    def putResistance(self, state ,resValueEntry, resNode1Entry, resNode2Entry,binst, binst2):
-    	if state == 1:
-	    	self.file.write("R")
-	    	self.file.write("\n")
-	    	self.file.write(str(resValueEntry.get()))
-	    	self.file.write("\n")    	
-	    	self.file.write(str(resNode1Entry.get()))
-	    	self.file.write("\n")    	
-	    	self.file.write(str(resNode2Entry.get()))
-	    	self.file.write("\n")
+    def putResistance(self, state ,resValueEntry, resNode1Entry, resNode2Entry, resValueLabel, resNode1Label, resNode2Label,binst, binst2):
+        if state == 1:
+            self.file.write("R")
+            self.file.write("\n")
+            self.file.write(str(resValueEntry.get()))
+            self.file.write("\n")       
+            self.file.write(str(resNode1Entry.get()))
+            self.file.write("\n")       
+            self.file.write(str(resNode2Entry.get()))
+            self.file.write("\n")
 
-    	resValueEntry.destroy()
-    	resNode1Entry.destroy()    	
-    	resNode2Entry.destroy()    	
-    	binst.destroy()   
-    	binst2.destroy() 	
-    	
+        resValueEntry.destroy()
+        resNode1Entry.destroy()     
+        resNode2Entry.destroy()  
+        resValueLabel.destroy()
+        resNode1Label.destroy()     
+        resNode2Label.destroy()          
+
+        binst.destroy()   
+        binst2.destroy()    
+        
 
     #Add Capacitor Component
     def addCapacitance(self):
-    	capValueEntry = Tk.Entry(self)
-    	capValueEntry.pack()
+        capValueEntry = Tk.Entry(self)
+        
         capNode1Entry = Tk.Entry(self)
-    	capNode1Entry.pack()    	
+        
         capNode2Entry = Tk.Entry(self)
-    	capNode2Entry.pack()    
 
-    	submit = Tk.Button(self, text = "Submit")
-    	submit.pack()
-    	submit['command']=	lambda binst = submit :self.putCapacitance(capValueEntry,
-    			capNode1Entry,capNode2Entry,binst)
+        rowStart = self.getRow()
+        capValueLabel=Tk.Label(self,text = "Nilai capacitor:")        
+        capNode1Label=Tk.Label(self,text = "Nilai Node 1:")
+        capNode2Label=Tk.Label(self,text = "Nilai Node 2:")
 
-    def putCapacitance(self, capValueEntry, capNode1Entry, capNode2Entry,binst):
-    	self.file.write("C")
-    	self.file.write("\n")
-    	self.file.write(str(capValueEntry.get()))
-    	self.file.write("\n")
-    	capValueEntry.destroy()
-    	self.file.write(str(capNode1Entry.get()))
-    	self.file.write("\n")
-    	capNode1Entry.destroy()    	
-    	self.file.write(str(capNode2Entry.get()))
-    	self.file.write("\n")
-    	capNode2Entry.destroy()    	
-    	binst.destroy()
+        capValueLabel.grid(row=rowStart, column = 1)
+        capNode1Label.grid(row=rowStart+1, column = 1)        
+        capNode2Label.grid(row=rowStart+2, column = 1)
 
+        capNode1Entry.grid(row=rowStart+1, column = 2)        
+        capValueEntry.grid(row=rowStart, column = 2)
+        capNode2Entry.grid(row=rowStart+2, column = 2)    
+
+        submit = Tk.Button(self, text = "Submit")
+        cancel = Tk.Button(self, text = "Cancel")
+        submit['command'] =lambda binst =submit, binst2 = cancel:self.putCapacitance(1,capValueEntry,
+                capNode1Entry,capNode2Entry, capValueLabel, capNode1Label, capNode2Label, binst, binst2)
+        cancel['command'] = lambda binst = cancel,  binst2 = submit:self.putCapacitance(0,capValueEntry,
+                capNode1Entry,capNode2Entry, capValueLabel, capNode1Label, capNode2Label, binst, binst2)
+        cancel.grid(row = rowStart+4, column = 4)
+        submit.grid(row = rowStart+4, column = 5)
+
+    def putCapacitance(self, state ,capValueEntry, capNode1Entry, capNode2Entry, capValueLabel, capNode1Label, capNode2Label,binst, binst2):
+        if state == 1:
+            self.file.write("C")
+            self.file.write("\n")
+            self.file.write(str(capValueEntry.get()))
+            self.file.write("\n")       
+            self.file.write(str(capNode1Entry.get()))
+            self.file.write("\n")       
+            self.file.write(str(capNode2Entry.get()))
+            self.file.write("\n")
+
+        capValueEntry.destroy()
+        capNode1Entry.destroy()     
+        capNode2Entry.destroy()  
+        capValueLabel.destroy()
+        capNode1Label.destroy()     
+        capNode2Label.destroy()          
+
+        binst.destroy()   
+        binst2.destroy() 
+
+    def addInductance(self):
+        indValueEntry = Tk.Entry(self)
+        
+        indNode1Entry = Tk.Entry(self)
+        
+        indNode2Entry = Tk.Entry(self)
+
+        rowStart = self.getRow()
+        indValueLabel=Tk.Label(self,text = "Nilai induktor:")        
+        indNode1Label=Tk.Label(self,text = "Nilai Node 1:")
+        indNode2Label=Tk.Label(self,text = "Nilai Node 2:")
+
+        indValueLabel.grid(row=rowStart, column = 1)
+        indNode1Label.grid(row=rowStart+1, column = 1)        
+        indNode2Label.grid(row=rowStart+2, column = 1)
+
+        indNode1Entry.grid(row=rowStart+1, column = 2)        
+        indValueEntry.grid(row=rowStart, column = 2)
+        indNode2Entry.grid(row=rowStart+2, column = 2)    
+
+        submit = Tk.Button(self, text = "Submit")
+        cancel = Tk.Button(self, text = "Cancel")
+        submit['command'] =lambda binst =submit, binst2 = cancel:self.putInductance(1,indValueEntry,
+                indNode1Entry,indNode2Entry, indValueLabel, indNode1Label, indNode2Label, binst, binst2)
+        cancel['command'] = lambda binst = cancel,  binst2 = submit:self.putInductance(0,indValueEntry,
+                indNode1Entry,indNode2Entry, indValueLabel, indNode1Label, indNode2Label, binst, binst2)
+        cancel.grid(row = rowStart+4, column = 4)
+        submit.grid(row = rowStart+4, column = 5)
+
+    def putInductance(self, state ,indValueEntry, indNode1Entry, indNode2Entry, indValueLabel, indNode1Label, indNode2Label,binst, binst2):
+        if state == 1:
+            self.file.write("L")
+            self.file.write("\n")
+            self.file.write(str(indValueEntry.get()))
+            self.file.write("\n")       
+            self.file.write(str(indNode1Entry.get()))
+            self.file.write("\n")       
+            self.file.write(str(indNode2Entry.get()))
+            self.file.write("\n")
+
+        indValueEntry.destroy()
+        indNode1Entry.destroy()     
+        indNode2Entry.destroy()  
+        indValueLabel.destroy()
+        indNode1Label.destroy()     
+        indNode2Label.destroy()          
+
+        binst.destroy()   
+        binst2.destroy()  
+
+    def addVoltageSource(self):
+        voltValueEntry = Tk.Entry(self)
+        
+        voltNode1Entry = Tk.Entry(self)
+        
+        voltNode2Entry = Tk.Entry(self)
+
+        rowStart = self.getRow()
+        voltValueLabel=Tk.Label(self,text = "Nilai Sumber Tegangan:")        
+        voltNode1Label=Tk.Label(self,text = "Nilai Node 1:")
+        voltNode2Label=Tk.Label(self,text = "Nilai Node 2:")
+
+        voltValueLabel.grid(row=rowStart, column = 1)
+        voltNode1Label.grid(row=rowStart+1, column = 1)        
+        voltNode2Label.grid(row=rowStart+2, column = 1)
+
+        voltNode1Entry.grid(row=rowStart+1, column = 2)        
+        voltValueEntry.grid(row=rowStart, column = 2)
+        voltNode2Entry.grid(row=rowStart+2, column = 2)    
+
+        submit = Tk.Button(self, text = "Submit")
+        cancel = Tk.Button(self, text = "Cancel")
+        submit['command'] =lambda binst =submit, binst2 = cancel:self.putVoltageSource(1,voltValueEntry,
+                voltNode1Entry,voltNode2Entry, voltValueLabel, voltNode1Label, voltNode2Label, binst, binst2)
+        cancel['command'] = lambda binst = cancel,  binst2 = submit:self.putVoltageSource(0,voltValueEntry,
+                voltNode1Entry,voltNode2Entry, voltValueLabel, voltNode1Label, voltNode2Label, binst, binst2)
+        cancel.grid(row = rowStart+4, column = 4)
+        submit.grid(row = rowStart+4, column = 5)
+
+    def putVoltageSource(self, state ,voltValueEntry, voltNode1Entry, voltNode2Entry, voltValueLabel, voltNode1Label, voltNode2Label,binst, binst2):
+        if state == 1:
+            self.file.write("R")
+            self.file.write("\n")
+            self.file.write(str(voltValueEntry.get()))
+            self.file.write("\n")       
+            self.file.write(str(voltNode1Entry.get()))
+            self.file.write("\n")       
+            self.file.write(str(voltNode2Entry.get()))
+            self.file.write("\n")
+
+        voltValueEntry.destroy()
+        voltNode1Entry.destroy()     
+        voltNode2Entry.destroy()  
+        voltValueLabel.destroy()
+        voltNode1Label.destroy()     
+        voltNode2Label.destroy()          
+
+        binst.destroy()   
+        binst2.destroy()   
+
+    def addCurrentSource(self):
+        currValueEntry = Tk.Entry(self)
+        
+        currNode1Entry = Tk.Entry(self)
+        
+        currNode2Entry = Tk.Entry(self)
+
+        rowStart = self.getRow()
+        currValueLabel=Tk.Label(self,text = "Nilai Sumber Arus:")        
+        currNode1Label=Tk.Label(self,text = "Nilai Node 1:")
+        currNode2Label=Tk.Label(self,text = "Nilai Node 2:")
+
+        currValueLabel.grid(row=rowStart, column = 1)
+        currNode1Label.grid(row=rowStart+1, column = 1)        
+        currNode2Label.grid(row=rowStart+2, column = 1)
+
+        currNode1Entry.grid(row=rowStart+1, column = 2)        
+        currValueEntry.grid(row=rowStart, column = 2)
+        currNode2Entry.grid(row=rowStart+2, column = 2)    
+
+        submit = Tk.Button(self, text = "Submit")
+        cancel = Tk.Button(self, text = "Cancel")
+        submit['command'] =lambda binst =submit, binst2 = cancel:self.putCurrentSource(1,currValueEntry,
+                currNode1Entry,currNode2Entry, currValueLabel, currNode1Label, currNode2Label, binst, binst2)
+        cancel['command'] = lambda binst = cancel,  binst2 = submit:self.putCurrentSource(0,currValueEntry,
+                currNode1Entry,currNode2Entry, currValueLabel, currNode1Label, currNode2Label, binst, binst2)
+        cancel.grid(row = rowStart+4, column = 4)
+        submit.grid(row = rowStart+4, column = 5)
+
+    def putCurrentSource(self, state ,currValueEntry, currNode1Entry, currNode2Entry, currValueLabel, currNode1Label, currNode2Label,binst, binst2):
+        if state == 1:
+            self.file.write("R")
+            self.file.write("\n")
+            self.file.write(str(currValueEntry.get()))
+            self.file.write("\n")       
+            self.file.write(str(currNode1Entry.get()))
+            self.file.write("\n")       
+            self.file.write(str(currNode2Entry.get()))
+            self.file.write("\n")
+
+        currValueEntry.destroy()
+        currNode1Entry.destroy()     
+        currNode2Entry.destroy()  
+        currValueLabel.destroy()
+        currNode1Label.destroy()     
+        currNode2Label.destroy()          
+
+        binst.destroy()   
+        binst2.destroy()      
 
 
     
@@ -183,7 +378,7 @@ class MyApp(object):
 
     # insert component
     def insertComponentInMenu(self)   :
-    	self.hide()
+        self.hide()
         subFrame = addComponentClass(self)
 
 
