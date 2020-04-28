@@ -79,15 +79,15 @@ void addHeaderToFile(
   for (int i = 0; i < component_array_length; i++) {
     if ( component_array[i].type == 'v') {
       cCounter++;
-      fprintf(*fptr, "I(C%d) (Amp),",cCounter);
+      fprintf(*fptr, "I(C%d) (Amp)",cCounter);
       i++;
     }
     else if ( component_array[i].type == 'i') {
       LCounter++;
-      fprintf(*fptr, "I(L%d) (Amp),",LCounter);
+      fprintf(*fptr, "I(L%d) (Amp)",LCounter);
       i++;
     }
-    else{
+    else {
     if (component_array[i].type == 'R'){
         rCounter++;
         temp = rCounter;
@@ -100,8 +100,9 @@ void addHeaderToFile(
         curSourceCounter++;
         temp = curSourceCounter;
       }
-      fprintf(*fptr, "I(%c%d) (Amp),", component_array[i].type,temp);
+      fprintf(*fptr, "I(%c%d) (Amp)", component_array[i].type,temp);
     }
+    if (i < component_array_length - 1) fprintf(*fptr, ",");
   }
   fprintf(*fptr, "\n");
 }
@@ -158,18 +159,19 @@ void addComponentCurrentsToFile(
   for (int i = 0; i < component_array_length; i++) {
     // kasus induktor
     if ( component_array[i].type == 'i' ) {
-      fprintf(*fptr, "%f,",
+      fprintf(*fptr, "%f",
         // sumber arus ditambah arus resistor
         solved_array[offset + i] + solved_array[offset + i + 1]);
       i++; // skip resistor
       continue;
     }
-    fprintf(*fptr, "%f,", solved_array[offset + i]);
+    fprintf(*fptr, "%f", solved_array[offset + i]);
 
     // kasus kapasitor, arus sumber tegangan dan resistor sama (seri)
     if ( component_array[i].type == 'v' ) {
       i++; // skip resistor
     }
+    if (i < component_array_length - 1) fprintf(*fptr, ",");
   }
 }
 
