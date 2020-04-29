@@ -423,14 +423,14 @@ class addComponentClass(Tk.Toplevel):
 
         submit = Tk.Button(otherFrame, text = "Submit")
         cancel = Tk.Button(otherFrame, text = "Cancel")
-        submit['command'] =lambda binst =submit, binst2 = cancel:self.putCurrentSource(1,currValueEntry,
+        submit['command'] =lambda binst =submit, binst2 = cancel:self.putCurrentACSource(1,currValueEntry,
                 currNode1Entry,currNode2Entry,currFreqEntry,currShiftEntry,variable, binst, binst2, otherFrame)
-        cancel['command'] = lambda binst = cancel,  binst2 = submit:self.putCurrentSource(0,currValueEntry,
+        cancel['command'] = lambda binst = cancel,  binst2 = submit:self.putCurrentACSource(0,currValueEntry,
                 currNode1Entry,currNode2Entry,currFreqEntry,currShiftEntry,variable, binst, binst2, otherFrame)
         cancel.grid(row = rowStart+6, column = 4)
         submit.grid(row = rowStart+6, column = 5)
 
-    def putCurrentSource(self, state ,currValueEntry, currNode1Entry, currNode2Entry,currFreqEntry,currShiftEntry,variable,binst, binst2, otherFrame):
+    def putCurrentACSource(self, state ,currValueEntry, currNode1Entry, currNode2Entry,currFreqEntry,currShiftEntry,variable,binst, binst2, otherFrame):
         if state == 1:
             self.file.write("J")
             self.file.write("\n")
@@ -441,9 +441,9 @@ class addComponentClass(Tk.Toplevel):
             self.file.write(str(currNode2Entry.get()))#2
             self.file.write("\n")
             if variable.get() == "Sinus":
-                self.file.write("1")
+                self.file.write("0")
             else :
-                self.file.write("2")
+                self.file.write("1")
             self.file.write("\n")
             self.file.write(str(currFreqEntry.get()))
             self.file.write("\n")            
@@ -491,14 +491,14 @@ class addComponentClass(Tk.Toplevel):
 
         submit = Tk.Button(otherFrame, text = "Submit")
         cancel = Tk.Button(otherFrame, text = "Cancel")
-        submit['command'] =lambda binst =submit, binst2 = cancel:self.putVoltageSource(1,voltValueEntry,
+        submit['command'] =lambda binst =submit, binst2 = cancel:self.puACtVoltageSource(1,voltValueEntry,
                 voltNode1Entry,voltNode2Entry,voltFreqEntry,voltShiftEntry,variable, binst, binst2, otherFrame)
-        cancel['command'] = lambda binst = cancel,  binst2 = submit:self.putVoltageSource(0,voltValueEntry,
+        cancel['command'] = lambda binst = cancel,  binst2 = submit:self.putACVoltageSource(0,voltValueEntry,
                 voltNode1Entry,voltNode2Entry,voltFreqEntry,voltShiftEntry,variable, binst, binst2, otherFrame)
         cancel.grid(row = rowStart+6, column = 4)
         submit.grid(row = rowStart+6, column = 5)
 
-    def putVoltageSource(self, state ,voltValueEntry, voltNode1Entry, voltNode2Entry,voltFreqEntry,voltShiftEntry,variable,binst, binst2, otherFrame):
+    def putACVoltageSource(self, state ,voltValueEntry, voltNode1Entry, voltNode2Entry,voltFreqEntry,voltShiftEntry,variable,binst, binst2, otherFrame):
         if state == 1:
             self.file.write("W")
             self.file.write("\n")
@@ -509,9 +509,9 @@ class addComponentClass(Tk.Toplevel):
             self.file.write(str(voltNode2Entry.get()))#2
             self.file.write("\n")
             if variable.get() == "Sinus":
-                self.file.write("1")
+                self.file.write("0")
             else :
-                self.file.write("2")
+                self.file.write("1")
             self.file.write("\n")
             self.file.write(str(voltFreqEntry.get()))
             self.file.write("\n")            
