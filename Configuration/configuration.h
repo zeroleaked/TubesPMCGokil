@@ -15,8 +15,7 @@ void addComponent(
   char type,
   double constant,
   int node1,
-  int node2,
-  double delta_t
+  int node2
 );
 void initializeComponentArray(component **component_array);
 void printComponents(component *component_array, int component_array_length,double delta_t);

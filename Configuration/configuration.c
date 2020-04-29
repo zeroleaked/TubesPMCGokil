@@ -57,7 +57,6 @@ void printNodeArray(int *node_array, int node_array_length) {
 
 // acuan nama untuk node tambahan (yang tidak diinput, tapi diperlukan untuk
 // analisis)
-int _negative_node = 0;
 
 // tambah komponen ke component_array
 void addComponent(
@@ -66,27 +65,8 @@ void addComponent(
   char type,
   double value,
   int node1,
-  int node2,
-  double delta_t
+  int node2
 ) {
-
-  if (type == 'C') {
-    // membuat model resistif dari kapasitor. Bukan menambahkan kapasitor pada
-    // component_array, melainkan sumber tegangan dan resistor. Untuk ke depannya,
-    // v bisa diberikan angka selain 0 (kapasitor memiliki tegangan awal)
-    _negative_node --;
-    addComponent(component_array, length, 'v', 0, node1, _negative_node, 0);
-    addComponent(component_array, length, 'R', delta_t/value, _negative_node, node2, 0);
-    return;
-  } else if (type == 'L') {
-    // membuat model resistif dari induktor. Bukan menambahkan induktor pada
-    // component_array, melainkan sumber arus dan resistor. Untuk ke depannya,
-    // i bisa diberikan angka selain 0 (induktor memiliki arus awal)
-    addComponent(component_array, length, 'i', 0, node1, node2, 0);
-    addComponent(component_array, length, 'R', value/delta_t, node1, node2, 0);
-    return;
-  }
-
   *length += 1;
   *component_array = realloc(*component_array, *length * sizeof(component));
 
