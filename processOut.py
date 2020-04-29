@@ -87,6 +87,5 @@ class MyApp(object):
 if __name__ == "__main__":
     root = Tk.Tk()
     root.geometry("800x600")
-    root.configure(bg='white')
     app = MyApp(root, "outfile.csv")
     root.mainloop()
