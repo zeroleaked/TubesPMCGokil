@@ -49,10 +49,10 @@ void createComponentArrayFromFile(
       double shift;
       double initial_value = sin((0+shift) * M_PI / 180);
       fscanf(fptr, "%d %lf %lf", &wave_type, &frequency, &shift);
-      double shift_rad = shift * M_PI / 180;
-      addComponent(component_array, component_array_length, type, sin(shift_rad),
+      double time_shift = shift * frequency * 2 * M_PI;
+      addComponent(component_array, component_array_length, type, sin(time_shift),
         node1, node2);
-      addWave(wave_array, &wave_array_length, wave_type, value, frequency, shift_rad);
+      addWave(wave_array, &wave_array_length, wave_type, value, frequency, time_shift);
     }
     else {
       addComponent(component_array, component_array_length, type, value, node1, node2);
