@@ -32,8 +32,6 @@ class addFrame(Tk.Toplevel):
 class addComponentClass(Tk.Toplevel):
     def __init__(self, original, inputFile):
         self.original_frame = original
-        self.data = original.data
-        self.Dict = original.Dict
         self.Row = 0
         Tk.Toplevel.__init__(self)
         self.geometry("800x600")
