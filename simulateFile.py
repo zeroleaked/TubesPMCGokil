@@ -114,6 +114,7 @@ class simulateCircuit(Tk.Toplevel):
         self.file.write("\n")
         self.file.write(str(timendEntry.get()))
         self.file.write("\n")
+        self.file.close()
 
         os.chdir(self.cwd)
 
