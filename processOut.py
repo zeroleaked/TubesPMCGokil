@@ -36,24 +36,26 @@ class MyApp(object):
     def __init__(self, parent, fileName):
         self.fileOutputName = fileName;
         self.inputFile = "infile.txt"
-        self.simulateexecute = "program.exe"
+        # self.simulateexecute = "program.exe"
+        self.simulateexecute = "./program.o"
         self.root = parent
         self.root.title("Main Menu")
         self.frame = Tk.Frame(parent)
-        self.frame.pack()
+        self.frame.grid(padx=10, pady=10)
 
-        
 
+        title = Tk.Label(self.frame, text="Main Menu")
+        title.grid(row=0, padx=5, pady=5, sticky="NESW")
 
         btnShowPlot = Tk.Button(self.frame, text="Show Plot", command=self.showPlotInMenu)
-        btnShowPlot.pack()
+        btnShowPlot.grid(row=1, padx=5, pady=5, sticky="NESW")
         btnAddComponent = Tk.Button(self.frame, text="Add Component", command=self.insertComponentInMenu)
-        btnAddComponent.pack()
+        btnAddComponent.grid(row=2, padx=5, pady=5, sticky="NESW")
         btnSimulate = Tk.Button(self.frame, text="Simulate", command=self.simulate)
-        btnSimulate.pack()
+        btnSimulate.grid(row=3, padx=5, pady=5, sticky="NESW")
 
         btnExit = Tk.Button(self.frame, text = "Exit", command = self.root.destroy)
-        btnExit.pack()
+        btnExit.grid(row=4, padx=5, pady=5)
 
     def hide(self):
         self.root.withdraw()
@@ -86,6 +88,6 @@ class MyApp(object):
 #----------------------------------------------------------------------
 if __name__ == "__main__":
     root = Tk.Tk()
-    root.geometry("800x600")
+    # root.geometry("800x600")
     app = MyApp(root, "outfile.csv")
     root.mainloop()
