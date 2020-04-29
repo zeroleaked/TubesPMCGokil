@@ -34,6 +34,7 @@ class addFrame(Tk.Toplevel):
 class MyApp(object):
 
     def __init__(self, parent, fileName):
+        self.fileOutputName = fileName;
         self.inputFile = "infile.txt"
         self.simulateexecute = "program.exe"
         self.root = parent
@@ -41,8 +42,7 @@ class MyApp(object):
         self.frame = Tk.Frame(parent)
         self.frame.pack()
 
-        self.data = pd.read_csv(fileName)
-        self.Dict = {}
+        
 
 
         btnShowPlot = Tk.Button(self.frame, text="Show Plot", command=self.showPlotInMenu)

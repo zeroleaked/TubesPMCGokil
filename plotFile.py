@@ -33,8 +33,8 @@ class showPlotClass(Tk.Toplevel):
     def __init__(self, original):
         """Constructor"""
         self.original_frame = original
-        self.data = original.data
-        self.Dict = original.Dict
+        self.data = pd.read_csv(original.fileOutputName)
+        self.Dict ={}
         Tk.Toplevel.__init__(self)
         self.geometry("800x600")
         self.title("Show Plot")
