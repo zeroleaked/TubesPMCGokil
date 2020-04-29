@@ -42,11 +42,11 @@ class showComponentClass(Tk.Toplevel):
         Tk.Toplevel.__init__(self)
         self.Row = 0
         canvas = Tk.Canvas(self)
-        scroll_y = Tk.Scrollbar(self, orient = "vertical")
+        scroll_y = Tk.Scrollbar(self, orient = "vertical", command = canvas.yview)
 
         frame = Tk.Frame(canvas)
         
-        self.geometry("800x600")
+        self.geometry("800x200")
         self.title("addComponentClass")        
         self.file = open(original.inputFile, "r")
 
