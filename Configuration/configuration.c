@@ -1,14 +1,11 @@
 #include <stdlib.h>
-
-
 #include <stdio.h>
 
 #include "configuration.h"
 
-
-
 void printComponents(component *component_array, int length, double delta_t) {
-  int vsource = 1, csource = 1, resistor = 1, capacitor = 1, inductor = 1;
+  int vsource = 1, csource = 1, resistor = 1, capacitor = 1, inductor = 1,
+    w=1,j=1;
   printf("\nName\tValue\t\tNode1\tNode2\n");
   for (int i = 0; i < length; i++) {
     if (component_array[i].type == 'V') {
@@ -32,6 +29,14 @@ void printComponents(component *component_array, int length, double delta_t) {
       printf("L%d\t%.3e H\t%d\t%d\n", inductor++, delta_t*component_array[i+1].value,
         component_array[i].node1, component_array[i].node2);
       i++;
+    }
+    else if (component_array[i].type == 'W') {
+      printf("W%d\tAC Voltage\t%d\t%d\n", w++,
+        component_array[i].node1, component_array[i].node2);
+    }
+    else if (component_array[i].type == 'J') {
+      printf("J%d\tAC Current\t%d\t%d\n", j++,
+        component_array[i].node1, component_array[i].node2);
     }
   }
   printf("\n");
@@ -74,6 +79,23 @@ void addComponent(
   (*component_array)[*length-1].value = value;
   (*component_array)[*length-1].node1 = node1;
   (*component_array)[*length-1].node2 = node2;
+}
+
+void addWave(
+  wave **wave_array,
+  int *length,
+  int type,
+  double amplitude,
+  double frequency,
+  double shift
+) {
+  *length += 1;
+  *wave_array = realloc(*wave_array, *length * sizeof(wave));
+
+  (*wave_array)[*length-1].type = type;
+  (*wave_array)[*length-1].amplitude = amplitude;
+  (*wave_array)[*length-1].frequency = frequency;
+  (*wave_array)[*length-1].shift = shift;
 }
 
 void initializeComponentArray(component **component_array) {

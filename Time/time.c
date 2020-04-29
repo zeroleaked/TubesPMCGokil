@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 
 #include "../Configuration/configuration.h"
 #include "../Tableau/tableau.h"
@@ -9,9 +10,12 @@
 void updateDynamicComponents(
   component *component_array,
   int component_array_length,
+  wave *wave_array,
+  double t,
   double *solved_array,
   int tableau_length
 ) {
+  int wave_counter = 0;
   for (int i = 0; i < component_array_length; i++) {
     // capacitor
     if ( component_array[i].type == 'v' ) {
@@ -24,6 +28,20 @@ void updateDynamicComponents(
       component_array[i].value +=
         // tambah arus pada r dari model induktor
         solved_array[tableau_length - component_array_length + i + 1];
+    } else
+    if ( component_array[i].type == 'W' || component_array[i].type == 'J') {
+      component_array[i].value =
+        wave_array[wave_counter].amplitude * sin(
+          2 * M_PI * wave_array[wave_counter].frequency * t
+          + wave_array[wave_counter].shift
+        );
+      if (wave_array[wave_counter].type == 1) {
+        if (component_array[i].value > 0)
+          component_array[i].value = wave_array[wave_counter].amplitude;
+        else
+          component_array[i].value = -wave_array[wave_counter].amplitude;
+      }
+      wave_counter ++;
     }
   }
   #ifdef DEBUG
@@ -39,6 +57,7 @@ void timeSeries(
   double delta_t,
   component *component_array,
   int component_array_length,
+  wave *wave_array,
   int *node_array,
   int node_array_length,
   int ground,
@@ -114,6 +133,8 @@ void timeSeries(
     updateDynamicComponents(
       component_array,
       component_array_length,
+      wave_array,
+      t,
       solved_array,
       tableau_length
     );

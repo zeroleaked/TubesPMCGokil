@@ -9,6 +9,11 @@ typedef struct{
   int node1, node2;
 } component;
 
+typedef struct{
+  int type;
+  double amplitude, frequency, shift;
+} wave;
+
 void addComponent(
   component **component_array,
   int *length,
@@ -17,6 +22,16 @@ void addComponent(
   int node1,
   int node2
 );
+
+void addWave(
+  wave **wave_array,
+  int *length,
+  int wave_type,
+  double amplitude,
+  double frequency,
+  double shift
+);
+
 void initializeComponentArray(component **component_array);
 void printComponents(component *component_array, int component_array_length,double delta_t);
 void destroyComponentArray(component **component_array);

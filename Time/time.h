@@ -7,6 +7,7 @@ void timeSeries(
   double delta_t,
   component *component_array,
   int component_array_length,
+  wave *wave_array,
   int *node_array,
   int node_array_length,
   int ground,
@@ -16,6 +17,8 @@ void timeSeries(
 void updateDynamicComponents(
   component *component_array,
   int component_array_length,
+  wave *wave_array,
+  double t,
   double *solved_array,
   int tableau_length
 );

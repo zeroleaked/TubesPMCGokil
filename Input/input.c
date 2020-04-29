@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 #include "../Configuration/configuration.h"
 #include "input.h"
 
@@ -6,9 +7,12 @@ void createComponentArrayFromFile(
   char *filepath,
   double delta_t,
   component **component_array,
-  int *component_array_length
+  int *component_array_length,
+  wave **wave_array
 ) {
   initializeComponentArray(component_array);
+  *wave_array = NULL;
+  int wave_array_length = 0;
 
   FILE *fptr;
   fptr = fopen(filepath, "r");
@@ -38,7 +42,17 @@ void createComponentArrayFromFile(
         node1, node2);
       addComponent(component_array, component_array_length, 'R', value/delta_t,
         node1, node2);
-      return;
+    }
+    else if (type == 'W' || type == 'J') {
+      int wave_type;
+      double frequency;
+      double shift;
+      double initial_value = sin((0+shift) * M_PI / 180);
+      fscanf(fptr, "%d %lf %lf", &wave_type, &frequency, &shift);
+      double shift_rad = shift * M_PI / 180;
+      addComponent(component_array, component_array_length, type, sin(shift_rad),
+        node1, node2);
+      addWave(wave_array, &wave_array_length, wave_type, value, frequency, shift_rad);
     }
     else {
       addComponent(component_array, component_array_length, type, value, node1, node2);

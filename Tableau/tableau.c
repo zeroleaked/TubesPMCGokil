@@ -97,13 +97,21 @@ void addBranch (
         // masukkan ke matriks N
         (*coefficient_matrix)[offset2+i][offset2+i] = -component_array[i].value;
       }
-      else if ( component_array[i].type == 'V' || component_array[i].type == 'v' ) {
+      else if (
+        component_array[i].type == 'V' ||
+        component_array[i].type == 'v' ||
+        component_array[i].type == 'W'
+      ) {
         // masukkan ke matriks M
         (*coefficient_matrix)[offset2+i][offset1+i] = 1;
         // masukkan ke u
         (*constant)[offset2+i] = component_array[i].value;
       }
-      else if ( component_array[i].type == 'I' || component_array[i].type == 'i') {
+      else if (
+        component_array[i].type == 'I' ||
+        component_array[i].type == 'i' ||
+        component_array[i].type == 'J'
+      ) {
         // masukkan ke N
         (*coefficient_matrix)[offset2+i][offset2+i] = 1;
         // masukkan ke u
@@ -159,7 +167,12 @@ void updateConstantArray (
 ) {
   int offset = tableau_length - component_array_length;
   for (int i = 0; i < component_array_length; i++) {
-    if ( component_array[i].type == 'v' || component_array[i].type == 'i' ) {
+    if (
+      component_array[i].type == 'v' ||
+      component_array[i].type == 'i' ||
+      component_array[i].type == 'W' ||
+      component_array[i].type == 'J'
+    ) {
       (*constant_array)[offset+i] = component_array[i].value;
     }
   }

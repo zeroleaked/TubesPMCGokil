@@ -41,6 +41,8 @@ void addHeaderToFile(
   unsigned int rCounter = 0;
   unsigned int volSourceCounter = 0;
   unsigned int curSourceCounter = 0;
+  unsigned int W_counter = 0;
+  unsigned int J_counter = 0;
   unsigned int temp;
   // print header tegangan komponen
   for (int i = 0; i < component_array_length; i++) {
@@ -67,6 +69,14 @@ void addHeaderToFile(
         curSourceCounter++;
         temp = curSourceCounter;
       }
+      else if (component_array[i].type == 'W') {
+        W_counter++;
+        temp = W_counter;
+      }
+      else if (component_array[i].type == 'J') {
+        J_counter++;
+        temp = J_counter;
+      }
       fprintf(*fptr, "V(%c%d) (Volt),", component_array[i].type,temp);
     }
   }
@@ -76,6 +86,8 @@ void addHeaderToFile(
   rCounter = 0;
   volSourceCounter = 0;
   curSourceCounter = 0;
+  W_counter = 0;
+  J_counter = 0;
   for (int i = 0; i < component_array_length; i++) {
     if ( component_array[i].type == 'v') {
       cCounter++;
@@ -99,6 +111,14 @@ void addHeaderToFile(
       else if (component_array[i].type == 'I'){
         curSourceCounter++;
         temp = curSourceCounter;
+      }
+      else if (component_array[i].type == 'W') {
+        W_counter++;
+        temp = W_counter;
+      }
+      else if (component_array[i].type == 'J') {
+        J_counter++;
+        temp = J_counter;
       }
       fprintf(*fptr, "I(%c%d) (Amp)", component_array[i].type,temp);
     }
