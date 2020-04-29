@@ -16,15 +16,15 @@ try :
     import Tkinter as Tk
     from Tkinter import ttk
 except ImportError :
-    import tkinter as Tk
-    from tkinter import ttk
+    import Tkinter as Tk
+    import ttk
 
 class addFrame(Tk.Toplevel):
     def __init__(self, original, frameName):
         self.original_frame = original
         Tk.Toplevel.__init__(self)
         self.geometry("400x300")
-        self.title(frameName) 
+        self.title(frameName)
         self.Row = 0
 
     def onClose(self):
@@ -33,9 +33,9 @@ class addFrame(Tk.Toplevel):
 
     def getRow(self):
         self.Row += 1
-        return (self.Row - 1) 
+        return (self.Row - 1)
 
-    
+
 class showComponentClass(Tk.Toplevel):
     def __init__(self, original):
         self.original_frame = original
@@ -45,9 +45,9 @@ class showComponentClass(Tk.Toplevel):
         scroll_y = Tk.Scrollbar(self, orient = "vertical", command = canvas.yview)
 
         frame = Tk.Frame(canvas)
-        
+
         self.geometry("800x200")
-        self.title("addComponentClass")        
+        self.title("addComponentClass")
         self.file = open(original.inputFile, "r")
 
         self.r_list = []
@@ -90,7 +90,7 @@ class showComponentClass(Tk.Toplevel):
             row_now = self.getRow()
             for j in range (4):
                 Tk.Label(frame, text = str(self.c_list[i][j])).grid(row = row_now, column = j)
-        
+
         Tk.Label(frame, text = "Daftar Sumber Tegangan",bg = "#00ffff").grid(row = self.getRow())
         row_now = self.getRow()
         Tk.Label(frame, text = "Nilai (Volt)").grid(row = row_now, column = 0)
@@ -154,9 +154,9 @@ class showComponentClass(Tk.Toplevel):
 
 
         btn = Tk.Button(frame, text="Close", command=self.onClose)
-        btn.grid(row = self.getRow())          
+        btn.grid(row = self.getRow())
 
-        canvas.create_window(0,0,anchor='nw',window = frame)       
+        canvas.create_window(0,0,anchor='nw',window = frame)
         canvas.update_idletasks()
 
         canvas.configure(scrollregion=canvas.bbox('all'),
@@ -170,7 +170,7 @@ class showComponentClass(Tk.Toplevel):
     def show(self):
         """"""
         self.update()
-        self.deiconify()    
+        self.deiconify()
 
     def onClose(self):
         self.file.close()
@@ -188,13 +188,13 @@ class showComponentClass(Tk.Toplevel):
             # print("momo = "+s)
             temp_list.append(s)
         return temp_list
-        
-    
+
+
     def readInputFile(self):
         list = self.file.read().splitlines()
         for k in range (len (list)):
             ch = list[k]
-            
+
             if ch == "R":
                 self.r_list.append(self.readN(list,k,3))
             elif ch == 'L':
@@ -211,9 +211,3 @@ class showComponentClass(Tk.Toplevel):
                 self.w_list.append(self.readN(list,k,6))
             elif ch == '':
                 break
-        
-        
-
-
-    
-
