@@ -5,6 +5,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from simulateFile import simulateCircuit
 from componentFile import addComponentClass
 from plotFile import showPlotClass
+from showComponentFile import showComponentClass
 try :
     import subprocess
 except:
@@ -54,8 +55,11 @@ class MyApp(object):
         btnSimulate = Tk.Button(self.frame, text="Simulate", command=self.simulate)
         btnSimulate.grid(row=3, padx=5, pady=5, sticky="NESW")
 
+        btnShowComponent = Tk.Button(self.frame, text="Show Component", command=self.showComponent)
+        btnShowComponent.grid(row=4, padx=5, pady=5, sticky="NESW")
+
         btnExit = Tk.Button(self.frame, text = "Exit", command = self.root.destroy)
-        btnExit.grid(row=4, padx=5, pady=5)
+        btnExit.grid(row=5, padx=5, pady=5)
 
     def hide(self):
         self.root.withdraw()
@@ -81,6 +85,10 @@ class MyApp(object):
     def simulate(self):
         self.hide()
         subFrame = simulateCircuit(self)
+
+    def showComponent(self):
+        self.hide()
+        subFrame = showComponentClass(self)
 
 
 
