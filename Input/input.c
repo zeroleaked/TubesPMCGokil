@@ -1,7 +1,42 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 #include "../Configuration/configuration.h"
 #include "input.h"
+
+void addTimeFromFile(
+    char *filepath,
+    double *time_start,
+    double *time_end)
+{
+    FILE *fptr;
+    fptr = fopen(filepath, "r");
+
+    if(fptr == NULL)
+    {
+        printf("Error opening file\n");
+        exit(1);
+    }
+
+    while(fscanf(fptr, "%lf %lf", time_start, time_end)!=2);
+}
+
+void addGroundFromFile(
+    char *filepath,
+    int *ground
+  ) {
+      FILE *fptr;
+      fptr = fopen(filepath, "r");
+
+      if(fptr == NULL)
+      {
+          printf("Error opening file\n");
+          exit(1);
+      }
+
+      while(fscanf(fptr, "%d", ground)!=1);
+  }
+
 
 void createComponentArrayFromFile(
   char *filepath,

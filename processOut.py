@@ -7,10 +7,8 @@ try :
 except:
     print("install subprocess")
     exit(0)
-try :
-    import Tkinter as Tk
-except ImportError :
-    import tkinter as Tk
+import Tkinter as Tk
+
 
 import os
 
@@ -26,12 +24,12 @@ class showPlotClass(Tk.Toplevel):
         Tk.Toplevel.__init__(self)
         self.geometry("800x600")
         self.title("Show Plot")
-        
+
 
         self.showPlotMenu()
-       
+
         btn = Tk.Button(self, text="Close", command=self.onClose)
-        btn.pack()          
+        btn.pack()
 
     def onClose(self):
         self.destroy()
@@ -39,14 +37,14 @@ class showPlotClass(Tk.Toplevel):
 
         #plotting menu
     def showPlotMenu(self):
- 
+
         total = 0
         for col in (self.data).columns:
             self.Dict[total] = col
             if (total != 0):
                 Tk.Button(self,text = col,command=(lambda total = total:(self.showPlot(total)))).pack()
-            total += 1      
-    
+            total += 1
+
     def showPlot(self, choice_show):
         plt.close()
         # figure = plt.Figure()
@@ -62,7 +60,7 @@ class addFrame(Tk.Toplevel):
         self.original_frame = original
         Tk.Toplevel.__init__(self)
         self.geometry("400x300")
-        self.title(frameName) 
+        self.title(frameName)
         self.Row = 0
 
     def onClose(self):
@@ -71,7 +69,7 @@ class addFrame(Tk.Toplevel):
 
     def getRow(self):
         self.Row += 1
-        return (self.Row - 1)    
+        return (self.Row - 1)
 
 
 class addComponentClass(Tk.Toplevel):
@@ -82,43 +80,43 @@ class addComponentClass(Tk.Toplevel):
         self.Row = 0
         Tk.Toplevel.__init__(self)
         self.geometry("800x600")
-        self.title("addComponentClass")        
+        self.title("addComponentClass")
         self.file = open(original.inputFile, "w+")
 
         btnres =Tk.Button(self, text="Add Resistance", command=self.addResistance)
-        btnres.grid(row = self.getRow()) 
+        btnres.grid(row = self.getRow())
 
         btncap =Tk.Button(self, text="Add Capacitance", command=self.addCapacitance)
         btncap.grid(row = self.getRow())
 
         btnind =Tk.Button(self, text="Add Inductance", command=self.addInductance)
-        btnind.grid(row = self.getRow())                           
+        btnind.grid(row = self.getRow())
 
         btnvolt =Tk.Button(self, text="Add Constant Voltage Source", command=self.addVoltageSource)
-        btnvolt.grid(row = self.getRow())                                   
+        btnvolt.grid(row = self.getRow())
 
         btncurr =Tk.Button(self, text="Add Constant Current Source", command=self.addCurrentSource)
-        btncurr.grid(row = self.getRow())         
+        btncurr.grid(row = self.getRow())
 
         # btnvoltAc =Tk.Button(self, text="Add AC Voltage Source", command=self.addACVoltageSource)
-        # btnvoltAc.grid(row = self.getRow())        
+        # btnvoltAc.grid(row = self.getRow())
 
         btncurrAc =Tk.Button(self, text="Add AC Current Source", command=self.addACCurrentSource)
-        btncurrAc.grid(row = self.getRow())                 
+        btncurrAc.grid(row = self.getRow())
 
         btnvoltAc =Tk.Button(self, text="Add AC Voltage Source", command=self.addACVoltageSource)
-        btnvoltAc.grid(row = self.getRow())           
-                                 
-       
+        btnvoltAc.grid(row = self.getRow())
+
+
         btn = Tk.Button(self, text="Save", command=self.onClose)
-        btn.grid(row = self.getRow())          
+        btn.grid(row = self.getRow())
 
     def hide(self):
         self.withdraw()
     def show(self):
         """"""
         self.update()
-        self.deiconify()    
+        self.deiconify()
 
     def onClose(self):
         self.destroy()
@@ -133,23 +131,23 @@ class addComponentClass(Tk.Toplevel):
         self.hide()
         otherFrame = addFrame(self, "addResistance")
         resValueEntry = Tk.Entry(otherFrame)
-        
+
         resNode1Entry = Tk.Entry(otherFrame)
-        
+
         resNode2Entry = Tk.Entry(otherFrame)
 
         rowStart = otherFrame.getRow()
-        resValueLabel=Tk.Label(otherFrame,text = "Nilai resistor(Ohm):")        
+        resValueLabel=Tk.Label(otherFrame,text = "Nilai resistor(Ohm):")
         resNode1Label=Tk.Label(otherFrame,text = "Nilai Node 1:")
         resNode2Label=Tk.Label(otherFrame,text = "Nilai Node 2:")
 
         resValueLabel.grid(row=rowStart, column = 1)
-        resNode1Label.grid(row=rowStart+1, column = 1)        
+        resNode1Label.grid(row=rowStart+1, column = 1)
         resNode2Label.grid(row=rowStart+2, column = 1)
 
-        resNode1Entry.grid(row=rowStart+1, column = 2)        
+        resNode1Entry.grid(row=rowStart+1, column = 2)
         resValueEntry.grid(row=rowStart, column = 2)
-        resNode2Entry.grid(row=rowStart+2, column = 2)    
+        resNode2Entry.grid(row=rowStart+2, column = 2)
 
         submit = Tk.Button(otherFrame, text = "Submit")
         cancel = Tk.Button(otherFrame, text = "Cancel")
@@ -165,14 +163,14 @@ class addComponentClass(Tk.Toplevel):
             self.file.write("R")
             self.file.write("\n")
             self.file.write(str(resValueEntry.get()))
-            self.file.write("\n")       
+            self.file.write("\n")
             self.file.write(str(resNode1Entry.get()))
-            self.file.write("\n")       
+            self.file.write("\n")
             self.file.write(str(resNode2Entry.get()))
             self.file.write("\n")
-   
+
         otherFrame.onClose()
-        
+
 
     #Add Capacitor Component
     def addCapacitance(self):
@@ -180,28 +178,28 @@ class addComponentClass(Tk.Toplevel):
         otherFrame = addFrame(self, "addResistance")
 
         capValueEntry = Tk.Entry(otherFrame)
-        
+
         capNode1Entry = Tk.Entry(otherFrame)
-        
+
         capNode2Entry = Tk.Entry(otherFrame)
 
         capVoltEntry = Tk.Entry(otherFrame)
 
 
         rowStart = otherFrame.getRow()
-        capValueLabel=Tk.Label(otherFrame,text = "Nilai capacitor:")        
+        capValueLabel=Tk.Label(otherFrame,text = "Nilai capacitor:")
         capNode1Label=Tk.Label(otherFrame,text = "Nilai Node 1:")
         capNode2Label=Tk.Label(otherFrame,text = "Nilai Node 2:")
         capVoltLabel=Tk.Label(otherFrame,text = "Tegangan awal kapasitor:")
 
         capValueLabel.grid(row=rowStart, column = 1)
-        capNode1Label.grid(row=rowStart+1, column = 1)        
+        capNode1Label.grid(row=rowStart+1, column = 1)
         capNode2Label.grid(row=rowStart+2, column = 1)
         capVoltLabel.grid(row = rowStart+3, column = 1)
 
-        capNode1Entry.grid(row=rowStart+1, column = 2)        
+        capNode1Entry.grid(row=rowStart+1, column = 2)
         capValueEntry.grid(row=rowStart, column = 2)
-        capNode2Entry.grid(row=rowStart+2, column = 2)    
+        capNode2Entry.grid(row=rowStart+2, column = 2)
         capVoltEntry.grid(row=rowStart+3, column = 2)
 
         submit = Tk.Button(otherFrame, text = "Submit")
@@ -218,23 +216,23 @@ class addComponentClass(Tk.Toplevel):
             self.file.write("C")
             self.file.write("\n")
             self.file.write(str(capValueEntry.get()))
-            self.file.write("\n")       
+            self.file.write("\n")
             self.file.write(str(capNode1Entry.get()))
-            self.file.write("\n")       
+            self.file.write("\n")
             self.file.write(str(capNode2Entry.get()))
             self.file.write("\n")
             self.file.write(str(capVoltEntry.get()))
             self.file.write("\n")
 
         capValueEntry.destroy()
-        capNode1Entry.destroy()     
-        capNode2Entry.destroy()  
+        capNode1Entry.destroy()
+        capNode2Entry.destroy()
         capValueLabel.destroy()
-        capNode1Label.destroy()     
-        capNode2Label.destroy()          
+        capNode1Label.destroy()
+        capNode2Label.destroy()
 
-        binst.destroy()   
-        binst2.destroy() 
+        binst.destroy()
+        binst2.destroy()
         otherFrame.onClose()
 
     def addInductance(self):
@@ -247,20 +245,20 @@ class addComponentClass(Tk.Toplevel):
         indCurrEntry  = Tk.Entry(otherFrame)
 
         rowStart = otherFrame.getRow()
-        indValueLabel=Tk.Label(otherFrame,text = "Nilai induktor(H):")        
+        indValueLabel=Tk.Label(otherFrame,text = "Nilai induktor(H):")
         indNode1Label=Tk.Label(otherFrame,text = "Nilai Node 1:")
         indNode2Label=Tk.Label(otherFrame,text = "Nilai Node 2:")
         indCurrLabel=Tk.Label(otherFrame,text = "Nilai Arus Awal(A):")
 
         indValueLabel.grid(row=rowStart, column = 1)
-        indNode1Label.grid(row=rowStart+1, column = 1)        
+        indNode1Label.grid(row=rowStart+1, column = 1)
         indNode2Label.grid(row=rowStart+2, column = 1)
         indCurrLabel.grid(row=rowStart+3, column = 1)
 
-        indNode1Entry.grid(row=rowStart+1, column = 2)        
+        indNode1Entry.grid(row=rowStart+1, column = 2)
         indValueEntry.grid(row=rowStart, column = 2)
-        indNode2Entry.grid(row=rowStart+2, column = 2)    
-        indCurrEntry.grid(row=rowStart+3, column = 2)    
+        indNode2Entry.grid(row=rowStart+2, column = 2)
+        indCurrEntry.grid(row=rowStart+3, column = 2)
 
         submit = Tk.Button(otherFrame, text = "Submit")
         cancel = Tk.Button(otherFrame, text = "Cancel")
@@ -277,46 +275,46 @@ class addComponentClass(Tk.Toplevel):
             self.file.write("L")
             self.file.write("\n")
             self.file.write(str(indValueEntry.get()))
-            self.file.write("\n")       
+            self.file.write("\n")
             self.file.write(str(indNode1Entry.get()))
-            self.file.write("\n")       
+            self.file.write("\n")
             self.file.write(str(indNode2Entry.get()))
             self.file.write("\n")
             self.file.write(str(indCurrEntry.get()))
             self.file.write("\n")
 
         indValueEntry.destroy()
-        indNode1Entry.destroy()     
-        indNode2Entry.destroy()  
+        indNode1Entry.destroy()
+        indNode2Entry.destroy()
         indValueLabel.destroy()
-        indNode1Label.destroy()     
-        indNode2Label.destroy()          
+        indNode1Label.destroy()
+        indNode2Label.destroy()
 
-        binst.destroy()   
-        binst2.destroy()  
+        binst.destroy()
+        binst2.destroy()
         otherFrame.onClose()
 
     def addVoltageSource(self):
         self.hide()
         otherFrame = addFrame(self, "Add Constant Voltage Source")
         voltValueEntry = Tk.Entry(otherFrame)
-        
+
         voltNode1Entry = Tk.Entry(otherFrame)
-        
+
         voltNode2Entry = Tk.Entry(otherFrame)
 
         rowStart = otherFrame.getRow()
-        voltValueLabel=Tk.Label(otherFrame,text = "Nilai Sumber Tegangan:")        
+        voltValueLabel=Tk.Label(otherFrame,text = "Nilai Sumber Tegangan:")
         voltNode1Label=Tk.Label(otherFrame,text = "Nilai Node 1:")
         voltNode2Label=Tk.Label(otherFrame,text = "Nilai Node 2:")
 
         voltValueLabel.grid(row=rowStart, column = 1)
-        voltNode1Label.grid(row=rowStart+1, column = 1)        
+        voltNode1Label.grid(row=rowStart+1, column = 1)
         voltNode2Label.grid(row=rowStart+2, column = 1)
 
-        voltNode1Entry.grid(row=rowStart+1, column = 2)        
+        voltNode1Entry.grid(row=rowStart+1, column = 2)
         voltValueEntry.grid(row=rowStart, column = 2)
-        voltNode2Entry.grid(row=rowStart+2, column = 2)    
+        voltNode2Entry.grid(row=rowStart+2, column = 2)
 
         submit = Tk.Button(otherFrame, text = "Submit")
         cancel = Tk.Button(otherFrame, text = "Cancel")
@@ -332,9 +330,9 @@ class addComponentClass(Tk.Toplevel):
             self.file.write("V")
             self.file.write("\n")
             self.file.write(str(voltValueEntry.get()))
-            self.file.write("\n")       
+            self.file.write("\n")
             self.file.write(str(voltNode1Entry.get()))
-            self.file.write("\n")       
+            self.file.write("\n")
             self.file.write(str(voltNode2Entry.get()))
             self.file.write("\n")
 
@@ -344,23 +342,23 @@ class addComponentClass(Tk.Toplevel):
         self.hide()
         otherFrame = addFrame(self, "Add Current Source")
         currValueEntry = Tk.Entry(otherFrame)
-        
+
         currNode1Entry = Tk.Entry(otherFrame)
-        
+
         currNode2Entry = Tk.Entry(otherFrame)
 
         rowStart = otherFrame.getRow()
-        currValueLabel=Tk.Label(otherFrame,text = "Nilai Sumber Arus:")        
+        currValueLabel=Tk.Label(otherFrame,text = "Nilai Sumber Arus:")
         currNode1Label=Tk.Label(otherFrame,text = "Nilai Node 1:")
         currNode2Label=Tk.Label(otherFrame,text = "Nilai Node 2:")
 
         currValueLabel.grid(row=rowStart, column = 1)
-        currNode1Label.grid(row=rowStart+1, column = 1)        
+        currNode1Label.grid(row=rowStart+1, column = 1)
         currNode2Label.grid(row=rowStart+2, column = 1)
 
-        currNode1Entry.grid(row=rowStart+1, column = 2)        
+        currNode1Entry.grid(row=rowStart+1, column = 2)
         currValueEntry.grid(row=rowStart, column = 2)
-        currNode2Entry.grid(row=rowStart+2, column = 2)    
+        currNode2Entry.grid(row=rowStart+2, column = 2)
 
         submit = Tk.Button(otherFrame, text = "Submit")
         cancel = Tk.Button(otherFrame, text = "Cancel")
@@ -376,9 +374,9 @@ class addComponentClass(Tk.Toplevel):
             self.file.write("I")
             self.file.write("\n")
             self.file.write(str(currValueEntry.get()))
-            self.file.write("\n")       
+            self.file.write("\n")
             self.file.write(str(currNode1Entry.get()))
-            self.file.write("\n")       
+            self.file.write("\n")
             self.file.write(str(currNode2Entry.get()))
             self.file.write("\n")
 
@@ -388,29 +386,29 @@ class addComponentClass(Tk.Toplevel):
         self.hide()
         otherFrame = addFrame(self, "Add AC Current Source")
         currValueEntry = Tk.Entry(otherFrame)
-        currFreqEntry = Tk.Entry(otherFrame)        
+        currFreqEntry = Tk.Entry(otherFrame)
         currShiftEntry = Tk.Entry(otherFrame)
-        currNode1Entry = Tk.Entry(otherFrame)        
+        currNode1Entry = Tk.Entry(otherFrame)
         currNode2Entry = Tk.Entry(otherFrame)
 
         rowStart = otherFrame.getRow()
-        currValueLabel=Tk.Label(otherFrame,text = "Nilai Amplitude Sumber Arus(A):")        
-        currFreqLabel=Tk.Label(otherFrame,text = "Nilai Frekuensi (Hz):")        
-        currShiftLabel=Tk.Label(otherFrame,text = "Nilai Shifting (s):")        
+        currValueLabel=Tk.Label(otherFrame,text = "Nilai Amplitude Sumber Arus(A):")
+        currFreqLabel=Tk.Label(otherFrame,text = "Nilai Frekuensi (Hz):")
+        currShiftLabel=Tk.Label(otherFrame,text = "Nilai Shifting (s):")
         currNode1Label=Tk.Label(otherFrame,text = "Nilai Node 1:")
         currNode2Label=Tk.Label(otherFrame,text = "Nilai Node 2:")
         currTypeLabel = Tk.Label(otherFrame,text = "Tipe Sumber:")
 
         currValueLabel.grid(row=rowStart, column = 1)
         currFreqLabel.grid(row = rowStart + 1, column = 1)
-        currNode1Label.grid(row=rowStart+2, column = 1)        
+        currNode1Label.grid(row=rowStart+2, column = 1)
         currNode2Label.grid(row=rowStart+3, column = 1)
         currShiftLabel.grid(row=rowStart+4, column = 1)
 
         currValueEntry.grid(row=rowStart, column = 2)
         currFreqEntry.grid(row = rowStart + 1, column = 2)
-        currNode1Entry.grid(row=rowStart+2, column = 2)                
-        currNode2Entry.grid(row=rowStart+3, column = 2)    
+        currNode1Entry.grid(row=rowStart+2, column = 2)
+        currNode2Entry.grid(row=rowStart+3, column = 2)
         currShiftEntry.grid(row=rowStart+4, column = 2)
 
         typeAC = ["Sinus", "Kotak"]
@@ -435,9 +433,9 @@ class addComponentClass(Tk.Toplevel):
             self.file.write("J")
             self.file.write("\n")
             self.file.write(str(currValueEntry.get())) #A
-            self.file.write("\n")       
+            self.file.write("\n")
             self.file.write(str(currNode1Entry.get()))#1
-            self.file.write("\n")       
+            self.file.write("\n")
             self.file.write(str(currNode2Entry.get()))#2
             self.file.write("\n")
             if variable.get() == "Sinus":
@@ -446,39 +444,39 @@ class addComponentClass(Tk.Toplevel):
                 self.file.write("1")
             self.file.write("\n")
             self.file.write(str(currFreqEntry.get()))
-            self.file.write("\n")            
+            self.file.write("\n")
             self.file.write(str(currShiftEntry.get()))
-            self.file.write("\n")            
+            self.file.write("\n")
 
-        otherFrame.onClose()        
+        otherFrame.onClose()
 
     def addACVoltageSource(self):
         self.hide()
         otherFrame = addFrame(self, "Add AC Voltage Source")
         voltValueEntry = Tk.Entry(otherFrame)
-        voltFreqEntry = Tk.Entry(otherFrame)        
+        voltFreqEntry = Tk.Entry(otherFrame)
         voltShiftEntry = Tk.Entry(otherFrame)
-        voltNode1Entry = Tk.Entry(otherFrame)        
+        voltNode1Entry = Tk.Entry(otherFrame)
         voltNode2Entry = Tk.Entry(otherFrame)
 
         rowStart = otherFrame.getRow()
-        voltValueLabel=Tk.Label(otherFrame,text = "Nilai Amplitude Sumber Tegangan(V):")        
-        voltFreqLabel=Tk.Label(otherFrame,text = "Nilai Frekuensi (Hz):")        
-        voltShiftLabel=Tk.Label(otherFrame,text = "Nilai Shifting (s):")        
+        voltValueLabel=Tk.Label(otherFrame,text = "Nilai Amplitude Sumber Tegangan(V):")
+        voltFreqLabel=Tk.Label(otherFrame,text = "Nilai Frekuensi (Hz):")
+        voltShiftLabel=Tk.Label(otherFrame,text = "Nilai Shifting (s):")
         voltNode1Label=Tk.Label(otherFrame,text = "Nilai Node 1:")
         voltNode2Label=Tk.Label(otherFrame,text = "Nilai Node 2:")
         voltTypeLabel = Tk.Label(otherFrame,text = "Tipe Sumber:")
 
         voltValueLabel.grid(row=rowStart, column = 1)
         voltFreqLabel.grid(row = rowStart + 1, column = 1)
-        voltNode1Label.grid(row=rowStart+2, column = 1)        
+        voltNode1Label.grid(row=rowStart+2, column = 1)
         voltNode2Label.grid(row=rowStart+3, column = 1)
         voltShiftLabel.grid(row=rowStart+4, column = 1)
 
         voltValueEntry.grid(row=rowStart, column = 2)
         voltFreqEntry.grid(row = rowStart + 1, column = 2)
-        voltNode1Entry.grid(row=rowStart+2, column = 2)                
-        voltNode2Entry.grid(row=rowStart+3, column = 2)    
+        voltNode1Entry.grid(row=rowStart+2, column = 2)
+        voltNode2Entry.grid(row=rowStart+3, column = 2)
         voltShiftEntry.grid(row=rowStart+4, column = 2)
 
         typeAC = ["Sinus", "Kotak"]
@@ -503,9 +501,9 @@ class addComponentClass(Tk.Toplevel):
             self.file.write("W")
             self.file.write("\n")
             self.file.write(str(voltValueEntry.get())) #A
-            self.file.write("\n")       
+            self.file.write("\n")
             self.file.write(str(voltNode1Entry.get()))#1
-            self.file.write("\n")       
+            self.file.write("\n")
             self.file.write(str(voltNode2Entry.get()))#2
             self.file.write("\n")
             if variable.get() == "Sinus":
@@ -514,11 +512,11 @@ class addComponentClass(Tk.Toplevel):
                 self.file.write("1")
             self.file.write("\n")
             self.file.write(str(voltFreqEntry.get()))
-            self.file.write("\n")            
+            self.file.write("\n")
             self.file.write(str(voltShiftEntry.get()))
-            self.file.write("\n")            
+            self.file.write("\n")
 
-        otherFrame.onClose()        
+        otherFrame.onClose()
 
 
 class simulateCircuit(Tk.Toplevel):
@@ -527,7 +525,7 @@ class simulateCircuit(Tk.Toplevel):
         self.original_frame = original
         self.file = open("timefile.txt", "w+")
         self.nameFileGrou = "groundfile.txt"
-        
+
         self.Row = 0
         Tk.Toplevel.__init__(self)
         self.geometry("800x600")
@@ -535,10 +533,10 @@ class simulateCircuit(Tk.Toplevel):
 
         rowStart = self.getRow()
 
-        timestartEntry = Tk.Entry(self)        
+        timestartEntry = Tk.Entry(self)
         timendEntry = Tk.Entry(self)
 
-        timestartLabel=Tk.Label(self,text = "Time Start :")        
+        timestartLabel=Tk.Label(self,text = "Time Start :")
         timeendLabel=Tk.Label(self,text = "Time End :")
 
         timestartEntry.grid(row = rowStart, column = 2)
@@ -549,24 +547,24 @@ class simulateCircuit(Tk.Toplevel):
         self.getRow()
 
         btngrou =Tk.Button(self, text="Add Ground", command=self.addGround)
-        btngrou.grid(row = self.getRow())                
+        btngrou.grid(row = self.getRow())
 
         btnsim = Tk.Button(self, text="Simulate", command=lambda :self.simulateNow(timestartEntry, timendEntry))
-        btnsim.grid(row = self.getRow(), column = 0)        
+        btnsim.grid(row = self.getRow(), column = 0)
 
         btn = Tk.Button(self, text="Close", command=self.onClose)
-        btn.grid(row = self.getRow(), column = 0) 
+        btn.grid(row = self.getRow(), column = 0)
     def hide(self):
         self.withdraw()
 
     def show(self):
         """"""
         self.update()
-        self.deiconify()           
+        self.deiconify()
 
     def onClose(self):
         self.destroy()
-        self.original_frame.show()    
+        self.original_frame.show()
 
     def getRow(self):
         self.Row += 1
@@ -578,7 +576,7 @@ class simulateCircuit(Tk.Toplevel):
         grouValueEntry = Tk.Entry(otherFrame)
 
         rowStart = otherFrame.getRow()
-        grouValueLabel=Tk.Label(otherFrame,text = "Nilai Node Ground:")        
+        grouValueLabel=Tk.Label(otherFrame,text = "Nilai Node Ground:")
 
         grouValueLabel.grid(row=rowStart, column = 1)
 
@@ -598,7 +596,7 @@ class simulateCircuit(Tk.Toplevel):
             self.file.write("\n")
             self.fileGrou.close()
 
-        otherFrame.onClose() 
+        otherFrame.onClose()
 
     def simulateNow(self, timestartEntry, timendEntry):
         self.file.write(str(timestartEntry.get()))
@@ -614,21 +612,21 @@ class simulateCircuit(Tk.Toplevel):
 
         self.onClose()
 
-    
+
 class MyApp(object):
-    
+
     def __init__(self, parent, fileName):
         self.inputFile = "infile.txt"
         self.simulateexecute = "program.exe"
         self.root = parent
         self.root.title("Main Menu")
         self.frame = Tk.Frame(parent)
-        self.frame.pack()        
+        self.frame.pack()
 
         self.data = pd.read_csv(fileName)
-        self.Dict = {}        
-        
-                
+        self.Dict = {}
+
+
         btnShowPlot = Tk.Button(self.frame, text="Show Plot", command=self.showPlotInMenu)
         btnShowPlot.pack()
         btnAddComponent = Tk.Button(self.frame, text="Add Component", command=self.insertComponentInMenu)
@@ -638,14 +636,14 @@ class MyApp(object):
 
         btnExit = Tk.Button(self.frame, text = "Exit", command = self.root.destroy)
         btnExit.pack()
-        
+
     def hide(self):
-        self.root.withdraw()        
-        
+        self.root.withdraw()
+
     def onCloseOtherFrame(self, otherFrame):
         otherFrame.destroy()
         self.show()
-        
+
     def show(self):
         """"""
         self.root.update()
@@ -653,7 +651,7 @@ class MyApp(object):
     #showplot
     def showPlotInMenu(self):
         self.hide()
-        subFrame = showPlotClass(self)   
+        subFrame = showPlotClass(self)
 
     # insert component
     def insertComponentInMenu(self)   :
@@ -665,11 +663,12 @@ class MyApp(object):
         subFrame = simulateCircuit(self)
 
 
-     
-    
+
+
 #----------------------------------------------------------------------
 if __name__ == "__main__":
     root = Tk.Tk()
     root.geometry("800x600")
+    root.configure(bg='white')
     app = MyApp(root, "outfile.csv")
     root.mainloop()

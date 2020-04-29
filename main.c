@@ -9,12 +9,22 @@
 
 int main(){
 
-  int ground = 0;
-  double delta_t = 0.01;
-  double t_start = 0;
-  double t_stop  = 12;
-  char *components_infile_path = "infiles/infile8.txt";
+  int ground;
+  double delta_t = 1e-3;
+  double t_start;
+  double t_stop;
+  // char *components_infile_path = "infiles/infile8.txt";
+  char *components_infile_path = "infile.txt";
+  char *time_infile_path = "timefile.txt";
+  char *ground_infile_path = "ground.txt";
   char *outfile_path = "outfile.csv";
+
+
+  addTimeFromFile(time_infile_path, &t_start, &t_stop);
+  printf("start = %fs, end = %fs\n", t_start, t_stop);
+  addGroundFromFile(ground_infile_path, &ground);
+  printf("ground = %d\n", ground);
+
 
   component *component_array;
   int component_array_length = 0;
