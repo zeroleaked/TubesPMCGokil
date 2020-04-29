@@ -31,14 +31,7 @@ class addFrame(Tk.Toplevel):
 
     def getRow(self):
         self.Row += 1
-        return (self.Row - 1)    
-
-
-
-
-      
-
-
+        return (self.Row - 1) 
 
 class MyApp(object):
     
