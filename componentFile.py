@@ -446,7 +446,7 @@ class addComponentClass(Tk.Toplevel):
 
         submit = Tk.Button(otherFrame, text = "Submit")
         cancel = Tk.Button(otherFrame, text = "Cancel")
-        submit['command'] =lambda binst =submit, binst2 = cancel:self.putACtVoltageSource(1,voltValueEntry,
+        submit['command'] =lambda binst =submit, binst2 = cancel:self.putACVoltageSource(1,voltValueEntry,
                 voltNode1Entry,voltNode2Entry,voltFreqEntry,voltShiftEntry,variable, binst, binst2, otherFrame)
         cancel['command'] = lambda binst = cancel,  binst2 = submit:self.putACVoltageSource(0,voltValueEntry,
                 voltNode1Entry,voltNode2Entry,voltFreqEntry,voltShiftEntry,variable, binst, binst2, otherFrame)
