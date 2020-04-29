@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import os
 
 try :
     import subprocess
@@ -18,7 +19,7 @@ class addFrame(Tk.Toplevel):
         self.original_frame = original
         Tk.Toplevel.__init__(self)
         self.geometry("400x300")
-        self.title(frameName) 
+        self.title(frameName)
         self.Row = 0
 
     def onClose(self):
@@ -27,7 +28,7 @@ class addFrame(Tk.Toplevel):
 
     def getRow(self):
         self.Row += 1
-        return (self.Row - 1)   
+        return (self.Row - 1)
 
 class simulateCircuit(Tk.Toplevel):
     def __init__(self, original):
@@ -36,7 +37,7 @@ class simulateCircuit(Tk.Toplevel):
         self.original_frame = original
         self.file = open("timefile.txt", "w+")
         self.nameFileGrou = "groundfile.txt"
-        
+
         self.Row = 0
         Tk.Toplevel.__init__(self)
         self.geometry("800x600")
@@ -44,10 +45,10 @@ class simulateCircuit(Tk.Toplevel):
 
         rowStart = self.getRow()
 
-        timestartEntry = Tk.Entry(self)        
+        timestartEntry = Tk.Entry(self)
         timendEntry = Tk.Entry(self)
 
-        timestartLabel=Tk.Label(self,text = "Time Start :")        
+        timestartLabel=Tk.Label(self,text = "Time Start :")
         timeendLabel=Tk.Label(self,text = "Time End :")
 
         timestartEntry.grid(row = rowStart, column = 2)
@@ -58,24 +59,24 @@ class simulateCircuit(Tk.Toplevel):
         self.getRow()
 
         btngrou =Tk.Button(self, text="Add Ground", command=self.addGround)
-        btngrou.grid(row = self.getRow())                
+        btngrou.grid(row = self.getRow())
 
         btnsim = Tk.Button(self, text="Simulate", command=lambda :self.simulateNow(timestartEntry, timendEntry))
-        btnsim.grid(row = self.getRow(), column = 0)        
+        btnsim.grid(row = self.getRow(), column = 0)
 
         btn = Tk.Button(self, text="Close", command=self.onClose)
-        btn.grid(row = self.getRow(), column = 0) 
+        btn.grid(row = self.getRow(), column = 0)
     def hide(self):
         self.withdraw()
 
     def show(self):
         """"""
         self.update()
-        self.deiconify()           
+        self.deiconify()
 
     def onClose(self):
         self.destroy()
-        self.original_frame.show()    
+        self.original_frame.show()
 
     def getRow(self):
         self.Row += 1
@@ -87,7 +88,7 @@ class simulateCircuit(Tk.Toplevel):
         grouValueEntry = Tk.Entry(otherFrame)
 
         rowStart = otherFrame.getRow()
-        grouValueLabel=Tk.Label(otherFrame,text = "Nilai Node Ground:")        
+        grouValueLabel=Tk.Label(otherFrame,text = "Nilai Node Ground:")
 
         grouValueLabel.grid(row=rowStart, column = 1)
 
@@ -107,7 +108,7 @@ class simulateCircuit(Tk.Toplevel):
             self.file.write("\n")
             self.fileGrou.close()
 
-        otherFrame.onClose() 
+        otherFrame.onClose()
 
     def simulateNow(self, timestartEntry, timendEntry):
         self.file.write(str(timestartEntry.get()))
