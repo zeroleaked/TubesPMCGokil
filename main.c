@@ -12,7 +12,7 @@ int main(){
   int ground = 0;
   double delta_t = 0.01;
   double t_start = 0;
-  double t_stop  = 6;
+  double t_stop  = 12;
   char *components_infile_path = "infiles/infile8.txt";
   char *outfile_path = "outfile.csv";
 
