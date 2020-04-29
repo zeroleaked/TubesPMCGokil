@@ -50,7 +50,7 @@ class MyApp(object):
 
         btnShowPlot = Tk.Button(self.frame, text="Show Plot", command=self.showPlotInMenu)
         btnShowPlot.grid(row=1, padx=5, pady=5, sticky="NESW")
-        btnAddComponent = Tk.Button(self.frame, text="Add Component", command=self.insertComponentInMenu)
+        btnAddComponent = Tk.Button(self.frame, text="Set Component", command=self.insertComponentInMenu)
         btnAddComponent.grid(row=2, padx=5, pady=5, sticky="NESW")
         btnSimulate = Tk.Button(self.frame, text="Simulate", command=self.simulate)
         btnSimulate.grid(row=3, padx=5, pady=5, sticky="NESW")
