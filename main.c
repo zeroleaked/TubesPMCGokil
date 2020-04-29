@@ -8,6 +8,8 @@
 // -DDEBUG for debug
 
 int main(){
+  char *ground_name_file = "groundfile.txt" // Letak Ground
+  char *time_name_file = "timefile.txt" // Letak waktu awal dan akhir
 
   int ground = 0;
   double delta_t = 0.01;
