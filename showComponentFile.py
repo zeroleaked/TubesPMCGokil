@@ -59,7 +59,7 @@ class showComponentClass(Tk.Toplevel):
         self.j_list = []
 
         self.readInputFile()
-        Tk.Label(frame, text = "Daftar R").grid(row = self.getRow())
+        Tk.Label(frame, text = "Daftar R", bg = "#00ffff").grid(row = self.getRow())
         row_now = self.getRow()
         Tk.Label(frame, text = "Nilai (Ohm)").grid(row = row_now, column = 0)
         Tk.Label(frame, text = "Node 1").grid(row = row_now, column = 1)
@@ -69,7 +69,7 @@ class showComponentClass(Tk.Toplevel):
             for j in range (3):
                 Tk.Label(frame, text = str(self.r_list[i][j])).grid(row = row_now, column = j)
 
-        Tk.Label(frame, text = "Daftar L").grid(row = self.getRow())
+        Tk.Label(frame, text = "Daftar L" ,bg = "#00ffff").grid(row = self.getRow())
         row_now = self.getRow()
         Tk.Label(frame, text = "Nilai (H)").grid(row = row_now, column = 0)
         Tk.Label(frame, text = "Node 1").grid(row = row_now, column = 1)
@@ -80,7 +80,7 @@ class showComponentClass(Tk.Toplevel):
             for j in range (4):
                 Tk.Label(frame, text = str(self.l_list[i][j])).grid(row = row_now, column = j)
 
-        Tk.Label(frame, text = "Daftar C").grid(row = self.getRow())
+        Tk.Label(frame, text = "Daftar C",bg = "#00ffff").grid(row = self.getRow())
         row_now = self.getRow()
         Tk.Label(frame, text = "Nilai (Farad)").grid(row = row_now, column = 0)
         Tk.Label(frame, text = "Node 1").grid(row = row_now, column = 1)
@@ -91,7 +91,7 @@ class showComponentClass(Tk.Toplevel):
             for j in range (4):
                 Tk.Label(frame, text = str(self.c_list[i][j])).grid(row = row_now, column = j)
         
-        Tk.Label(frame, text = "Daftar Sumber Tegangan").grid(row = self.getRow())
+        Tk.Label(frame, text = "Daftar Sumber Tegangan",bg = "#00ffff").grid(row = self.getRow())
         row_now = self.getRow()
         Tk.Label(frame, text = "Nilai (Volt)").grid(row = row_now, column = 0)
         Tk.Label(frame, text = "Node 1").grid(row = row_now, column = 1)
@@ -101,7 +101,7 @@ class showComponentClass(Tk.Toplevel):
             for j in range (3):
                 Tk.Label(frame, text = str(self.v_list[i][j])).grid(row = row_now, column = j)
 
-        Tk.Label(frame, text = "Daftar Sumber Arus").grid(row = self.getRow())
+        Tk.Label(frame, text = "Daftar Sumber Arus",bg = "#00ffff").grid(row = self.getRow())
         row_now = self.getRow()
         Tk.Label(frame, text = "Nilai (Ampere)").grid(row = row_now, column = 0)
         Tk.Label(frame, text = "Node 1").grid(row = row_now, column = 1)
@@ -111,7 +111,7 @@ class showComponentClass(Tk.Toplevel):
             for j in range (3):
                 Tk.Label(frame, text = str(self.i_list[i][j])).grid(row = row_now, column = j)
 
-        Tk.Label(frame, text = "Daftar Sumber Tegangan AC").grid(row = self.getRow())
+        Tk.Label(frame, text = "Daftar Sumber Tegangan AC",bg = "#00ffff").grid(row = self.getRow())
         row_now = self.getRow()
         Tk.Label(frame, text = "Amplitude (Volt)").grid(row = row_now, column = 0)
         Tk.Label(frame, text = "Node 1").grid(row = row_now, column = 1)
