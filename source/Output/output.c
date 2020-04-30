@@ -190,7 +190,7 @@ void addComponentCurrentsToFile(
     if ( component_array[i].type == 'v' ) {
       i++; // skip resistor
     }
-    if (i < component_array_length) fprintf(*fptr, ",");
+    if (i < component_array_length-1) fprintf(*fptr, ",");
   }
 }
 
