@@ -127,7 +127,7 @@ class showComponentClass(Tk.Toplevel):
             self.writeRow()
 
         for i in range (len(self.j_list)):
-            self.row[0] = 'V' + str(len(self.i_list)+i+1)
+            self.row[0] = 'I' + str(len(self.i_list)+i+1)
             self.row[1] = type[int(self.j_list[i][3])]
             self.row[2] = str(self.j_list[i][1])
             self.row[3] = str(self.j_list[i][2])
