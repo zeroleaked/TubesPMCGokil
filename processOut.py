@@ -37,8 +37,8 @@ class MyApp(object):
     def __init__(self, parent, fileName):
         self.fileOutputName = fileName;
         self.inputFile = "infile.txt"
-        # self.simulateexecute = "program.exe"
-        self.simulateexecute = "./program.o"
+        self.simulateexecute = "program.exe"
+        # self.simulateexecute = "./program.o"
         self.root = parent
         self.root.title("Main Menu")
         self.frame = Tk.Frame(parent)
