@@ -9,7 +9,7 @@
 
 int main(){
   int ground;
-  double delta_t = 1e-3;
+  // double delta_t = 1e-4;
   double t_start;
   double t_stop;
   // char *components_infile_path = "infiles/infile8.txt";
@@ -25,6 +25,7 @@ int main(){
   addGroundFromFile(ground_infile_path, &ground);
   printf("ground = %d\n", ground);
 
+  double delta_t = (t_stop-t_start) * 1e-5;
 
   component *component_array;
   int component_array_length = 0;
