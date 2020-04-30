@@ -42,7 +42,7 @@ class showComponentClass(Tk.Toplevel):
         frame = Tk.Frame(canvas)
 
         self.geometry("800x200")
-        self.title("addComponentClass")
+        self.title("Show Component")
         self.file = open(original.inputFile, "r")
 
         self.r_list = []
