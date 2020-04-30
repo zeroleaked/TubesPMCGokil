@@ -25,7 +25,7 @@ int main(){
   addGroundFromFile(ground_infile_path, &ground);
   printf("ground = %d\n", ground);
 
-  double delta_t = (t_stop-t_start) * 1e-5;
+  double delta_t = (t_stop-t_start) * 1e-4;
 
   component *component_array;
   int component_array_length = 0;
