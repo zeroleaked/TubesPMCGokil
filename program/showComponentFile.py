@@ -11,8 +11,8 @@ try :
     import Tkinter as Tk
     from Tkinter import ttk
 except ImportError :
-    import tkinter as Tk
-    from tkinter import ttk
+    import Tkinter as Tk
+    import ttk
 
 class addFrame(Tk.Toplevel):
     def __init__(self, original, frameName):
