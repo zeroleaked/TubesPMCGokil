@@ -8,16 +8,11 @@ except:
     exit(0)
 
 try :
-    import subprocess
-except:
-    print("install subprocess")
-    exit(0)
-try :
     import Tkinter as Tk
     from Tkinter import ttk
 except ImportError :
-    import Tkinter as Tk
-    import ttk
+    import tkinter as Tk
+    from tkinter import ttk
 
 class addFrame(Tk.Toplevel):
     def __init__(self, original, frameName):
@@ -46,8 +41,13 @@ class showComponentClass(Tk.Toplevel):
 
         self.frame = Tk.Frame(canvas)
 
+<<<<<<< HEAD
         self.geometry("600x300")
         self.title("addComponentClass")
+=======
+        self.geometry("800x200")
+        self.title("Show Component")
+>>>>>>> 06589625511e66b851f7696a003987e1c59e7b92
         self.file = open(original.inputFile, "r")
 
         self.r_list = []
