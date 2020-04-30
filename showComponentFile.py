@@ -8,16 +8,11 @@ except:
     exit(0)
 
 try :
-    import subprocess
-except:
-    print("install subprocess")
-    exit(0)
-try :
     import Tkinter as Tk
     from Tkinter import ttk
 except ImportError :
-    import Tkinter as Tk
-    import ttk
+    import tkinter as Tk
+    from tkinter import ttk
 
 class addFrame(Tk.Toplevel):
     def __init__(self, original, frameName):
@@ -130,7 +125,7 @@ class showComponentClass(Tk.Toplevel):
                     continue
                 Tk.Label(frame, text = str(self.w_list[i][j])).grid(row = row_now, column = j)
 
-        Tk.Label(frame, text = "Daftar Sumber Arus AC").grid(row = self.getRow())
+        Tk.Label(frame, text = "Daftar Sumber Arus AC",bg = "#00ffff").grid(row = self.getRow())
         row_now = self.getRow()
         Tk.Label(frame, text = "Amplitude (Ampere)").grid(row = row_now, column = 0)
         Tk.Label(frame, text = "Node 1").grid(row = row_now, column = 1)
