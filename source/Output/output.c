@@ -183,15 +183,14 @@ void addComponentCurrentsToFile(
         // sumber arus ditambah arus resistor
         solved_array[offset + i] + solved_array[offset + i + 1]);
       i++; // skip resistor
-      continue;
     }
-    fprintf(*fptr, "%f", solved_array[offset + i]);
+    else fprintf(*fptr, "%f", solved_array[offset + i]);
 
     // kasus kapasitor, arus sumber tegangan dan resistor sama (seri)
     if ( component_array[i].type == 'v' ) {
       i++; // skip resistor
     }
-    if (i < component_array_length - 1) fprintf(*fptr, ",");
+    if (i < component_array_length) fprintf(*fptr, ",");
   }
 }
 
