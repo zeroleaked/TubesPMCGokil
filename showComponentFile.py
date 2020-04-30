@@ -44,9 +44,9 @@ class showComponentClass(Tk.Toplevel):
         canvas = Tk.Canvas(self)
         scroll_y = Tk.Scrollbar(self, orient = "vertical", command = canvas.yview)
 
-        frame = Tk.Frame(canvas)
+        self.frame = Tk.Frame(canvas)
 
-        self.geometry("800x200")
+        self.geometry("600x300")
         self.title("addComponentClass")
         self.file = open(original.inputFile, "r")
 
@@ -59,104 +59,93 @@ class showComponentClass(Tk.Toplevel):
         self.j_list = []
 
         self.readInputFile()
-        Tk.Label(frame, text = "Daftar R", bg = "#00ffff").grid(row = self.getRow())
-        row_now = self.getRow()
-        Tk.Label(frame, text = "Nilai (Ohm)").grid(row = row_now, column = 0)
-        Tk.Label(frame, text = "Node 1").grid(row = row_now, column = 1)
-        Tk.Label(frame, text = "Node 2").grid(row = row_now, column = 2)
+        # print self.r_list
+        # Tk.Label(frame, text = "Daftar R", bg = "#00ffff").grid(row = self.getRow())
+        self.row = ["Name", "Value", "Node 1", "Node 2", "Initial", "Amplitude", "Frequency", "Time Shift"]
+        self.writeRow()
+
         for i in range (len(self.r_list)):
-            row_now = self.getRow()
-            for j in range (3):
-                Tk.Label(frame, text = str(self.r_list[i][j])).grid(row = row_now, column = j)
+            self.row[0] = 'R' + str(i+1)
+            self.row[1] = str(self.r_list[i][0]) + ' Ohm'
+            self.row[2] = str(self.r_list[i][1])
+            self.row[3] = str(self.r_list[i][2])
+            self.row[4] = '-'
+            self.row[5] = '-'
+            self.row[6] = '-'
+            self.row[7] = '-'
+            self.writeRow()
 
-        Tk.Label(frame, text = "Daftar L" ,bg = "#00ffff").grid(row = self.getRow())
-        row_now = self.getRow()
-        Tk.Label(frame, text = "Nilai (H)").grid(row = row_now, column = 0)
-        Tk.Label(frame, text = "Node 1").grid(row = row_now, column = 1)
-        Tk.Label(frame, text = "Node 2").grid(row = row_now, column = 2)
-        Tk.Label(frame, text = "Nilai arus awal").grid(row = row_now, column = 3)
         for i in range (len(self.l_list)):
-            row_now = self.getRow()
-            for j in range (4):
-                Tk.Label(frame, text = str(self.l_list[i][j])).grid(row = row_now, column = j)
+            self.row[0] = 'L' + str(i+1)
+            self.row[1] = str(self.l_list[i][0]) + ' H'
+            self.row[2] = str(self.l_list[i][1])
+            self.row[3] = str(self.l_list[i][2])
+            self.row[4] = str(self.l_list[i][3]) + ' A'
+            self.row[5] = '-'
+            self.row[6] = '-'
+            self.row[7] = '-'
+            self.writeRow()
 
-        Tk.Label(frame, text = "Daftar C",bg = "#00ffff").grid(row = self.getRow())
-        row_now = self.getRow()
-        Tk.Label(frame, text = "Nilai (Farad)").grid(row = row_now, column = 0)
-        Tk.Label(frame, text = "Node 1").grid(row = row_now, column = 1)
-        Tk.Label(frame, text = "Node 2").grid(row = row_now, column = 2)
-        Tk.Label(frame, text = "Nilai tegangan awal").grid(row = row_now, column = 3)
         for i in range (len(self.c_list)):
-            row_now = self.getRow()
-            for j in range (4):
-                Tk.Label(frame, text = str(self.c_list[i][j])).grid(row = row_now, column = j)
+            self.row[0] = 'C' + str(i+1)
+            self.row[1] = str(self.c_list[i][0]) + ' F'
+            self.row[2] = str(self.c_list[i][1])
+            self.row[3] = str(self.c_list[i][2])
+            self.row[4] = str(self.c_list[i][3]) + ' V'
+            self.row[5] = '-'
+            self.row[6] = '-'
+            self.row[7] = '-'
+            self.writeRow()
 
-        Tk.Label(frame, text = "Daftar Sumber Tegangan",bg = "#00ffff").grid(row = self.getRow())
-        row_now = self.getRow()
-        Tk.Label(frame, text = "Nilai (Volt)").grid(row = row_now, column = 0)
-        Tk.Label(frame, text = "Node 1").grid(row = row_now, column = 1)
-        Tk.Label(frame, text = "Node 2").grid(row = row_now, column = 2)
         for i in range (len(self.v_list)):
-            row_now = self.getRow()
-            for j in range (3):
-                Tk.Label(frame, text = str(self.v_list[i][j])).grid(row = row_now, column = j)
+            self.row[0] = 'V' + str(i+1)
+            self.row[1] = str(self.v_list[i][0]) + ' V'
+            self.row[2] = str(self.v_list[i][1])
+            self.row[3] = str(self.v_list[i][2])
+            self.row[4] = '-'
+            self.row[5] = '-'
+            self.row[6] = '-'
+            self.row[7] = '-'
+            self.writeRow()
 
-        Tk.Label(frame, text = "Daftar Sumber Arus",bg = "#00ffff").grid(row = self.getRow())
-        row_now = self.getRow()
-        Tk.Label(frame, text = "Nilai (Ampere)").grid(row = row_now, column = 0)
-        Tk.Label(frame, text = "Node 1").grid(row = row_now, column = 1)
-        Tk.Label(frame, text = "Node 2").grid(row = row_now, column = 2)
-        for i in range (len(self.i_list)):
-            row_now = self.getRow()
-            for j in range (3):
-                Tk.Label(frame, text = str(self.i_list[i][j])).grid(row = row_now, column = j)
-
-        Tk.Label(frame, text = "Daftar Sumber Tegangan AC",bg = "#00ffff").grid(row = self.getRow())
-        row_now = self.getRow()
-        Tk.Label(frame, text = "Amplitude (Volt)").grid(row = row_now, column = 0)
-        Tk.Label(frame, text = "Node 1").grid(row = row_now, column = 1)
-        Tk.Label(frame, text = "Node 2").grid(row = row_now, column = 2)
-        Tk.Label(frame, text = "Type").grid(row = row_now, column = 3)
-        Tk.Label(frame, text = "Freq (Hz)").grid(row = row_now, column = 4)
-        Tk.Label(frame, text = "Time Shift(s)").grid(row = row_now, column = 5)
+        type = ['Sine', 'Square']
         for i in range (len(self.w_list)):
-            row_now = self.getRow()
-            for j in range (6):
-                if (j == 3):
-                    if int(self.w_list[i][3]) == 0:
-                        Tk.Label(frame, text = "Sinus").grid(row = row_now, column = j)
-                    else:
-                        Tk.Label(frame, text = "Kotak").grid(row = row_now, column = j)
-                    continue
-                Tk.Label(frame, text = str(self.w_list[i][j])).grid(row = row_now, column = j)
+            self.row[0] = 'V' + str(len(self.v_list)+i+1)
+            self.row[1] = type[int(self.w_list[i][3])]
+            self.row[2] = str(self.w_list[i][1])
+            self.row[3] = str(self.w_list[i][2])
+            self.row[4] = '-'
+            self.row[5] = str(self.w_list[i][0]) + ' V'
+            self.row[6] = str(self.w_list[i][4]) + ' Hz'
+            self.row[7] = str(self.w_list[i][5]) + ' s'
+            self.writeRow()
 
-        Tk.Label(frame, text = "Daftar Sumber Arus AC").grid(row = self.getRow())
-        row_now = self.getRow()
-        Tk.Label(frame, text = "Amplitude (Ampere)").grid(row = row_now, column = 0)
-        Tk.Label(frame, text = "Node 1").grid(row = row_now, column = 1)
-        Tk.Label(frame, text = "Node 2").grid(row = row_now, column = 2)
-        Tk.Label(frame, text = "Type").grid(row = row_now, column = 3)
-        Tk.Label(frame, text = "Freq (Hz)").grid(row = row_now, column = 4)
-        Tk.Label(frame, text = "Time Shift(s)").grid(row = row_now, column = 5)
+        for i in range (len(self.i_list)):
+            self.row[0] = 'I' + str(i+1)
+            self.row[1] = str(self.i_list[i][0]) + ' A'
+            self.row[2] = str(self.i_list[i][1])
+            self.row[3] = str(self.i_list[i][2])
+            self.row[4] = '-'
+            self.row[5] = '-'
+            self.row[6] = '-'
+            self.row[7] = '-'
+            self.writeRow()
+
         for i in range (len(self.j_list)):
-            row_now = self.getRow()
-            for j in range (6):
-                if (j == 3):
-                    if int(self.j_list[i][3]) == 0:
-                        Tk.Label(frame, text = "Sinus").grid(row = row_now, column = j)
-                    else:
-                        Tk.Label(frame, text = "Kotak").grid(row = row_now, column = j)
-                    continue
-                Tk.Label(frame, text = str(self.j_list[i][j])).grid(row = row_now, column = j)
+            self.row[0] = 'V' + str(len(self.i_list)+i+1)
+            self.row[1] = type[int(self.j_list[i][3])]
+            self.row[2] = str(self.j_list[i][1])
+            self.row[3] = str(self.j_list[i][2])
+            self.row[4] = '-'
+            self.row[5] = str(self.j_list[i][0]) + ' A'
+            self.row[6] = str(self.j_list[i][4]) + ' Hz'
+            self.row[7] = str(self.j_list[i][5]) + ' s'
+            self.writeRow()
 
-        print self.w_list
-        print self.j_list
+        btn = Tk.Button(self.frame, text="Close", command=self.onClose)
+        btn.grid(row = self.getRow(), column=4, padx=5, pady=5)
 
-
-        btn = Tk.Button(frame, text="Close", command=self.onClose)
-        btn.grid(row = self.getRow())
-
-        canvas.create_window(0,0,anchor='nw',window = frame)
+        canvas.create_window(0,0,anchor='nw',window = self.frame)
         canvas.update_idletasks()
 
         canvas.configure(scrollregion=canvas.bbox('all'),
@@ -211,3 +200,8 @@ class showComponentClass(Tk.Toplevel):
                 self.w_list.append(self.readN(list,k,6))
             elif ch == '':
                 break
+
+    def writeRow(self):
+        row_now = self.getRow()
+        for i in range (8):
+            Tk.Label(self.frame, text = self.row[i]).grid(row = row_now, column = i, padx=5, pady=5)
