@@ -1,4 +1,4 @@
-## Program written in C for simulating RLC circuits.
+## Program written in C for simulating RLC circuits
 
 Compile source with
 
